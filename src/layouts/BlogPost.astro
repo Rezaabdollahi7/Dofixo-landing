@@ -1,0 +1,65 @@
+---
+import Layout from "./Layout.astro";
+import Header from "../components/ui/Header.astro";
+import Footer from "../components/sections/Footer.astro";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, tags } = post.data;
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  ...(updatedDate && { dateModified: updatedDate.toISOString() }),
+  author: {
+    "@type": "Organization",
+    name: "دوفیکسو",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "دوفیکسو",
+    url: "https://dofixo.ir",
+  },
+};
+---
+
+<Layout
+  title={`${title} | وبلاگ دوفیکسو`}
+  description={description}
+  canonicalPath={`/blog/${post.id}`}
+  schema={articleSchema}
+>
+  <Header />
+  <main class="mt-8 sm:pt-16 pt-20">
+    <article class="max-w-content mx-auto px-4 max-w-3xl">
+      <header class="text-center mb-10">
+        <h1 class="text-3xl md:text-4xl font-heading font-extrabold text-primary">
+          {title}
+        </h1>
+        <p class="text-charcoal/50 text-sm mt-4">
+          {pubDate.toLocaleDateString("fa-IR")}
+        </p>
+        {tags.length > 0 && (
+          <div class="flex flex-wrap justify-center gap-2 mt-4">
+            {tags.map((tag) => (
+              <span class="bg-[#fdeeea] text-secondary text-xs font-bold px-3 py-1 rounded-full">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </header>
+      <div class="prose prose-lg max-w-none text-charcoal/80 leading-8">
+        <slot />
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>

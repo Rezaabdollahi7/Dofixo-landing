@@ -1,5 +1,5 @@
 {
-  "name": "mafixo",
+  "name": "dofixo",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -18,5 +18,8 @@
     "astro": "^7.0.2",
     "astro-icon": "^1.1.5",
     "tailwindcss": "^4.3.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.20"
   }
 }

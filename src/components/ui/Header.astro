@@ -31,11 +31,12 @@ const navLinks: { href: string; label: string; icon: NavIcon }[] = [
   { href: "/pricing", label: "قیمت‌گذاری", icon: "tabler:tag" },
   { href: "/about", label: "درباره ما", icon: "tabler:info-circle" },
   { href: "/contact", label: "تماس با ما", icon: "tabler:mail" },
+  { href: "/blog", label: "بلاگ", icon: "tabler:mail" },
 ];
 
 const PHONE_DISPLAY = { prefix: "۰۹۲۱", number: "۹۸۱۱۹۸۰" };
 const PHONE_HREF = "tel:09219811980";
-const TELEGRAM_HREF = "https://t.me/mafixo";
+const TELEGRAM_HREF = "https://t.me/dofixo";
 const SOFTWARE_HREF = "/";
 
 const iconBaseClass = "flex items-center justify-center [&_svg]:w-full [&_svg]:h-full";
@@ -53,27 +54,27 @@ const iconBaseClass = "flex items-center justify-center [&_svg]:w-full [&_svg]:h
                 gap-2 items-center shadow-xl">
 
       <!-- Logo -->
-      <a href="/" aria-label="خانه مافیکسو" class="flex items-center justify-center gap-2">
+      <a href="/" aria-label="خانه دوفیکسو" class="flex items-center justify-center gap-2">
         <img
-          src="/images/mafixo.png"
-          alt="لوگوی مافیکسو"
+          src="/images/dofixo.png"
+          alt="لوگوی دوفیکسو"
           class="size-16 rounded-lg"
           width="64"
           height="64"
         />
-        <p class="font-semibold text-lg text-secondary lg:pt-1">مافیکسو</p>
+        <p class="font-semibold text-lg text-secondary lg:pt-1">دوفیکسو</p>
       </a>
 
       <!-- Left Side Actions -->
       <div class="flex items-center sm:gap-4">
 
         <!-- Telegram Button -->
-        <a href={TELEGRAM_HREF} aria-label="تلگرام مافیکسو" class="sm:bg-[#e9f0f9] rounded-r-4xl sm:h-14 sm:w-20 items-center rtl:sm:-ml-10 ltr:sm:-mr-10 rtl:sm:pr-[18px] ltr:sm:pl-[18px] hidden md:flex">
+        <a href={TELEGRAM_HREF} aria-label="تلگرام دوفیکسو" class="sm:bg-[#e9f0f9] rounded-r-4xl sm:h-14 sm:w-20 items-center rtl:sm:-ml-10 ltr:sm:-mr-10 rtl:sm:pr-[18px] ltr:sm:pl-[18px] hidden md:flex">
           <span class={`w-[30px] h-[31px] ${iconBaseClass} [&_svg_path]:stroke-[#110E2D]`} set:html={TelegramSvg} />
         </a>
 
         <!-- Phone Button -->
-        <a href={PHONE_HREF} aria-label="تماس با مافیکسو" class="px-8 sm:h-14 sm:rounded-[200px] sm:bg-secondary btnHover text-white hidden md:flex items-center justify-end gap-5">
+        <a href={PHONE_HREF} aria-label="تماس با دوفیکسو" class="px-8 sm:h-14 sm:rounded-[200px] sm:bg-secondary btnHover text-white hidden md:flex items-center justify-end gap-5">
           <div class="hidden sm:block">
             <p class="opacity-50 rtl:text-left ltr:text-right text-sm md:text-base">{PHONE_DISPLAY.prefix}</p>
             <p class="font-extrabold -mt-1 text-sm md:text-base">{PHONE_DISPLAY.number}</p>
@@ -104,7 +105,7 @@ const iconBaseClass = "flex items-center justify-center [&_svg]:w-full [&_svg]:h
               <li>
                 <a href={SOFTWARE_HREF} class="flex items-center justify-center gap-2 bg-white rounded-[22px] py-3 px-4 hover:shadow-lg transition-shadow">
                   <span class={`w-[30px] h-[30px] ${iconBaseClass} [&_svg_path]:stroke-[#EE5D38]`} set:html={DesktopSvg} />
-                  <span>نرم‌افزار مدیریت مافیکسو</span>
+                  <span>نرم‌افزار مدیریت دوفیکسو</span>
                 </a>
               </li>
             ) : (
@@ -142,7 +143,7 @@ const iconBaseClass = "flex items-center justify-center [&_svg]:w-full [&_svg]:h
       <li class="mb-8">
         <a href={SOFTWARE_HREF} class="flex gap-[10px] items-center hover:text-secondary transition-colors">
           <span class={`text-[#110e2d] w-[25px] h-[25px] ${iconBaseClass}`} set:html={DesktopSvg} />
-          <span>نرم‌افزار مدیریت مافیکسو</span>
+          <span>نرم‌افزار مدیریت دوفیکسو</span>
         </a>
       </li>
 
