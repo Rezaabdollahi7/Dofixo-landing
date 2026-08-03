@@ -1,0 +1,60 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-inventory" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F58762"/>
+      <stop offset="45%" stop-color="#EE5D38"/>
+      <stop offset="100%" stop-color="#C43F22"/>
+    </linearGradient>
+    <radialGradient id="glow1-inventory" cx="82%" cy="12%" r="55%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2-inventory" cx="12%" cy="92%" r="45%">
+      <stop offset="0%" stop-color="#FFD9C4" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#FFD9C4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="iconGlow-inventory" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg-inventory)"/>
+  <rect width="1200" height="675" fill="url(#glow1-inventory)"/>
+  <rect width="1200" height="675" fill="url(#glow2-inventory)"/>
+
+  <!-- subtle diagonal grid pattern -->
+  <g stroke="#FFFFFF" stroke-opacity="0.05" stroke-width="1">
+    <line x1="0" y1="0" x2="1200" y2="675"/>
+    <line x1="0" y1="169" x2="1031" y2="675"/>
+    <line x1="0" y1="338" x2="862" y2="675"/>
+    <line x1="169" y1="0" x2="1200" y2="506"/>
+    <line x1="338" y1="0" x2="1200" y2="338"/>
+  </g>
+
+  <!-- decorative circles -->
+  <circle cx="1080" cy="90" r="150" fill="#FFFFFF" opacity="0.05"/>
+  <circle cx="110" cy="600" r="200" fill="#FFFFFF" opacity="0.06"/>
+  <circle cx="1000" cy="580" r="70" fill="#FFFFFF" opacity="0.04"/>
+
+  <!-- sparkle accents -->
+  <g fill="#FFFFFF" opacity="0.55">
+    <path d="M170 130 l8 22 22 8 -22 8 -8 22 -8 -22 -22 -8 22 -8 z"/>
+    <path d="M1050 480 l6 16 16 6 -16 6 -6 16 -6 -16 -16 -6 16 -6 z"/>
+  </g>
+  <g fill="#FFFFFF" opacity="0.35">
+    <circle cx="260" cy="220" r="4"/>
+    <circle cx="960" cy="200" r="3"/>
+    <circle cx="200" cy="480" r="3"/>
+    <circle cx="1120" cy="340" r="4"/>
+  </g>
+
+  <!-- icon backdrop circle -->
+  <circle cx="600" cy="337.5" r="150" fill="url(#iconGlow-inventory)"/>
+  <circle cx="600" cy="337.5" r="150" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1.5"/>
+
+  <g transform="translate(498,235.5) scale(8.5)">
+    <path d="M3 7l9-4 9 4-9 4-9-4z" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3 7v10l9 4 9-4V7M12 11v10" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

@@ -1,41 +1,189 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/ui/Header.astro";
 import Footer from "../../components/sections/Footer.astro";
-import { getCollection } from "astro:content";
+import BlogCard from "../../components/sections/BlogCard.astro";
 
-const posts = (await getCollection("blog", ({ data }) => {
+const allPosts = await getCollection("blog", ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
-})).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+});
+
+const posts = allPosts.sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+
+const allTags = Array.from(new Set(posts.flatMap((p) => p.data.tags))).sort();
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: "بلاگ دوفیکسو",
+  description: "مقالات و راهنماهای مدیریت تعمیرگاه موبایل، لپ‌تاپ و دستگاه‌های الکترونیکی",
+  url: new URL("/blog", Astro.site).toString(),
+  blogPost: posts.map((post) => ({
+    "@type": "BlogPosting",
+    headline: post.data.title,
+    description: post.data.description,
+    datePublished: post.data.publishDate.toISOString(),
+    url: new URL(`/blog/${post.id}`, Astro.site).toString(),
+  })),
+};
 ---
 
 <Layout
-  title="وبلاگ دوفیکسو | مقالات مدیریت تعمیرگاه"
-  description="راهنما، نکات و بهترین شیوه‌های مدیریت تعمیرگاه موبایل و لوازم الکترونیکی."
+  title="بلاگ دوفیکسو | راهنمای مدیریت تعمیرگاه موبایل و لپ‌تاپ"
+  description="مقالات و راهنماهای عملی برای صاحبان تعمیرگاه موبایل، لپ‌تاپ و دستگاه‌های الکترونیکی؛ از مدیریت انبار قطعات تا افزایش رضایت مشتری."
   canonicalPath="/blog"
+  schema={schema}
 >
   <Header />
-  <main class="mt-8 sm:pt-16 pt-20">
-    <section class="max-w-content mx-auto px-4">
-      <header class="text-center mb-16">
-        <h1 class="text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-primary">
-          وبلاگ دوفیکسو
-        </h1>
-        <p class="text-charcoal/60 text-base md:text-lg mt-4 max-w-2xl mx-auto">
-          راهنما و نکات کاربردی برای مدیریت بهتر تعمیرگاه شما
-        </p>
-      </header>
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.map((post) => (
-          <a href={`/blog/${post.id}`} class="block bg-white rounded-[20px] border border-lavender p-6 hover:shadow-4 transition-all duration-300">
-            <h2 class="text-lg font-bold text-primary mb-2">{post.data.title}</h2>
-            <p class="text-charcoal/60 text-sm leading-7">{post.data.description}</p>
-            <p class="text-charcoal/40 text-xs mt-4">{post.data.pubDate.toLocaleDateString("fa-IR")}</p>
-          </a>
-        ))}
+  <section class="mt-10" aria-labelledby="blog-heading">
+    <div class="max-w-content mx-auto px-4">
+      <div class="text-center max-w-2xl mx-auto">
+        <div class="inline-flex items-center gap-3 bg-[#fdeeea] rounded-full px-6 py-2 mb-4">
+          <span class="text-secondary font-bold text-sm">بلاگ دوفیکسو</span>
+        </div>
+        <h1 id="blog-heading" class="text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-primary leading-tight">
+          راهنمای مدیریت <span class="text-secondary">تعمیرگاه</span>
+        </h1>
+        <p class="text-primary/60 text-base md:text-lg mt-4">
+          نکات عملی، تجربه‌های واقعی و راهنماهای گام‌به‌گام برای اداره‌ی بهتر تعمیرگاه شما.
+        </p>
       </div>
-    </section>
-  </main>
-  <Footer />
+
+      <!-- جستجو و فیلتر هشتگ -->
+      <div class="max-w-2xl mx-auto mt-8">
+        <div class="relative">
+          <input
+            id="blog-search"
+            type="search"
+            placeholder="جستجو در مقالات..."
+            class="w-full h-12 rounded-full bg-[#f5f6f8] border border-transparent focus:border-secondary focus:bg-white outline-none pr-12 pl-5 text-sm transition-colors"
+            aria-label="جستجو در مقالات"
+          />
+          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary/30" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
+          </svg>
+        </div>
+
+        {allTags.length > 0 && (
+          <div id="blog-tags" class="flex flex-wrap justify-center gap-2 mt-4">
+            <button
+              type="button"
+              class="tag-pill active text-xs font-bold px-4 py-1.5 rounded-full bg-secondary text-white transition-colors"
+              data-tag="__all__"
+            >
+              همه
+            </button>
+            {allTags.map((tag) => (
+              <button
+                type="button"
+                class="tag-pill text-xs font-bold px-4 py-1.5 rounded-full bg-[#f5f6f8] text-primary/60 hover:bg-[#fdeeea] hover:text-secondary transition-colors"
+                data-tag={tag}
+              >
+                #{tag}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {
+        posts.length > 0 ? (
+          <div id="blog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+            {posts.map((post) => (
+              <div
+                class="blog-card-wrap"
+                data-title={post.data.title}
+                data-description={post.data.description}
+                data-tags={post.data.tags.join(",")}
+              >
+                <BlogCard
+                  href={`/blog/${post.id}`}
+                  title={post.data.title}
+                  description={post.data.description}
+                  publishDate={post.data.publishDate}
+                  tags={post.data.tags}
+                  coverImage={post.data.coverImage}
+                  coverImageAlt={post.data.coverImageAlt}
+                  icon={post.data.icon}
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="text-center py-20">
+            <p class="text-primary/50">به‌زودی اولین مقاله منتشر می‌شود.</p>
+          </div>
+        )
+      }
+
+      <p id="blog-empty-state" class="hidden text-center py-16 text-primary/50">
+        نتیجه‌ای برای جستجوی شما پیدا نشد.
+      </p>
+    </div>
+  </section>
+
+  <div class="mt-20">
+    <Footer />
+  </div>
 </Layout>
+
+<script>
+  function initBlogFilters() {
+    const searchInput = document.getElementById("blog-search") as HTMLInputElement | null;
+    const tagsContainer = document.getElementById("blog-tags");
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".blog-card-wrap"));
+    const emptyState = document.getElementById("blog-empty-state");
+    if (!searchInput || cards.length === 0) return;
+
+    let activeTag = "__all__";
+
+    function applyFilters() {
+      const query = (searchInput!.value || "").trim().toLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const title = (card.dataset.title || "").toLowerCase();
+        const description = (card.dataset.description || "").toLowerCase();
+        const tags = (card.dataset.tags || "").split(",");
+
+        const matchesQuery = !query || title.includes(query) || description.includes(query);
+        const matchesTag = activeTag === "__all__" || tags.includes(activeTag);
+
+        const visible = matchesQuery && matchesTag;
+        card.style.display = visible ? "" : "none";
+        if (visible) visibleCount++;
+      });
+
+      if (emptyState) {
+        emptyState.classList.toggle("hidden", visibleCount !== 0);
+      }
+    }
+
+    searchInput.addEventListener("input", applyFilters);
+
+    if (tagsContainer) {
+      tagsContainer.addEventListener("click", (e) => {
+        const btn = (e.target as HTMLElement).closest<HTMLElement>(".tag-pill");
+        if (!btn) return;
+
+        activeTag = btn.dataset.tag || "__all__";
+
+        tagsContainer.querySelectorAll(".tag-pill").forEach((el) => {
+          el.classList.remove("active", "bg-secondary", "text-white");
+          el.classList.add("bg-[#f5f6f8]", "text-primary/60");
+        });
+        btn.classList.add("active", "bg-secondary", "text-white");
+        btn.classList.remove("bg-[#f5f6f8]", "text-primary/60");
+
+        applyFilters();
+      });
+    }
+  }
+
+  document.addEventListener("astro:page-load", initBlogFilters);
+  initBlogFilters();
+</script>

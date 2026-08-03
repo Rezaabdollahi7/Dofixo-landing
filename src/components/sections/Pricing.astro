@@ -10,8 +10,21 @@ interface PricingPlan {
   discount?: string;
   perDay?: string;
   isPopular?: boolean;
-  features: string[];
 }
+
+// همه‌ی پلن‌ها دقیقاً یک مجموعه امکانات یکسان دارن؛ فقط مدت و قیمت فرق می‌کنه.
+// (طبق پاسخ سوال «تفاوت پلن‌ها در چیست؟» در src/data/faqs.ts)
+// برای همین یک‌بار این‌جا نمایش داده می‌شه، نه در هر کارت جداگانه.
+const sharedFeatures: string[] = [
+  "مدیریت نامحدود دستگاه‌ها و مشتریان",
+  "داشبورد مدیریتی هوشمند با گزارش‌های لحظه‌ای",
+  "مدیریت انبار قطعات و کالاها",
+  "مدیریت کاربران و دسترسی‌ها (چندین تکنسین)",
+  "صدور فاکتور فروش، تعمیر و خرید",
+  "گزارش سود و زیان و عملکرد مالی",
+  "جستجوی پیشرفته و فیلترهای متنوع",
+  "پشتیبانی و بروزرسانی‌های دائمی و رایگان",
+];
 
 const pricingPlans: PricingPlan[] = [
   {
@@ -20,20 +33,6 @@ const pricingPlans: PricingPlan[] = [
     title: "۱ ماهه",
     price: "۶۹۰",
     perDay: "معادل ۲۳,۰۰۰ تومان در روز",
-    features: [
-      "مدیریت نامحدود دستگاه‌ها",
-      "مدیریت نامحدود مشتریان",
-      "داشبورد مدیریتی هوشمند با گزارش‌های لحظه‌ای",
-      "مدیریت انبار قطعات و کالاها",
-      "مدیریت کاربران و دسترسی‌ها (چندین تکنسین)",
-      "صدور فاکتور فروش و تعمیر و خرید",
-      "جستجوی پیشرفته و فیلترهای متنوع",
-      "گزارش سود و زیان و عملکرد مالی",
-      "گزارش موجودی انبار لحظه‌ای",
-      "مدیریت دسته‌بندی کالاها و قطعات",
-      "گزارش تراکنش‌های انبار و مالی",
-      "پشتیبانی و بروزرسانی‌های دائمی و رایگان"
-    ]
   },
   {
     id: "quarterly",
@@ -42,20 +41,6 @@ const pricingPlans: PricingPlan[] = [
     price: "۱,۹۷۰",
     originalPrice: "۲,۰۷۰",
     discount: "۱۰۰ هزار تومان تخفیف",
-    features: [
-      "مدیریت نامحدود دستگاه‌ها",
-      "مدیریت نامحدود مشتریان",
-      "داشبورد مدیریتی هوشمند با گزارش‌های لحظه‌ای",
-      "مدیریت انبار قطعات و کالاها",
-      "مدیریت کاربران و دسترسی‌ها (چندین تکنسین)",
-      "صدور فاکتور فروش و تعمیر و خرید",
-      "جستجوی پیشرفته و فیلترهای متنوع",
-      "گزارش سود و زیان و عملکرد مالی",
-      "گزارش موجودی انبار لحظه‌ای",
-      "مدیریت دسته‌بندی کالاها و قطعات",
-      "گزارش تراکنش‌های انبار و مالی",
-      "پشتیبانی و بروزرسانی‌های دائمی و رایگان"
-    ]
   },
   {
     id: "semiannual",
@@ -64,20 +49,6 @@ const pricingPlans: PricingPlan[] = [
     price: "۳,۹۹۰",
     originalPrice: "۴,۱۴۰",
     discount: "۱۵۰ هزار تومان تخفیف",
-    features: [
-      "مدیریت نامحدود دستگاه‌ها",
-      "مدیریت نامحدود مشتریان",
-      "داشبورد مدیریتی هوشمند با گزارش‌های لحظه‌ای",
-      "مدیریت انبار قطعات و کالاها",
-      "مدیریت کاربران و دسترسی‌ها (چندین تکنسین)",
-      "صدور فاکتور فروش و تعمیر و خرید",
-      "جستجوی پیشرفته و فیلترهای متنوع",
-      "گزارش سود و زیان و عملکرد مالی",
-      "گزارش موجودی انبار لحظه‌ای",
-      "مدیریت دسته‌بندی کالاها و قطعات",
-      "گزارش تراکنش‌های انبار و مالی",
-      "پشتیبانی و بروزرسانی‌های دائمی و رایگان"
-    ]
   },
   {
     id: "annual",
@@ -87,21 +58,7 @@ const pricingPlans: PricingPlan[] = [
     originalPrice: "۸,۲۸۰",
     discount: "۲۹۰ هزارتومان تخفیف",
     isPopular: true,
-    features: [
-      "مدیریت نامحدود دستگاه‌ها",
-      "مدیریت نامحدود مشتریان",
-      "داشبورد مدیریتی هوشمند با گزارش‌های لحظه‌ای",
-      "مدیریت انبار قطعات و کالاها",
-      "مدیریت کاربران و دسترسی‌ها (چندین تکنسین)",
-      "صدور فاکتور فروش و تعمیر و خرید",
-      "جستجوی پیشرفته و فیلترهای متنوع",
-      "گزارش سود و زیان و عملکرد مالی",
-      "گزارش موجودی انبار لحظه‌ای",
-      "مدیریت دسته‌بندی کالاها و قطعات",
-      "گزارش تراکنش‌های انبار و مالی",
-      "پشتیبانی و بروزرسانی‌های دائمی و رایگان"
-    ]
-  }
+  },
 ];
 ---
 
@@ -124,6 +81,23 @@ const pricingPlans: PricingPlan[] = [
         با انتخاب پلن مناسب، مدیریت تعمیرات خود را متحول کنید
       </p>
     </header>
+
+    <!-- Shared Features (identical across all plans — shown once) -->
+    <div class="bg-[#f0f4fa] rounded-[20px] p-6 md:p-8 max-w-4xl mx-auto mb-8">
+      <p class="text-center font-bold text-primary mb-5">
+        همه‌ی پلن‌ها شامل این امکانات هستن؛ فقط مدت و قیمت فرق می‌کنه:
+      </p>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm" role="list">
+        {sharedFeatures.map((feature) => (
+          <li class="flex items-center gap-3">
+            <svg class="w-5 h-5 text-secondary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span class="text-charcoal/80">{feature}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
 
     <!-- Pricing Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -175,29 +149,11 @@ const pricingPlans: PricingPlan[] = [
               </span>
             </div>
           )}
-          
-          <!-- Features List -->
-          <ul class="text-right mt-10 space-y-3 text-sm" role="list">
-            {plan.features.map((feature) => (
-              <li class="flex items-center gap-3">
-                <svg 
-                  class="w-5 h-5 text-secondary flex-shrink-0" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                <span class="text-charcoal/80">{feature}</span>
-              </li>
-            ))}
-          </ul>
 
           <!-- CTA Button -->
-          <div class="mt-6">
+          <div class="mt-8">
             <a 
-              href="/demo" 
+              href="/contact" 
               class:list={[
                 "block w-full font-bold py-3 px-4 rounded-[12px] transition-all duration-300",
                 plan.isPopular 
@@ -222,15 +178,15 @@ const pricingPlans: PricingPlan[] = [
         
         <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
           <a 
-            href="/demo" 
+            href="/contact" 
             class="inline-flex items-center gap-2 bg-primary text-white font-bold py-3 px-8 rounded-[12px] hover:bg-primary/90 transition-all duration-300"
-            aria-label="مشاهده نسخه دمو"
+            aria-label="درخواست دمو رایگان"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            مشاهده دمو
+            درخواست دمو رایگان
           </a>
           
           <a 
