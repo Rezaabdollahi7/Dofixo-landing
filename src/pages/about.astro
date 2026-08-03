@@ -17,26 +17,6 @@ interface TeamMember {
   phone: string;
 }
 
-const team: TeamMember[] = [
-  {
-    name: "محمد صدرا حسین‌پور",
-    role: "بنیان‌گذار مشترک • طراح محصول • مهندس نرم‌افزار فول‌استک",
-    skills: ["طراحی UI/UX", "طراحی محصول", "توسعه فول‌استک", "سئوی فنی", "استراتژی محصول"],
-    techStack: ["Figma", "Next.js", "React", "TypeScript", "Tailwind CSS", "Node.js", "PostgreSQL"],
-    telegram: "https://t.me/Sadrahosseinpour",
-    instagram: "https://instagram.com/s.h.10.official",
-    phone: "09100466700",
-  },
-  {
-    name: "سید رضا عبداللهی",
-    role: "مهندس نرم‌افزار فول‌استک • متخصص توسعه بک‌اند • معمار دیتابیس",
-    skills: ["توسعه بک‌اند", "توسعه REST API", "معماری دیتابیس", "توسعه فول‌استک", "بهینه‌سازی عملکرد"],
-    techStack: ["Next.js", "Node.js", "Express.js", "PostgreSQL", "React", "TypeScript", "Tailwind CSS"],
-    telegram: "https://t.me/rezaabdollahi7",
-    instagram: "https://instagram.com/srezaabdollahi7",
-    phone: "09219811980",
-  },
-];
 ---
 <Layout title="درباره دوفیکسو | داستان و تیم سازنده" description='دوفیکسو با هدف نظم‌بخشی به فرآیندهای تعمیرگاه‌های ایرانی ساخته شده. بیشتر درباره‌ی ما و مسیری که طی کردیم بخوانید.'>
     <Header/>
@@ -124,79 +104,6 @@ const team: TeamMember[] = [
   </div>
 </section>
 
-<!-- ========== تیم متخصصان ========== -->
-<section class="mt-20 sm:mt-28">
-  <div class="max-w-content mx-auto px-4">
-    <div class="text-center max-w-xl mx-auto mb-10">
-      <div class="inline-flex items-center gap-3 bg-[#fdeeea] rounded-full px-6 py-2 mb-4">
-        <span class="text-secondary font-bold text-sm">تیم ما</span>
-      </div>
-      <h2 class="text-2xl sm:text-3xl font-['Rokh'] font-extrabold text-[#110e2d]">
-        تیم متخصصان
-      </h2>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-      {team.map((member) => (
-        <div class="bg-white rounded-[20px] sm:rounded-[30px] shadow-2 hover:shadow-8 transition-all duration-300 p-6 sm:p-7">
-          <div class="flex items-center gap-4">
-            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-[#fdeeea] to-[#fcdfd7] flex items-center justify-center flex-shrink-0 shadow-2 overflow-hidden">
-              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="8" r="4" fill="currentColor" class="text-secondary"/>
-                <path d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke-linecap="round" fill="currentColor" class="text-secondary"/>
-              </svg>
-            </div>
-            <div>
-              <h3 class="font-['Rokh'] font-extrabold text-[#110e2d] text-base sm:text-lg">{member.name}</h3>
-              <p class="text-secondary text-xs sm:text-sm font-medium mt-1">{member.role}</p>
-            </div>
-          </div>
-
-          <div class="mt-5">
-            <p class="text-[11px] font-bold text-[#110e2d]/40 mb-2">مهارت‌های اصلی</p>
-            <div class="flex flex-wrap gap-1.5">
-              {member.skills.map((skill) => (
-                <span class="text-[11px] font-medium text-[#110e2d]/70 bg-[#f5f6f8] rounded-full px-3 py-1">
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div class="mt-4">
-            <p class="text-[11px] font-bold text-[#110e2d]/40 mb-2">تکنولوژی‌ها</p>
-            <p class="text-xs text-[#110e2d]/60 leading-6">{member.techStack.join(" • ")}</p>
-          </div>
-
-          <div class="mt-5 pt-4 border-t border-[#110e2d0d] flex items-center gap-2 text-[#110e2d]">
-            <a
-              href={member.telegram}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`تلگرام ${member.name}`}
-              class="w-9 h-9 rounded-full bg-[#f5f6f8] hover:bg-secondary hover:text-white flex items-center justify-center transition-colors [&>svg]:w-4 [&>svg]:h-4"
-              set:html={TelegramSvg}
-            />
-            <a
-              href={member.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`اینستاگرام ${member.name}`}
-              class="w-9 h-9 rounded-full bg-[#f5f6f8] hover:bg-secondary hover:text-white flex items-center justify-center transition-colors [&>svg]:w-4 [&>svg]:h-4"
-              set:html={InstagramSvg}
-            />
-            <a
-              href={`tel:${member.phone}`}
-              aria-label={`تماس با ${member.name}`}
-              class="w-9 h-9 rounded-full bg-[#f5f6f8] hover:bg-secondary hover:text-white flex items-center justify-center transition-colors [&>svg]:w-4 [&>svg]:h-4"
-              set:html={PhoneSvg}
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
   <Footer/>
 </Layout>
 
