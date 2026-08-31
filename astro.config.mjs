@@ -4,9 +4,8 @@ import tailwindcss from "@tailwindcss/vite";
 import icon from "astro-icon";
 import sitemap from "@astrojs/sitemap";
 
-// https://astro.build/config
 export default defineConfig({
-  site: "https://dofixo.ir",
+  site: "https://www.dofixo.ir",
   vite: {
     plugins: [tailwindcss()],
   },

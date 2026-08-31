@@ -12,14 +12,15 @@ function escapeXml(value: string): string {
 
 export const GET: APIRoute = async ({ site }) => {
   const posts = await getCollection("blog", ({ data }) =>
-    import.meta.env.PROD ? data.draft !== true : true
+    import.meta.env.PROD ? data.draft !== true : true,
   );
 
   const sortedPosts = posts.sort(
-    (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+    (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
   );
 
-  const siteUrl = site?.toString().replace(/\/$/, "") ?? "https://dofixo.ir";
+  const siteUrl =
+    site?.toString().replace(/\/$/, "") ?? "https://www.dofixo.ir";
 
   const items = sortedPosts
     .map((post) => {
