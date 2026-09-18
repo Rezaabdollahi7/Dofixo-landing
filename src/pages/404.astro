@@ -1,0 +1,64 @@
+---
+// صفحه ۴۰۴ — با noindex، چون نباید ایندکس شود،
+// اما لینک‌های اصلی سایت را نگه می‌دارد تا کاربر و خزنده به بن‌بست نخورند.
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/ui/Header.astro";
+import Footer from "../components/sections/Footer.astro";
+
+const quickLinks = [
+  { href: "/", label: "صفحه اصلی", description: "معرفی نرم‌افزار مدیریت تعمیرگاه دوفیکسو" },
+  { href: "/features", label: "امکانات", description: "از پذیرش دستگاه تا گزارش‌های مالی" },
+  { href: "/pricing", label: "قیمت‌گذاری", description: "پلن‌های اشتراک و تعرفه‌ها" },
+  { href: "/blog", label: "بلاگ", description: "راهنماهای عملی مدیریت تعمیرگاه" },
+  { href: "/about", label: "درباره ما", description: "تیم سازنده و مسیر دوفیکسو" },
+  { href: "/contact", label: "تماس با ما", description: "مشاوره و پشتیبانی" },
+];
+---
+
+<Layout
+  title="صفحه پیدا نشد (۴۰۴) | دوفیکسو"
+  description="صفحه‌ای که دنبالش بودید پیدا نشد. از این‌جا می‌توانید به بخش‌های اصلی سایت دوفیکسو بروید."
+  noindex
+>
+  <Header />
+
+  <main id="main-content" class="max-w-content mx-auto px-4 py-20">
+    <div class="text-center max-w-2xl mx-auto">
+      <p class="font-heading font-extrabold text-secondary text-6xl sm:text-8xl">۴۰۴</p>
+      <h1 class="text-2xl sm:text-4xl font-heading font-extrabold text-primary mt-4">
+        این صفحه پیدا نشد
+      </h1>
+      <p class="text-charcoal/60 leading-8 mt-4">
+        ممکن است آدرس تغییر کرده باشد یا صفحه حذف شده باشد. از میان بخش‌های زیر ادامه دهید.
+      </p>
+
+      <a
+        href="/"
+        class="inline-flex items-center justify-center gap-2 mt-8 h-12 px-8 rounded-[12px] bg-secondary text-white font-bold shadow-8 hover:opacity-90 transition-opacity"
+      >
+        بازگشت به صفحه اصلی
+      </a>
+    </div>
+
+    <nav aria-label="بخش‌های اصلی سایت" class="mt-16">
+      <h2 class="font-heading font-extrabold text-xl text-primary text-center mb-6">
+        شاید دنبال یکی از این‌ها بودید
+      </h2>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+        {quickLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="block h-full bg-white rounded-[18px] shadow-1 border border-lavender p-5 hover:shadow-4 transition-shadow"
+            >
+              <span class="block font-bold text-primary">{link.label}</span>
+              <span class="block text-charcoal/60 text-sm leading-6 mt-1">{link.description}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </main>
+
+  <Footer />
+</Layout>
