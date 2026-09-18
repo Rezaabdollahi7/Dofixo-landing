@@ -38,10 +38,11 @@
         <div class="mt-8 flex flex-wrap gap-4">
           <a
             href="https://app.dofixo.ir"
+            rel="noopener"
             class="bg-secondary btnHover flex items-center justify-center gap-2 h-12 text-lg px-8 cursor-pointer rounded-[12px] text-white font-bold shadow-8 hover:shadow-lg transition-all duration-300 "
           >
             دموی رایگان
-            <svg class="w-5 h-5 rotate-270" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 rotate-270" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
             </svg>
           </a>
@@ -50,7 +51,7 @@
             class="bg-[#110e2d10] hover:bg-[#110e2d20] flex items-center justify-center gap-2 h-12 text-sm px-8 cursor-pointer rounded-[12px] text-[#110e2d] font-bold transition-all duration-300 "
           >
             مشاهده امکانات
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
           </a>
@@ -74,11 +75,13 @@
           <!-- متن اصلی داخل دایره -->
           <div class="absolute inset-0 flex flex-col items-center justify-center  ">
            <img
-              src="/images/hero-img.png"
-              alt="داشبورد مدیریت تعمیرگاه در نرم‌افزار دوفیکسو"
-              width="800"
-              height="800"
+              src="/images/hero-img.webp"
+              alt="داشبورد نرم‌افزار دوفیکسو: فهرست دستگاه‌های در حال تعمیر به‌همراه وضعیت و اطلاعات مشتری"
+              width="666"
+              height="375"
               fetchpriority="high"
+              decoding="async"
+              class="w-full h-auto"
             />
           </div>
         </div>
