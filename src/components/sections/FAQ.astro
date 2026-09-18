@@ -57,26 +57,45 @@ import { generalFaqs } from "../../data/generalFaqs";
 </section>
 
 <script>
-    document.querySelectorAll('.faq-toggle').forEach(button => {
-        button.addEventListener('click', () => {
-            const item = button.closest('.faq-item');
-            const content = item.querySelector('.faq-content');
-            const icon = button.querySelector('.faq-icon');
-            const isOpen = content.style.maxHeight !== '0px' && content.style.maxHeight !== '';
+  // آکاردئون سوالات متداول.
+  // محتوای پاسخ‌ها همیشه در DOM می‌ماند (فقط با max-height جمع می‌شود)
+  // تا هم خزنده آن را ببیند و هم با schema نوع FAQPage هم‌خوان بماند.
+  function initFaqAccordion() {
+    const toggles = document.querySelectorAll<HTMLButtonElement>(".faq-toggle");
 
-            document.querySelectorAll('.faq-content').forEach(c => {
-                c.style.maxHeight = '0px';
-                c.closest('.faq-item').classList.remove('shadow-4');
-                c.closest('.faq-item').querySelector('.faq-icon').style.transform = 'rotate(0deg)';
-                c.closest('.faq-item').querySelector('.faq-toggle').setAttribute('aria-expanded', 'false');
-            });
+    const collapseAll = () => {
+      document.querySelectorAll<HTMLElement>(".faq-content").forEach((content) => {
+        content.style.maxHeight = "0px";
 
-            if (!isOpen) {
-                content.style.maxHeight = content.scrollHeight + 'px';
-                item.classList.add('shadow-4');
-                icon.style.transform = 'rotate(180deg)';
-                button.setAttribute('aria-expanded', 'true');
-            }
-        });
+        const item = content.closest(".faq-item");
+        if (!item) return;
+
+        item.classList.remove("shadow-4");
+        item.querySelector<HTMLElement>(".faq-icon")?.style.setProperty("transform", "rotate(0deg)");
+        item.querySelector<HTMLElement>(".faq-toggle")?.setAttribute("aria-expanded", "false");
+      });
+    };
+
+    toggles.forEach((button) => {
+      button.addEventListener("click", () => {
+        const item = button.closest(".faq-item");
+        const content = item?.querySelector<HTMLElement>(".faq-content");
+        const icon = button.querySelector<HTMLElement>(".faq-icon");
+        if (!item || !content) return;
+
+        const isOpen = content.style.maxHeight !== "0px" && content.style.maxHeight !== "";
+
+        collapseAll();
+
+        if (!isOpen) {
+          content.style.maxHeight = `${content.scrollHeight}px`;
+          item.classList.add("shadow-4");
+          icon?.style.setProperty("transform", "rotate(180deg)");
+          button.setAttribute("aria-expanded", "true");
+        }
+      });
     });
+  }
+
+  initFaqAccordion();
 </script>

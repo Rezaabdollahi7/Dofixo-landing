@@ -213,3 +213,49 @@
   filter: brightness(100%) contrast(108%) saturate(0%) blur(0px)
     hue-rotate(0deg);
 }
+
+/* پرش به محتوای اصلی — فقط هنگام فوکوس با کیبورد دیده می‌شود.
+   مخفی‌سازی با clip انجام شده تا برخلاف display:none، برای صفحه‌خوان قابل دسترس بماند. */
+.skip-link {
+  position: absolute;
+  inset-inline-start: 1rem;
+  top: -100%;
+  z-index: 9999;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 0.75rem 0.75rem;
+  background-color: var(--color-dark-gray-1);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.875rem;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus-visible {
+  top: 0;
+  outline: 3px solid var(--color-burnt-orange);
+  outline-offset: 2px;
+}
+
+/* حالت فوکوس یکدست و قابل‌دیدن برای پیمایش با کیبورد */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--color-burnt-orange);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* احترام به تنظیم «کاهش حرکت» سیستم‌عامل */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

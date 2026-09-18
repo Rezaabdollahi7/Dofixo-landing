@@ -3,32 +3,36 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/ui/Header.astro';
 import Footer from '../components/sections/Footer.astro';
-import TelegramSvg from '/icons/telegram.svg?raw';
-import InstagramSvg from '/icons/instagram.svg?raw';
-import PhoneSvg from '/icons/phone.svg?raw';
+import { breadcrumbSchema } from '../data/site';
 
-interface TeamMember {
-  name: string;
-  role: string;
-  skills: string[];
-  techStack: string[];
-  telegram: string;
-  instagram: string;
-  phone: string;
-}
-
+const breadcrumb = breadcrumbSchema([
+  { name: 'خانه', path: '/' },
+  { name: 'درباره ما', path: '/about' },
+]);
 ---
-<Layout title="درباره دوفیکسو | داستان و تیم سازنده" description='دوفیکسو با هدف نظم‌بخشی به فرآیندهای تعمیرگاه‌های ایرانی ساخته شده. بیشتر درباره‌ی ما و مسیری که طی کردیم بخوانید.'>
+<Layout
+  title="درباره دوفیکسو | سازنده‌ی نرم‌افزار مدیریت تعمیرگاه"
+  description="دوفیکسو با هدف نظم‌بخشی به فرآیندهای تعمیرگاه‌های ایرانی ساخته شده است. درباره‌ی تیم سازنده، رویکرد و مسیری که طی کرده‌ایم بخوانید."
+  schema={breadcrumb}
+>
     <Header/>
-<section class="mt-10">
+  <main id="main-content">
+    <!-- مسیر صفحه؛ هم برای کاربر و هم برای درک ساختار سایت توسط خزنده -->
+    <nav aria-label="مسیر صفحه" class="max-w-content mx-auto px-4 mt-6 text-xs text-primary/40 flex items-center gap-2">
+      <a href="/" class="hover:text-secondary transition-colors">خانه</a>
+      <span aria-hidden="true">/</span>
+      <span class="text-primary/70">درباره ما</span>
+    </nav>
+
+    <section class="mt-10" aria-labelledby="about-heading">
   <div class="max-w-content mx-auto px-4 relative">
     
     <!-- هدر بخش -->
     <div class=" relative z-1 items-center">
       <div>
-        <h1 class="text-[40px] lg:text-[50px] text-[#110e2d] lg:leading-[139%] font-['Rokh'] text-center lg:text-start">
-          <span class="text-[#110E2D80] font-['IRANYekanXFaNum'] font-normal">نوآوری و خلاقیت،</span>
-          <span class="font-['Rokh'] font-extrabold">با <br class="hidden sm:block">تیم طراحی </span>
+        <h1 id="about-heading" class="text-[40px] lg:text-[50px] text-[#110e2d] lg:leading-[139%] font-['Rokh'] text-center lg:text-start">
+          <span class="text-[#110E2D80] font-['IRANYekanXFaNum'] font-normal">داستان ساخت</span>
+          <span class="font-['Rokh'] font-extrabold">نرم‌افزار <br class="hidden sm:block">مدیریت تعمیرگاه </span>
           <span class="text-secondary font-['Rokh'] font-extrabold">دوفیکسو</span>
         </h1>
       </div>
@@ -36,7 +40,7 @@ interface TeamMember {
 
     <!-- محتوای اصلی -->
     <div class="grid grid-cols-12 gap-y-5  rounded-[15px]   p-4 sm:p-[20px] pb-4 lg:pb-0 items-end lg:-mt-20  relative ">
-      <img src="/images/about-mockup.png" alt="" class="absolute top-0 right-0 hidden lg:block">
+      <img src="/images/about-mockup.png" alt="" aria-hidden="true" width="1396" height="411" loading="lazy" decoding="async" class="absolute top-0 right-0 hidden lg:block">
       <!-- دکوراسیون پس‌زمینه -->
       <div class=" hidden lg:block absolute inset-x-0 w-full top-0 h-[410px] bg-gradient-to-b from-[#fdeeea]/30 to-transparent rounded-[30px]"></div>
 
@@ -104,6 +108,7 @@ interface TeamMember {
   </div>
 </section>
 
+  </main>
   <Footer/>
 </Layout>
 

@@ -56,11 +56,13 @@ const iconBaseClass = "flex items-center justify-center [&_svg]:w-full [&_svg]:h
       <!-- Logo -->
       <a href="/" aria-label="خانه دوفیکسو" class="flex items-center justify-center gap-2">
         <img
-          src="/images/dofixo.png"
+          src="/images/logo-128.webp"
           alt="لوگوی دوفیکسو"
           class="size-16 rounded-lg"
-          width="64"
-          height="64"
+          width="128"
+          height="128"
+          fetchpriority="high"
+          decoding="async"
         />
         <p class="font-semibold text-lg text-secondary lg:pt-1">دوفیکسو</p>
       </a>
@@ -98,7 +100,7 @@ const iconBaseClass = "flex items-center justify-center [&_svg]:w-full [&_svg]:h
     <!-- Desktop Navigation -->
     <nav class="max-w-[1237px] mx-auto max-[1350px]:px-10 hidden md:block" aria-label="منوی اصلی">
       <div class="bg-primary rounded-b-[27px] p-3 py-4 relative">
-        <img src="/images/Pattern.png" alt="" aria-hidden="true" class="absolute inset-0 h-full mx-auto" />
+        <img src="/images/Pattern.png" alt="" aria-hidden="true" width="771" height="62" loading="lazy" decoding="async" class="absolute inset-0 h-full mx-auto" />
         <ul class="text-xs gap-6 flex items-center justify-center font-semibold relative">
           {navLinks.filter(l => !["درباره ما", "تماس با ما", "بلاگ", "امکانات", "قیمت‌گذاری"].includes(l.label) || true).map((link) =>
             link.href === SOFTWARE_HREF ? (
@@ -183,7 +185,7 @@ const iconBaseClass = "flex items-center justify-center [&_svg]:w-full [&_svg]:h
       headerArrow?.classList.add("hidden");
       hamIcon?.querySelector(".ham-open")?.classList.remove("hidden");
       hamIcon?.querySelector(".ham-close")?.classList.add("hidden");
-      hamIcon.setAttribute("aria-expanded", "false");
+      hamIcon?.setAttribute("aria-expanded", "false");
     }
   });
 </script>

@@ -4,6 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/ui/Header.astro";
 import Footer from "../../components/sections/Footer.astro";
 import BlogCard from "../../components/sections/BlogCard.astro";
+import { SITE, absoluteUrl, breadcrumbSchema } from "../../data/site";
 
 const allPosts = await getCollection("blog", ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
@@ -15,29 +16,45 @@ const posts = allPosts.sort(
 
 const allTags = Array.from(new Set(posts.flatMap((p) => p.data.tags))).sort();
 
-const schema = {
+const blogSchema = {
   "@context": "https://schema.org",
   "@type": "Blog",
+  "@id": `${SITE.url}/blog/#blog`,
   name: "بلاگ دوفیکسو",
-  description: "مقالات و راهنماهای مدیریت تعمیرگاه موبایل، لپ‌تاپ و دستگاه‌های الکترونیکی",
-  url: new URL("/blog", Astro.site).toString(),
+  description:
+    "مقالات و راهنماهای مدیریت تعمیرگاه موبایل، لپ‌تاپ و دستگاه‌های الکترونیکی",
+  url: absoluteUrl("/blog/"),
+  inLanguage: "fa-IR",
+  publisher: { "@id": `${SITE.url}/#organization` },
   blogPost: posts.map((post) => ({
     "@type": "BlogPosting",
     headline: post.data.title,
     description: post.data.description,
     datePublished: post.data.publishDate.toISOString(),
-    url: new URL(`/blog/${post.id}`, Astro.site).toString(),
+    url: absoluteUrl(`/blog/${post.id}/`),
   })),
 };
+
+const breadcrumb = breadcrumbSchema([
+  { name: "خانه", path: "/" },
+  { name: "بلاگ", path: "/blog" },
+]);
 ---
 
 <Layout
   title="بلاگ دوفیکسو | راهنمای مدیریت تعمیرگاه موبایل و لپ‌تاپ"
   description="مقالات و راهنماهای عملی برای صاحبان تعمیرگاه موبایل، لپ‌تاپ و دستگاه‌های الکترونیکی؛ از مدیریت انبار قطعات تا افزایش رضایت مشتری."
   canonicalPath="/blog"
-  schema={schema}
+  schema={[blogSchema, breadcrumb]}
 >
   <Header />
+
+  <main id="main-content">
+  <nav aria-label="مسیر صفحه" class="max-w-content mx-auto px-4 mt-6 text-xs text-primary/40 flex items-center gap-2">
+    <a href="/" class="hover:text-secondary transition-colors">خانه</a>
+    <span aria-hidden="true">/</span>
+    <span class="text-primary/70">بلاگ</span>
+  </nav>
 
   <section class="mt-10" aria-labelledby="blog-heading">
     <div class="max-w-content mx-auto px-4">
@@ -90,9 +107,13 @@ const schema = {
         )}
       </div>
 
+      <h2 class="font-heading font-extrabold text-2xl text-primary mt-14 mb-2">
+        تازه‌ترین مقاله‌ها
+      </h2>
+
       {
         posts.length > 0 ? (
-          <div id="blog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+          <div id="blog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             {posts.map((post) => (
               <div
                 class="blog-card-wrap"
@@ -125,6 +146,8 @@ const schema = {
       </p>
     </div>
   </section>
+
+  </main>
 
   <div class="mt-20">
     <Footer />

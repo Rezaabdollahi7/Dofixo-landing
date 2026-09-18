@@ -1,7 +1,6 @@
 ---
 // src/pages/index.astro
 import Layout from '../layouts/Layout.astro'
-import "../styles/global.css";
 import Header from '../components/ui/Header.astro'
 import FeaturesSlides from '../components/sections/FeaturesSlides.astro'
 import Footer from '../components/sections/Footer.astro'
@@ -14,15 +13,45 @@ import Pricing from '../components/sections/Pricing.astro'
 import Contact from '../components/sections/Contact.astro'
 import Screenshots from '../components/sections/Screenshots.astro';
 import { generalFaqs } from '../data/generalFaqs';
+import { SITE, absoluteUrl } from '../data/site';
 
+const title = 'نرم‌افزار مدیریت تعمیرگاه موبایل و لپ‌تاپ | دوفیکسو';
+const description =
+  'نرم‌افزار مدیریت تعمیرگاه دوفیکسو: پذیرش دستگاه، پیگیری وضعیت تعمیر، مدیریت مشتریان، انبار قطعات، فاکتور و گزارش مالی در یک پنل. نسخه دمو رایگان.';
+
+// قیمت‌ها با پلن‌های واقعی صفحه‌ی /pricing هم‌خوان است.
+// صفحه قیمت‌ها را به تومان نشان می‌دهد؛ schema.org فقط کد ISO 4217 می‌پذیرد،
+// پس مقادیر به ریال (۱ تومان = ۱۰ ریال) تبدیل شده‌اند.
 const softwareSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "دوفیکسو",
+  "@id": `${SITE.url}/#software`,
+  name: SITE.name,
+  alternateName: SITE.nameEn,
   applicationCategory: "BusinessApplication",
+  applicationSubCategory: "نرم‌افزار مدیریت تعمیرگاه",
   operatingSystem: "Web",
-  url: "https://www.dofixo.ir",
-  description: "دوفیکسو نرم‌افزاری برای مدیریت پذیرش، پیگیری تعمیرات و فروش قطعات در تعمیرگاه‌های موبایل و لوازم خانگی است.",
+  url: `${SITE.url}/`,
+  inLanguage: "fa-IR",
+  description,
+  featureList: [
+    "ثبت و پذیرش دستگاه",
+    "پیگیری وضعیت تعمیر",
+    "مدیریت مشتریان تعمیرگاه",
+    "مدیریت انبار و قطعات",
+    "صدور فاکتور",
+    "مدیریت مالی و گزارش‌گیری",
+  ],
+  publisher: { "@id": `${SITE.url}/#organization` },
+  offers: {
+    "@type": "AggregateOffer",
+    priceCurrency: "IRR",
+    lowPrice: "6900000",
+    highPrice: "79900000",
+    offerCount: 4,
+    url: absoluteUrl("/pricing/"),
+    availability: "https://schema.org/InStock",
+  },
 };
 
 const faqSchema = {
@@ -36,20 +65,26 @@ const faqSchema = {
       text: faq.answer,
     },
   })),
-};  
+};
 ---
 
-<Layout title='دوفیکسو | نرم‌افزار مدیریت تعمیرگاه و فروشگاه لوازم یدکی' description='دوفیکسو نرم‌افزاری برای مدیریت پذیرش، پیگیری تعمیرات و فروش قطعات در تعمیرگاه‌های موبایل و لوازم خانگی است. از پراکندگی به نظم، با دوفیکسو.'
-  schema={[softwareSchema, faqSchema]}>
-     <Header />
-     <Hero/>
-    <FeaturesSlides/>
-    <Comparison/>
-    <Screenshots/>
-     <Pricing/>
-    <Stats/>
-    <About/>
-    <Contact/>
-    <FAQ/>
-    <Footer/>
+<Layout
+  title={title}
+  description={description}
+  preloadImage="/images/hero-img.webp"
+  schema={[softwareSchema, faqSchema]}
+>
+  <Header />
+  <main id="main-content">
+    <Hero />
+    <FeaturesSlides />
+    <Comparison />
+    <Screenshots />
+    <Pricing />
+    <Stats />
+    <About />
+    <Contact />
+    <FAQ />
+  </main>
+  <Footer />
 </Layout>
