@@ -46,6 +46,13 @@ const relatedPosts = allPosts
   .slice(0, 3);
 
 const postUrl = absoluteUrl(`/blog/${post.id}/`);
+
+// گوگل عنوان را بر اساس عرض پیکسلی (حدود ۶۰۰ پیکسل) می‌برد، نه تعداد کاراکتر.
+// پسوند برند فقط وقتی اضافه می‌شود که عنوان مقاله کوتاه باشد؛ در غیر این صورت
+// پسوند جایی را اشغال می‌کند که خود عنوان به آن نیاز دارد. نام برند در هر حال
+// از طریق schema نوع WebSite به‌عنوان site name در نتیجه‌ی جستجو نشان داده می‌شود.
+const pageTitle =
+  post.data.title.length <= 50 ? `${post.data.title} | دوفیکسو` : post.data.title;
 const publishedISO = post.data.publishDate.toISOString();
 const modifiedISO = (post.data.updatedDate ?? post.data.publishDate).toISOString();
 
@@ -76,7 +83,7 @@ const schema = [postSchema, breadcrumb];
 ---
 
 <Layout
-  title={`${post.data.title} | بلاگ دوفیکسو`}
+  title={pageTitle}
   description={post.data.description}
   canonicalPath={`/blog/${post.id}`}
   ogType="article"
