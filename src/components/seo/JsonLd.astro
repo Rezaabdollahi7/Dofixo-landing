@@ -1,9 +1,14 @@
 ---
 interface Props {
-  schema: Record<string, any> | Record<string, any>[];
+  schema?: Record<string, any> | Record<string, any>[];
 }
 const { schema } = Astro.props;
-const schemas = Array.isArray(schema) ? schema : [schema];
+
+// ورودی خالی یا آیتم‌های falsy حذف می‌شوند تا تگ <script> بی‌محتوا تولید نشود.
+const schemas = (Array.isArray(schema) ? schema : [schema]).filter(Boolean) as Record<
+  string,
+  any
+>[];
 ---
 
 {schemas.map((s) => (
