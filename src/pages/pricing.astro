@@ -8,20 +8,39 @@ import Contact from "../components/sections/Contact.astro";
 import Header from "../components/ui/Header.astro";
 import Footer from "../components/sections/Footer.astro";
 import { faqs } from "../data/faqs";
+import { SITE, absoluteUrl, breadcrumbSchema } from "../data/site";
 
+// صفحه قیمت‌ها را به «هزار تومان» نشان می‌دهد (۶۹۰ هزار تومان و ...).
+// schema.org فقط کد ارز ISO 4217 می‌پذیرد و کد رسمی ایران IRR (ریال) است،
+// پس هر مبلغ در ۱۰ ضرب شده تا عدد schema با قیمت واقعی صفحه یکی باشد.
 const pricingSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "دوفیکسو",
+  "@id": `${SITE.url}/#software`,
+  name: SITE.name,
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
+  url: absoluteUrl("/pricing/"),
+  publisher: { "@id": `${SITE.url}/#organization` },
   offers: [
-    { "@type": "Offer", name: "۱ ماهه", price: "690000", priceCurrency: "IRR" },
-    { "@type": "Offer", name: "۳ ماهه", price: "1970000", priceCurrency: "IRR" },
-    { "@type": "Offer", name: "۶ ماهه", price: "3990000", priceCurrency: "IRR" },
-    { "@type": "Offer", name: "۱ ساله", price: "7990000", priceCurrency: "IRR" },
-  ],
+    { name: "۱ ماهه", price: "6900000" },
+    { name: "۳ ماهه", price: "19700000" },
+    { name: "۶ ماهه", price: "39900000" },
+    { name: "۱ ساله", price: "79900000" },
+  ].map((plan) => ({
+    "@type": "Offer",
+    name: plan.name,
+    price: plan.price,
+    priceCurrency: "IRR",
+    url: absoluteUrl("/pricing/"),
+    availability: "https://schema.org/InStock",
+  })),
 };
+
+const breadcrumb = breadcrumbSchema([
+  { name: "خانه", path: "/" },
+  { name: "قیمت‌گذاری", path: "/pricing" },
+]);
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -38,12 +57,23 @@ const faqSchema = {
 ---
 
 
-<Layout title="قیمت و تعرفه اشتراک دوفیکسو | پلن‌های مناسب هر تعمیرگاه" description="پلن‌های اشتراک دوفیکسو متناسب با حجم کسب‌وکار شما، از تعمیرگاه‌های کوچک تا فروشگاه‌های چند شعبه‌ای."   canonicalPath="/pricing"
-  schema={[pricingSchema, faqSchema]}>
-    <Header/>
-  <PricingHero />
-  <PricingComparison />
-  <PricingFAQ />
-  <Contact />
+<Layout
+  title="قیمت نرم‌افزار مدیریت تعمیرگاه دوفیکسو | تعرفه اشتراک"
+  description="تعرفه‌ی اشتراک دوفیکسو از ۶۹۰ هزار تومان در ماه؛ پلن‌های یک‌ماهه تا یک‌ساله برای تعمیرگاه‌های کوچک تا چندشعبه‌ای، همراه با نسخه دموی رایگان."
+  canonicalPath="/pricing"
+  schema={[pricingSchema, faqSchema, breadcrumb]}
+>
+  <Header/>
+  <main id="main-content">
+    <nav aria-label="مسیر صفحه" class="max-w-content mx-auto px-4 pt-6 text-xs text-primary/40 flex items-center gap-2">
+      <a href="/" class="hover:text-secondary transition-colors">خانه</a>
+      <span aria-hidden="true">/</span>
+      <span class="text-primary/70">قیمت‌گذاری</span>
+    </nav>
+    <PricingHero />
+    <PricingComparison />
+    <PricingFAQ />
+    <Contact />
+  </main>
   <Footer/>
 </Layout>

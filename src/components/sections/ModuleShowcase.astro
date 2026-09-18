@@ -55,6 +55,24 @@ const titleOrderClass = layout === "title-first" ? "lg:order-1" : "lg:order-3";
             <div class="absolute hidden lg:block rtl:-right-10 ltr:-left-10  w-5 h-[80%] my-[80px] bg-[#efefef] shadow-2 ltr:rounded-r-[15px] ltr:sm:rounded-l-[30px]  rtl:rounded-r-[15px] rtl:sm:rounded-r-[30px]">
             </div>
 
+      <!-- عنوان و توضیح ماژول -->
+      <div class:list={["col-span-12 lg:col-span-3 order-1 relative h-full flex flex-col items-start justify-center", titleOrderClass]}>
+        <img alt="" aria-hidden="true" src="/images/Rectangle3.png" width="379" height="404" loading="lazy" decoding="async" class="rtl:[transform:rotateY(180deg)] absolute  drop-shadow-1 h-full w-full -z-10">
+        <div class="px-3">
+            <img src={titleIcon} alt="" aria-hidden="true" width="48" height="48" loading="lazy" decoding="async" class="size-12 z-20 absolute top-[10%] left-[10%]">
+            <div class="inline-flex items-center gap-2 bg-white rounded-full px-6 py-1.5 mb-5 z-10 ">
+                <span class="text-secondary font-bold ">ماژول</span>
+                <span class="text-secondary font-black ">{moduleNumber}</span>
+            </div>
+            <h2 id={`module-${moduleNumber}-heading`} class="text-xl sm:text-3xl font-heading font-extrabold text-primary leading-tight z-10">
+                {title}
+            </h2>
+            <p class="text-charcoal/60 text-sm leading-7 mt-3 z-10 text-justify">
+                {description}
+            </p>
+        </div>
+      </div>
+
       <!-- پیش‌نمایش ماژول (جایگزین اسلایدر نمونه‌کار) -->
       <div class:list={["col-span-12 lg:col-span-4 order-2", previewOrderClass]}>
         <div class="bg-white rounded-[20px] sm:rounded-[30px] p-3 sm:p-6">
@@ -66,6 +84,7 @@ const titleOrderClass = layout === "title-first" ? "lg:order-1" : "lg:order-3";
               height="300"
               class="w-full h-[220px] sm:h-[300px] object-cover rounded-[15px] sm:rounded-[20px]"
               loading="lazy"
+              decoding="async"
             />
           ) : (
             <div
@@ -110,23 +129,6 @@ const titleOrderClass = layout === "title-first" ? "lg:order-1" : "lg:order-3";
         </div>
       </div>
 
-      <!-- عنوان و توضیح ماژول -->
-      <div class:list={["col-span-12 lg:col-span-3 order-1 relative h-full flex flex-col items-start justify-center", titleOrderClass]}>
-        <img alt="" src="/images/Rectangle3.png" class="rtl:[transform:rotateY(180deg)] absolute  drop-shadow-1 h-full w-full -z-10">
-        <div class="px-3">
-            <img src={titleIcon} alt="" class="size-12 z-20 absolute top-[10%] left-[10%]">
-            <div class="inline-flex items-center gap-2 bg-white rounded-full px-6 py-1.5 mb-5 z-10 ">
-                <span class="text-secondary font-bold ">ماژول</span>
-                <span class="text-secondary font-black ">{moduleNumber}</span>
-            </div>
-            <h2 id={`module-${moduleNumber}-heading`} class="text-xl sm:text-3xl font-heading font-extrabold text-primary leading-tight z-10">
-                {title}
-            </h2>
-            <p class="text-charcoal/60 text-sm leading-7 mt-3 z-10 text-justify">
-                {description}
-            </p>
-        </div>
-      </div>
     </div>
   </div>
 </section>

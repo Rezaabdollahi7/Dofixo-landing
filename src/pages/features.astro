@@ -4,21 +4,58 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/ui/Header.astro';
 import Footer from '../components/sections/Footer.astro';
 import ModuleShowcase from "../components/sections/ModuleShowcase.astro";
+import { absoluteUrl, breadcrumbSchema } from '../data/site';
+
+const breadcrumb = breadcrumbSchema([
+  { name: 'خانه', path: '/' },
+  { name: 'امکانات', path: '/features' },
+]);
+
+// فهرست ماژول‌ها دقیقاً همان چیزی است که در صفحه دیده می‌شود.
+const featureListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "امکانات نرم‌افزار مدیریت تعمیرگاه دوفیکسو",
+  url: absoluteUrl("/features/"),
+  itemListElement: [
+    "مدیریت دستگاه‌ها",
+    "مدیریت مشتریان",
+    "انبار و قطعات",
+    "فاکتور و مالی",
+    "گزارش‌گیری",
+    "مدیریت تیم تعمیرکاران",
+  ].map((name, index) => ({
+    "@type": "ListItem",
+    position: index + 1,
+    name,
+  })),
+};
 ---
 
-<Layout title="امکانات دوفیکسو | ابزارهای مدیریت تعمیرگاه در یک پلتفرم" description='مدیریت پذیرش دستگاه، پیگیری وضعیت تعمیر، انبارداری قطعات و گزارش‌گیری مالی؛ همه امکانات دوفیکسو برای اداره‌ی حرفه‌ای تعمیرگاه.'>
+<Layout
+  title="امکانات نرم‌افزار مدیریت تعمیرگاه دوفیکسو | پذیرش تا فاکتور"
+  description="پذیرش دستگاه، پیگیری وضعیت تعمیر، مدیریت مشتریان، انبار قطعات، صدور فاکتور و گزارش‌گیری مالی؛ همه‌ی امکانات دوفیکسو برای اداره‌ی حرفه‌ای تعمیرگاه."
+  schema={[featureListSchema, breadcrumb]}
+>
     <Header/>
-    <header class="text-center  mt-32">
+  <main id="main-content" class="mt-8 sm:pt-16 pt-20 relative bg-[url(/images/Vector72.webp)] bg-contain">
+    <nav aria-label="مسیر صفحه" class="max-w-content mx-auto px-4 text-xs text-primary/40 flex items-center gap-2 relative z-10">
+      <a href="/" class="hover:text-secondary transition-colors">خانه</a>
+      <span aria-hidden="true">/</span>
+      <span class="text-primary/70">امکانات</span>
+    </nav>
+
+    <div class="text-center mt-12 relative z-10">
       <h1 class="text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-primary">
-        امکانات کامل مدیریت تعمیرگاه
+        امکانات کامل نرم‌افزار مدیریت تعمیرگاه
       </h1>
-      <p class="text-charcoal/60 text-base md:text-lg mt-4 max-w-2xl mx-auto">
+      <p class="text-charcoal/60 text-base md:text-lg mt-4 max-w-2xl mx-auto px-4">
         از پذیرش دستگاه تا صدور فاکتور و گزارش‌گیری مالی؛ دوفیکسو تمام فرآیندهای تعمیرگاه شما را در یک پلتفرم یکپارچه مدیریت می‌کند.
       </p>
-    </header> 
-  <main class="mt-8 sm:pt-16 pt-20 relative bg-[url(/images/Vector72.png)] bg-contain">
-        <img alt="" src="/images/Vector72.png" class="absolute right-0  -top-20 hidden md:block">
-    <img alt="" src="/images/Vector73.png" class="absolute right-0  -top-20 hidden md:block">
+    </div>
+
+    <img alt="" aria-hidden="true" src="/images/Vector72.webp" width="1408" height="557" loading="lazy" decoding="async" class="absolute right-0  -top-20 hidden md:block">
+    <img alt="" aria-hidden="true" src="/images/Vector73.webp" width="1408" height="737" loading="lazy" decoding="async" class="absolute right-0  -top-20 hidden md:block">
     <section class="mt-10">
       <div class="max-w-content mx-auto px-4 relative">
            <ModuleShowcase

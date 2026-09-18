@@ -4,106 +4,54 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/ui/Header.astro';
 import Footer from '../components/sections/Footer.astro';
 
+import { SITE, absoluteUrl, breadcrumbSchema } from '../data/site';
+
+// Organization به‌صورت سراسری در Layout تزریق می‌شود؛ این صفحه فقط
+// ContactPage و راه‌های ارتباطی واقعی را اضافه می‌کند تا schema تکراری نسازیم.
 const contactSchema = {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "دوفیکسو",
-  url: "https://dofixo.ir",
-  email: "info@dofixo.com",
-  telephone: "+989219811980",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "شهر صنعتی البرز، بلوار سهروردی، بین حکمت اول و سوم، ساختمان چمران",
-    addressLocality: "قزوین",
-    addressCountry: "IR",
+  "@type": "ContactPage",
+  name: "تماس با دوفیکسو",
+  url: absoluteUrl("/contact/"),
+  inLanguage: "fa-IR",
+  about: { "@id": `${SITE.url}/#organization` },
+  mainEntity: {
+    "@id": `${SITE.url}/#organization`,
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: "customer support",
+        telephone: SITE.phone,
+        email: SITE.email,
+        areaServed: "IR",
+        availableLanguage: ["fa"],
+      },
+    ],
   },
 };
 
+const breadcrumb = breadcrumbSchema([
+  { name: 'خانه', path: '/' },
+  { name: 'تماس با ما', path: '/contact' },
+]);
 ---
 
-<Layout title="تماس با دوفیکسو | پشتیبانی و مشاوره رایگان" description='سوالی درباره‌ی دوفیکسو دارید؟ تیم پشتیبانی ما آماده‌ی پاسخ‌گویی و راهنمایی برای انتخاب پلن مناسب کسب‌وکار شماست.'  schema={contactSchema}>
+<Layout
+  title="تماس با دوفیکسو | مشاوره رایگان نرم‌افزار تعمیرگاه"
+  description="سؤالی درباره‌ی دوفیکسو دارید؟ تیم پشتیبانی برای انتخاب پلن مناسب تعمیرگاه شما و راه‌اندازی نرم‌افزار آماده‌ی پاسخ‌گویی است."
+  schema={[contactSchema, breadcrumb]}
+>
     <Header/>
-  <main class="sm:pt-16 pt-20">
+  <main id="main-content" class="sm:pt-16 pt-20">
+    <nav aria-label="مسیر صفحه" class="max-w-content mx-auto px-4 text-xs text-primary/40 flex items-center gap-2">
+      <a href="/" class="hover:text-secondary transition-colors">خانه</a>
+      <span aria-hidden="true">/</span>
+      <span class="text-primary/70">تماس با ما</span>
+    </nav>
     <section class="mt-10">
       <div class="max-w-content mx-auto px-4 relative">
         <div class="grid grid-cols-12 gap-6 xl:gap-[54px] gap-y-10">
           
-          <!-- ========== سمت راست - فرم تماس ========== -->
-          <div class="lg:col-span-7 col-span-12 order-last bg-[url(/images/contact-bg.png)] bg-contain bg-no-repeat ">
-            <div class="relative">
-              
-              <!-- دکوراسیون پس‌زمینه -->
-              <div class="absolute inset-0  w-full h-full">
-                <div class="w-full h-full  bg-gradient-to-br from-[#fdeeea] to-[#fcdfd7] rounded-[30px] opacity-30"></div>
-                <div class="bg-[#120F2D24] rounded-b-[20px] mx-[42px] h-6 lg:mr-[70px] "></div>
-              </div>
-
-              <!-- هدر فرم -->
-              <div class="relative w-[90%] sm:w-[300px] mt-12 sm:mt-10 md:mt-3 mr-4 sm:mr-[68px]  rounded-[20px] sm:rounded-[30px] bg-[#110e2d] flex items-center gap-5 px-5 py-7 h-[70px] shadow-2">
-                <svg class="absolute -bottom-[18px] right-[88px]  z-10" width="44" height="24" viewBox="0 0 74 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M73.603 0H0C14.1842 0 27.3009 7.53381 34.4478 19.7859L36.8642 23.9282L39.2806 19.7859C46.4065 7.57007 59.4669 0.0443115 73.603 0Z" fill="#110e2d"></path>
-                </svg>
-                <div class="relative">
-                  <div class="w-5 h-5 shadow-5 absolute top-1 right-2  bg-[#110e2d]"></div>
-                  <svg class="relative" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M3.75 4.375H11.25M3.75 11.875H11.25M3.75 19.375H26.25M3.75 26.875H26.25M16.9825 12.3925C17.715 13.125 18.8925 13.125 21.25 13.125C23.6075 13.125 24.785 13.125 25.5175 12.3925C26.25 11.66 26.25 10.4825 26.25 8.125C26.25 5.7675 26.25 4.59 25.5175 3.8575C24.785 3.125 23.6075 3.125 21.25 3.125C18.8925 3.125 17.715 3.125 16.9825 3.8575C16.25 4.59 16.25 5.7675 16.25 8.125C16.25 10.4825 16.25 11.66 16.9825 12.3925Z" stroke="#EE5D38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                </div>
-                <svg width="1" height="26" viewBox="0 0 1 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <line opacity="0.12" x1="0.5" y1="-2.18557e-08" x2="0.500001" y2="26" stroke="white" stroke-dasharray="5 5"></line>
-                </svg>
-                <div>
-                  <p class="sm:text-xl text-lg font-['Rokh'] font-extrabold text-white">فرم رزرو وقت مشاوره</p>
-                </div>
-              </div>
-
-              <!-- فرم -->
-              <form class="sm:mx-[75px] mx-4 lg:right-4  mt-6 sm:mt-9 bg-gradient-to-br from-[#f9f9f9] to-[#f1f4f7] rounded-[20px] sm:rounded-[30px] p-4 sm:p-[30px] relative shadow-2" action="/api/contact" method="POST">
-                
-                <!-- نام -->
-                <div class="rounded-[15px] mb-5 flex-grow w-full  pl-4 flex items-center justify-between gap-3 bg-white text-xs font-normal h-[53px] shadow-sm">
-                  <label for="contact-name" class="sr-only">نام و نام خانوادگی</label>
-                  <input id="contact-name" type="text" name="fullName"  class="flex-grow text-[15px] py-4  pr-4 bg-transparent outline-none w-full font-['IRANYekanXFaNum']" placeholder="نام و نام خانوادگی" required>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 24">
-                    <g opacity="0.5">
-                      <path fill="#dddada79" fill-rule="evenodd" d="M7.75 7.5A4.26 4.26 0 0 0 12 11.75a4.26 4.26 0 0 0 4.25-4.25A4.26 4.26 0 0 0 12 3.25a4.26 4.26 0 0 0-4.25 4.25m1.5 0c0-1.52 1.23-2.75 2.75-2.75s2.75 1.23 2.75 2.75-1.23 2.75-2.75 2.75S9.25 9.02 9.25 7.5m8.5 12.5c0 .41.34.75.75.75s.75-.34.75-.75v-2.03c0-1.65-.81-3.06-2.13-3.66-3.07-1.38-7.16-1.39-10.24 0-1.32.6-2.13 2-2.13 3.66V20c0 .41.34.75.75.75s.75-.34.75-.75v-2.03c0-.84.33-1.88 1.25-2.3 2.69-1.21 6.32-1.21 9 0 .92.43 1.25 1.47 1.25 2.3z" stroke="#404040" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </g>
-                  </svg>
-                </div>
-
-                <!-- شماره تماس -->
-                <div class="rounded-[15px] mb-5 flex-grow w-full  pl-4 flex items-center justify-between gap-3 bg-white text-xs font-normal h-[53px] shadow-sm">
-                  <input type="text" class="flex-grow text-[15px] py-4  pr-4 bg-transparent outline-none w-full font-['IRANYekanXFaNum']" placeholder="شماره همراه" required>
-                  <svg width="20" height="21" viewBox="0 0 20 21" fill="#dddada79" xmlns="http://www.w3.org/2000/svg">
-                    <g opacity="0.5">
-                      <path d="M10.833 3C12.6011 3 14.2968 3.70238 15.547 4.95262C16.7973 6.20286 17.4996 7.89856 17.4996 9.66667M11.2496 5.91667C12.1337 5.91667 12.9815 6.26786 13.6067 6.89298C14.2318 7.5181 14.583 8.36594 14.583 9.25M7.6313 5.26L7.2963 4.505C7.0763 4.01167 6.96713 3.765 6.80296 3.57583C6.59758 3.33893 6.32954 3.16476 6.02963 3.07333C5.79046 3 5.51963 3 4.97963 3C4.18963 3 3.79463 3 3.46296 3.15167C3.05382 3.35045 2.73712 3.69939 2.5788 4.12583C2.45963 4.47 2.4938 4.82417 2.56213 5.53333C3.28991 13.075 7.42463 17.2097 14.9663 17.9375C15.6746 18.0058 16.0296 18.04 16.3746 17.9208C16.8006 17.7625 17.1492 17.4462 17.348 17.0375C17.4996 16.705 17.4996 16.31 17.4996 15.52C17.4996 14.9792 17.4996 14.7092 17.4263 14.47C17.3349 14.1701 17.1607 13.902 16.9238 13.6967C16.7346 13.5325 16.488 13.4233 15.9946 13.2033L15.2396 12.8683C14.7046 12.6308 14.438 12.5117 14.1663 12.4858C13.9062 12.4609 13.6438 12.4974 13.4005 12.5925C13.1463 12.6917 12.9213 12.8783 12.4721 13.2533C12.0246 13.6258 11.8013 13.8117 11.528 13.9117C11.2653 14.0025 10.9852 14.0313 10.7096 13.9958C10.4221 13.9542 10.2013 13.8358 9.76046 13.6C8.3888 12.8667 7.63296 12.1108 6.89963 10.7392C6.6638 10.2975 6.5463 10.0775 6.5038 9.78917C6.4683 9.51416 6.49682 9.23467 6.58713 8.9725C6.68713 8.69833 6.8738 8.475 7.2463 8.0275C7.6213 7.5775 7.80796 7.35333 7.90713 7.09917C8.00213 6.85583 8.0388 6.59333 8.0138 6.33333C7.98796 6.0625 7.8688 5.795 7.6313 5.26Z" stroke="#404040" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </g>
-                  </svg>
-                </div>
-
-                <!-- پیام -->
-                <div class="mb-5 bg-white overflow-hidden rounded-[15px] h-[144px] flex text-xs shadow-sm">
-                  <textarea class="bg-transparent text-[15px] flex-grow-1 outline-none w-full h-full p-4 text-sm resize-none font-['IRANYekanXFaNum']" placeholder="توضیحات شما"></textarea>
-                  <svg class="m-4" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g opacity="0.5">
-                      <path d="M11.8084 17.4084C15.2951 17.1775 18.0718 14.3609 18.3001 10.825C18.3443 10.1334 18.3443 9.41669 18.3001 8.72503C18.0718 5.19003 15.2951 2.37503 11.8084 2.14253C10.6042 2.06317 9.39602 2.06317 8.19177 2.14253C4.7051 2.37419 1.92843 5.19003 1.7001 8.72586C1.65596 9.42517 1.65596 10.1266 1.7001 10.8259C1.78343 12.1134 2.3526 13.3059 3.02343 14.3125C3.4126 15.0167 3.15593 15.8959 2.7501 16.665C2.45843 17.2192 2.31177 17.4959 2.42927 17.6959C2.54593 17.8959 2.80843 17.9025 3.3326 17.915C4.3701 17.94 5.06927 17.6467 5.62427 17.2375C5.93843 17.005 6.09593 16.8892 6.20427 16.8759C6.3126 16.8625 6.52677 16.9509 6.95343 17.1259C7.33677 17.2842 7.7826 17.3817 8.19093 17.4092C9.37843 17.4875 10.6193 17.4875 11.8093 17.4092M9.99593 10H10.0043M13.3259 10H13.3334M6.66677 10H6.67427" stroke="#404040" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
-                    </g>
-                  </svg>
-                </div>
-
-
-                <!-- دکمه ارسال -->
-                <button type="submit" class="bg-[#110e2d] btnHover flex items-center justify-center gap-2 h-[53px] text-sm w-full cursor-pointer rounded-[15px] text-white font-bold font-['Rokh'] shadow-lg hover:shadow-xl transition-all duration-300">
-                  <p>ارسال درخواست</p>
-                  <svg class="rotate-0" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path opacity="0.5" d="M17.1663 11.125C17.3321 11.125 17.4911 11.0592 17.6083 10.9419C17.7255 10.8247 17.7913 10.6658 17.7913 10.5C17.7913 10.3342 17.7255 10.1753 17.6083 10.0581C17.4911 9.94085 17.3321 9.875 17.1663 9.875V11.125ZM17.1663 9.875H3.83301V11.125H17.1663V9.875Z" fill="white"></path>
-                    <path d="M8.83301 5.5L3.83301 10.5L8.83301 15.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                  </svg>
-                </button>
-              </form>
-            </div>
-          </div>
-
           <!-- ========== سمت چپ - اطلاعات تماس ========== -->
           <div class="lg:col-span-5 col-span-12 ">
             <div>
@@ -175,6 +123,82 @@ const contactSchema = {
 
               <!-- نقشه -->
               <iframe  title="نقشه موقعیت دفتر دوفیکسو در قزوین" class="rounded-[20px] overflow-hidden w-full h-56 sm:h-[200px] shadow-md" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1616.0680753757124!2d50.08057843980947!3d36.198889235649816!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8cadbf407d90c7%3A0xd4297f225533f131!2zNTNYSCtYSjPYjCDYtNmH2LEg2LXZhti52KrbjCDYp9mE2KjYsdiy2Iwg2KfbjNix2KfZhg!5e0!3m2!1sfa!2sus!4v1783458192292!5m2!1sfa!2sus" width="600" height="200" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+          </div>
+
+          <!-- ========== سمت راست - فرم تماس ========== -->
+          <div class="lg:col-span-7 col-span-12 order-last bg-[url(/images/contact-bg.webp)] bg-contain bg-no-repeat ">
+            <div class="relative">
+              
+              <!-- دکوراسیون پس‌زمینه -->
+              <div class="absolute inset-0  w-full h-full">
+                <div class="w-full h-full  bg-gradient-to-br from-[#fdeeea] to-[#fcdfd7] rounded-[30px] opacity-30"></div>
+                <div class="bg-[#120F2D24] rounded-b-[20px] mx-[42px] h-6 lg:mr-[70px] "></div>
+              </div>
+
+              <!-- هدر فرم -->
+              <div class="relative w-[90%] sm:w-[300px] mt-12 sm:mt-10 md:mt-3 mr-4 sm:mr-[68px]  rounded-[20px] sm:rounded-[30px] bg-[#110e2d] flex items-center gap-5 px-5 py-7 h-[70px] shadow-2">
+                <svg class="absolute -bottom-[18px] right-[88px]  z-10" width="44" height="24" viewBox="0 0 74 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M73.603 0H0C14.1842 0 27.3009 7.53381 34.4478 19.7859L36.8642 23.9282L39.2806 19.7859C46.4065 7.57007 59.4669 0.0443115 73.603 0Z" fill="#110e2d"></path>
+                </svg>
+                <div class="relative">
+                  <div class="w-5 h-5 shadow-5 absolute top-1 right-2  bg-[#110e2d]"></div>
+                  <svg class="relative" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3.75 4.375H11.25M3.75 11.875H11.25M3.75 19.375H26.25M3.75 26.875H26.25M16.9825 12.3925C17.715 13.125 18.8925 13.125 21.25 13.125C23.6075 13.125 24.785 13.125 25.5175 12.3925C26.25 11.66 26.25 10.4825 26.25 8.125C26.25 5.7675 26.25 4.59 25.5175 3.8575C24.785 3.125 23.6075 3.125 21.25 3.125C18.8925 3.125 17.715 3.125 16.9825 3.8575C16.25 4.59 16.25 5.7675 16.25 8.125C16.25 10.4825 16.25 11.66 16.9825 12.3925Z" stroke="#EE5D38" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </div>
+                <svg width="1" height="26" viewBox="0 0 1 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <line opacity="0.12" x1="0.5" y1="-2.18557e-08" x2="0.500001" y2="26" stroke="white" stroke-dasharray="5 5"></line>
+                </svg>
+                <div>
+                  <h2 class="sm:text-xl text-lg font-['Rokh'] font-extrabold text-white">فرم رزرو وقت مشاوره</h2>
+                </div>
+              </div>
+
+              <!-- فرم -->
+              <form class="sm:mx-[75px] mx-4 lg:right-4  mt-6 sm:mt-9 bg-gradient-to-br from-[#f9f9f9] to-[#f1f4f7] rounded-[20px] sm:rounded-[30px] p-4 sm:p-[30px] relative shadow-2" action="/api/contact" method="POST">
+                
+                <!-- نام -->
+                <div class="rounded-[15px] mb-5 flex-grow w-full  pl-4 flex items-center justify-between gap-3 bg-white text-xs font-normal h-[53px] shadow-sm">
+                  <label for="contact-name" class="sr-only">نام و نام خانوادگی</label>
+                  <input id="contact-name" type="text" name="fullName"  class="flex-grow text-[15px] py-4  pr-4 bg-transparent outline-none w-full font-['IRANYekanXFaNum']" placeholder="نام و نام خانوادگی" required>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 24 24">
+                    <g opacity="0.5">
+                      <path fill="#dddada79" fill-rule="evenodd" d="M7.75 7.5A4.26 4.26 0 0 0 12 11.75a4.26 4.26 0 0 0 4.25-4.25A4.26 4.26 0 0 0 12 3.25a4.26 4.26 0 0 0-4.25 4.25m1.5 0c0-1.52 1.23-2.75 2.75-2.75s2.75 1.23 2.75 2.75-1.23 2.75-2.75 2.75S9.25 9.02 9.25 7.5m8.5 12.5c0 .41.34.75.75.75s.75-.34.75-.75v-2.03c0-1.65-.81-3.06-2.13-3.66-3.07-1.38-7.16-1.39-10.24 0-1.32.6-2.13 2-2.13 3.66V20c0 .41.34.75.75.75s.75-.34.75-.75v-2.03c0-.84.33-1.88 1.25-2.3 2.69-1.21 6.32-1.21 9 0 .92.43 1.25 1.47 1.25 2.3z" stroke="#404040" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                  </svg>
+                </div>
+
+                <!-- شماره تماس -->
+                <div class="rounded-[15px] mb-5 flex-grow w-full  pl-4 flex items-center justify-between gap-3 bg-white text-xs font-normal h-[53px] shadow-sm">
+                  <input type="text" class="flex-grow text-[15px] py-4  pr-4 bg-transparent outline-none w-full font-['IRANYekanXFaNum']" placeholder="شماره همراه" required>
+                  <svg width="20" height="21" viewBox="0 0 20 21" fill="#dddada79" xmlns="http://www.w3.org/2000/svg">
+                    <g opacity="0.5">
+                      <path d="M10.833 3C12.6011 3 14.2968 3.70238 15.547 4.95262C16.7973 6.20286 17.4996 7.89856 17.4996 9.66667M11.2496 5.91667C12.1337 5.91667 12.9815 6.26786 13.6067 6.89298C14.2318 7.5181 14.583 8.36594 14.583 9.25M7.6313 5.26L7.2963 4.505C7.0763 4.01167 6.96713 3.765 6.80296 3.57583C6.59758 3.33893 6.32954 3.16476 6.02963 3.07333C5.79046 3 5.51963 3 4.97963 3C4.18963 3 3.79463 3 3.46296 3.15167C3.05382 3.35045 2.73712 3.69939 2.5788 4.12583C2.45963 4.47 2.4938 4.82417 2.56213 5.53333C3.28991 13.075 7.42463 17.2097 14.9663 17.9375C15.6746 18.0058 16.0296 18.04 16.3746 17.9208C16.8006 17.7625 17.1492 17.4462 17.348 17.0375C17.4996 16.705 17.4996 16.31 17.4996 15.52C17.4996 14.9792 17.4996 14.7092 17.4263 14.47C17.3349 14.1701 17.1607 13.902 16.9238 13.6967C16.7346 13.5325 16.488 13.4233 15.9946 13.2033L15.2396 12.8683C14.7046 12.6308 14.438 12.5117 14.1663 12.4858C13.9062 12.4609 13.6438 12.4974 13.4005 12.5925C13.1463 12.6917 12.9213 12.8783 12.4721 13.2533C12.0246 13.6258 11.8013 13.8117 11.528 13.9117C11.2653 14.0025 10.9852 14.0313 10.7096 13.9958C10.4221 13.9542 10.2013 13.8358 9.76046 13.6C8.3888 12.8667 7.63296 12.1108 6.89963 10.7392C6.6638 10.2975 6.5463 10.0775 6.5038 9.78917C6.4683 9.51416 6.49682 9.23467 6.58713 8.9725C6.68713 8.69833 6.8738 8.475 7.2463 8.0275C7.6213 7.5775 7.80796 7.35333 7.90713 7.09917C8.00213 6.85583 8.0388 6.59333 8.0138 6.33333C7.98796 6.0625 7.8688 5.795 7.6313 5.26Z" stroke="#404040" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                  </svg>
+                </div>
+
+                <!-- پیام -->
+                <div class="mb-5 bg-white overflow-hidden rounded-[15px] h-[144px] flex text-xs shadow-sm">
+                  <textarea class="bg-transparent text-[15px] flex-grow-1 outline-none w-full h-full p-4 text-sm resize-none font-['IRANYekanXFaNum']" placeholder="توضیحات شما"></textarea>
+                  <svg class="m-4" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g opacity="0.5">
+                      <path d="M11.8084 17.4084C15.2951 17.1775 18.0718 14.3609 18.3001 10.825C18.3443 10.1334 18.3443 9.41669 18.3001 8.72503C18.0718 5.19003 15.2951 2.37503 11.8084 2.14253C10.6042 2.06317 9.39602 2.06317 8.19177 2.14253C4.7051 2.37419 1.92843 5.19003 1.7001 8.72586C1.65596 9.42517 1.65596 10.1266 1.7001 10.8259C1.78343 12.1134 2.3526 13.3059 3.02343 14.3125C3.4126 15.0167 3.15593 15.8959 2.7501 16.665C2.45843 17.2192 2.31177 17.4959 2.42927 17.6959C2.54593 17.8959 2.80843 17.9025 3.3326 17.915C4.3701 17.94 5.06927 17.6467 5.62427 17.2375C5.93843 17.005 6.09593 16.8892 6.20427 16.8759C6.3126 16.8625 6.52677 16.9509 6.95343 17.1259C7.33677 17.2842 7.7826 17.3817 8.19093 17.4092C9.37843 17.4875 10.6193 17.4875 11.8093 17.4092M9.99593 10H10.0043M13.3259 10H13.3334M6.66677 10H6.67427" stroke="#404040" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </g>
+                  </svg>
+                </div>
+
+
+                <!-- دکمه ارسال -->
+                <button type="submit" class="bg-[#110e2d] btnHover flex items-center justify-center gap-2 h-[53px] text-sm w-full cursor-pointer rounded-[15px] text-white font-bold font-['Rokh'] shadow-lg hover:shadow-xl transition-all duration-300">
+                  <p>ارسال درخواست</p>
+                  <svg class="rotate-0" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path opacity="0.5" d="M17.1663 11.125C17.3321 11.125 17.4911 11.0592 17.6083 10.9419C17.7255 10.8247 17.7913 10.6658 17.7913 10.5C17.7913 10.3342 17.7255 10.1753 17.6083 10.0581C17.4911 9.94085 17.3321 9.875 17.1663 9.875V11.125ZM17.1663 9.875H3.83301V11.125H17.1663V9.875Z" fill="white"></path>
+                    <path d="M8.83301 5.5L3.83301 10.5L8.83301 15.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  </svg>
+                </button>
+              </form>
             </div>
           </div>
 
