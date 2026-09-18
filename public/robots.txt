@@ -1,4 +1,9 @@
+# https://www.dofixo.ir
+# همه‌ی خزنده‌ها به کل سایت دسترسی دارند؛ هیچ CSS، JS یا تصویری مسدود نشده
+# چون گوگل برای رندر صفحه به همه‌ی آن‌ها نیاز دارد.
 User-agent: *
 Allow: /
+
+# صفحه ۴۰۴ با متاتگ noindex کنترل می‌شود، نه با robots.txt.
 
 Sitemap: https://www.dofixo.ir/sitemap-index.xml
