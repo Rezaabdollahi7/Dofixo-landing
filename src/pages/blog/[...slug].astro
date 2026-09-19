@@ -31,11 +31,19 @@ const iconLabels: Record<string, string> = {
   general: "دوفیکسو",
 };
 
-const formattedDate = new Intl.DateTimeFormat("fa-IR", {
+const faDate = new Intl.DateTimeFormat("fa-IR", {
   year: "numeric",
   month: "long",
   day: "numeric",
-}).format(post.data.publishDate);
+});
+const formattedDate = faDate.format(post.data.publishDate);
+
+// اگر مقاله بعداً بازبینی شده، همان تاریخی که در dateModified اعلام می‌کنیم
+// برای خواننده هم دیده شود؛ ادعای «به‌روز» بدون نشان‌دادن تاریخ، ارزشی ندارد.
+const wasUpdated =
+  !!post.data.updatedDate &&
+  post.data.updatedDate.getTime() > post.data.publishDate.getTime();
+const formattedUpdated = wasUpdated ? faDate.format(post.data.updatedDate!) : null;
 
 const wordsCount = post.body?.split(/\s+/).filter(Boolean).length ?? 0;
 const readingMinutes = Math.max(1, Math.round(wordsCount / 180));
@@ -128,6 +136,15 @@ const schema = [postSchema, breadcrumb];
           <time datetime={post.data.publishDate.toISOString().slice(0, 10)}>{formattedDate}</time>
           <span class="w-1 h-1 rounded-full bg-primary/20"></span>
           <span>{readingMinutes} دقیقه مطالعه</span>
+          {formattedUpdated && (
+            <>
+              <span class="w-1 h-1 rounded-full bg-primary/20"></span>
+              <span>
+                آخرین بازبینی:{" "}
+                <time datetime={modifiedISO.slice(0, 10)}>{formattedUpdated}</time>
+              </span>
+            </>
+          )}
         </div>
       </header>
 
