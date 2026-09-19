@@ -1,0 +1,32 @@
+# ریدایرکت‌های ۳۰۱ — Netlify و Cloudflare Pages این فایل را مستقیم می‌خوانند.
+# حذف نکنید: آدرس‌های قدیمی در گوگل ایندکس شده‌اند و بعضی‌شان هنوز کلیک می‌گیرند.
+
+# ۰) یکسان‌سازی دامنه. سرچ کنسول هر دو نسخه‌ی www و بدون www را می‌شناسد
+#    (مثلاً https://dofixo.ir/blog/modiriat-tim-teknesian-... ایندکس شده است)
+#    و همین باعث «Page with redirect» و تقسیم اعتبار بین دو دامنه می‌شود.
+#    علامت ! اجباری است تا بر فایل استاتیک هم‌نام اولویت بگیرد.
+http://dofixo.ir/*    https://www.dofixo.ir/:splat  301!
+https://dofixo.ir/*   https://www.dofixo.ir/:splat  301!
+
+# ۱) تغییر نام برند در اسلاگ مقالات (mafixo → dofixo) و مقالات ادغام‌شده.
+#    مقصدها نهایی‌اند؛ هیچ ریدایرکت زنجیره‌ای ساخته نمی‌شود.
+/blog/5-dalil-niaz-be-mafixo	/blog/chera-narmafzar-modiriat-tamirgah-sarmayegozari-ast/	301
+/blog/afzayesh-sorat-tamirat-mafixo	/blog/afzayesh-sorat-tamirat-dofixo/	301
+/blog/amoozesh-amali-kontorol-anbar-mafixo	/blog/modiriat-anbar-ghataat-tamirgah/	301
+/blog/ayande-modiriat-tamirat	/blog/chera-narmafzar-modiriat-tamirgah-sarmayegozari-ast/	301
+/blog/barandsazi-tamirgah-ba-mafixo	/blog/barandsazi-tamirgah-ba-dofixo/	301
+/blog/estandard-herfei-tamirgah-mafixo	/blog/checklist-modiriat-tamirgah-mobile/	301
+/blog/gozaresh-giri-hooshmand-mafixo	/blog/dashboard-modiriati-hooshmand-tamirgah/	301
+/blog/jalb-eatemad-moshtari-tamirgah	/blog/hefz-va-vafadari-moshtari-tamirgah/	301
+/blog/jazbe-moshtari-jadid-tamirgah	/blog/hefz-va-vafadari-moshtari-tamirgah/	301
+/blog/mafixo-baraye-tamirgah-console	/blog/dofixo-baraye-tamirgah-console/	301
+/blog/mafixo-baraye-tamirgah-laptop	/blog/dofixo-baraye-tamirgah-laptop/	301
+/blog/modiriat-garanti-tamirat-mafixo	/blog/modiriat-garanti-tamirat-dofixo/	301
+/blog/modiriat-hooshmand-moshtarian-mafixo	/blog/hefz-va-vafadari-moshtari-tamirgah/	301
+/blog/modiriat-mali-tamirgah-mafixo	/blog/modiriat-mali-tamirgah-dofixo/	301
+/blog/modiriat-tim-teknesian-mafixo	/blog/modiriat-tim-teknesian-dofixo/	301
+/blog/rahnamaye-tanzimat-avalie-mafixo	/features/	301
+/blog/safar-shafaf-dastgah-mafixo	/blog/safar-shafaf-dastgah-dofixo/	301
+/blog/sazmandehi-tim-tamirgah	/blog/modiriat-tim-teknesian-dofixo/	301
+/blog/tajrobe-teknesian-ba-sistem-mafixo	/blog/modiriat-tim-teknesian-dofixo/	301
+/blog/vizhegihaye-kamshenakhte-mafixo	/features/	301

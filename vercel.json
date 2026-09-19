@@ -1,0 +1,106 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/blog/5-dalil-niaz-be-mafixo",
+      "destination": "/blog/chera-narmafzar-modiriat-tamirgah-sarmayegozari-ast/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/afzayesh-sorat-tamirat-mafixo",
+      "destination": "/blog/afzayesh-sorat-tamirat-dofixo/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/amoozesh-amali-kontorol-anbar-mafixo",
+      "destination": "/blog/modiriat-anbar-ghataat-tamirgah/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/ayande-modiriat-tamirat",
+      "destination": "/blog/chera-narmafzar-modiriat-tamirgah-sarmayegozari-ast/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/barandsazi-tamirgah-ba-mafixo",
+      "destination": "/blog/barandsazi-tamirgah-ba-dofixo/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/estandard-herfei-tamirgah-mafixo",
+      "destination": "/blog/checklist-modiriat-tamirgah-mobile/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/gozaresh-giri-hooshmand-mafixo",
+      "destination": "/blog/dashboard-modiriati-hooshmand-tamirgah/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/jalb-eatemad-moshtari-tamirgah",
+      "destination": "/blog/hefz-va-vafadari-moshtari-tamirgah/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/jazbe-moshtari-jadid-tamirgah",
+      "destination": "/blog/hefz-va-vafadari-moshtari-tamirgah/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/mafixo-baraye-tamirgah-console",
+      "destination": "/blog/dofixo-baraye-tamirgah-console/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/mafixo-baraye-tamirgah-laptop",
+      "destination": "/blog/dofixo-baraye-tamirgah-laptop/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/modiriat-garanti-tamirat-mafixo",
+      "destination": "/blog/modiriat-garanti-tamirat-dofixo/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/modiriat-hooshmand-moshtarian-mafixo",
+      "destination": "/blog/hefz-va-vafadari-moshtari-tamirgah/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/modiriat-mali-tamirgah-mafixo",
+      "destination": "/blog/modiriat-mali-tamirgah-dofixo/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/modiriat-tim-teknesian-mafixo",
+      "destination": "/blog/modiriat-tim-teknesian-dofixo/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/rahnamaye-tanzimat-avalie-mafixo",
+      "destination": "/features/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/safar-shafaf-dastgah-mafixo",
+      "destination": "/blog/safar-shafaf-dastgah-dofixo/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/sazmandehi-tim-tamirgah",
+      "destination": "/blog/modiriat-tim-teknesian-dofixo/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/tajrobe-teknesian-ba-sistem-mafixo",
+      "destination": "/blog/modiriat-tim-teknesian-dofixo/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/vizhegihaye-kamshenakhte-mafixo",
+      "destination": "/features/",
+      "permanent": true
+    }
+  ]
+}
