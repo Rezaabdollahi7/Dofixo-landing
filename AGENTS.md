@@ -52,3 +52,12 @@ Conventions that are easy to break:
 - **Host is `www.dofixo.ir`.** The bare domain 308s to it in Vercel.
 - **No placeholder text is ever published** — no `[تصویر: …]`, no link to an
   article that does not exist yet.
+- **`pnpm build` runs `scripts/check-site.mjs` after Astro**, and fails on a
+  slashless or broken internal link, placeholder text, or a `vercel.json` out
+  of step with the published articles. Fix the cause; don't bypass the check.
+- **Academy code:** articles in `src/content/academy/{guide,tutorials,experience}`
+  (MDX), authors in `src/content/authors`, helpers in `src/lib/academy.ts`,
+  routes in `src/pages/academy/`. Empty sections, author pages and the course
+  page are not built at all. Publishing steps are section ۱۰ of
+  `docs/academy/writing-guide.md`; old-post 301s come from
+  `src/data/blog-redirects.json` via `pnpm redirects`.
