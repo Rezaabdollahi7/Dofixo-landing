@@ -1,0 +1,19 @@
+---
+import { Image } from "astro:assets";
+
+/**
+ * هر تصویر Markdown در مقاله‌های MDX از این‌جا رد می‌شود (components.img).
+ *
+ *   ![متن جایگزین برای گوگل و صفحه‌خوان](./01-devices-list.webp "کپشنی که زیر تصویر دیده می‌شود")
+ *
+ * alt توصیف تصویر است برای کسی که آن را نمی‌بیند؛ کپشن (عنوان در گیومه) چیزی
+ * است که خواننده‌ی بیننده باید از تصویر بفهمد. هر دو لازم‌اند و یکی نیستند.
+ * تصویر بهینه‌شده از خود سایت سرو می‌شود (/_astro/…)، نه از جای دیگر.
+ */
+const { title, ...props } = Astro.props;
+---
+
+<figure class="my-8">
+  <Image {...(props as any)} widths={[720, 1080, 1440]} sizes="(min-width: 1024px) 760px, 100vw" />
+  {title && <figcaption class="text-sm text-primary/55 text-center leading-[200%] mt-3 px-4">{title}</figcaption>}
+</figure>
