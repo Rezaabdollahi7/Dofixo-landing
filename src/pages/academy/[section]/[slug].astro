@@ -11,6 +11,8 @@ import CtaBlock from "../../../components/academy/CtaBlock.astro";
 import AparatPlayer from "../../../components/academy/AparatPlayer.astro";
 import Step from "../../../components/academy/Step.astro";
 import Callout from "../../../components/academy/Callout.astro";
+import Figure from "../../../components/academy/Figure.astro";
+import NextStep from "../../../components/academy/NextStep.astro";
 import { SITE, absoluteUrl, breadcrumbSchema } from "../../../data/site";
 import { CHAPTERS, publishedChapters } from "../../../data/course";
 import {
@@ -134,7 +136,7 @@ const videoSchema =
 const schema = [articleSchema, breadcrumbSchema(crumbs), ...(videoSchema ? [videoSchema] : [])];
 
 // اجزایی که مقاله‌های MDX بدون import می‌توانند استفاده کنند
-const components = { Step, Callout, Cta: CtaBlock };
+const components = { img: Figure, Step, Callout, Cta: CtaBlock, NextStep };
 ---
 
 <Layout
@@ -231,6 +233,20 @@ const components = { Step, Callout, Cta: CtaBlock };
               )
             }
 
+            <section aria-labelledby="learn-heading" class="bg-[#f8f9fb] rounded-[20px] p-5 sm:p-6 mb-10">
+              <h2 id="learn-heading" class="font-heading font-extrabold text-lg text-primary mb-3">
+                {isTutorial ? "در این آموزش چه یاد می‌گیرید" : "در این مقاله چه می‌خوانید"}
+              </h2>
+              <ul class="space-y-2" role="list">
+                {article.data.learn.map((item) => (
+                  <li class="flex gap-3 text-primary/80 leading-[200%]">
+                    <svg class="w-5 h-5 shrink-0 mt-1.5 text-secondary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+
             <div
               class="academy-prose text-primary/80 leading-[220%] text-justify
                      [&_h2]:font-heading [&_h2]:font-extrabold [&_h2]:text-primary [&_h2]:text-2xl [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:scroll-mt-28 [&_h2]:text-right
@@ -243,12 +259,10 @@ const components = { Step, Callout, Cta: CtaBlock };
                      [&_blockquote]:border-r-4 [&_blockquote]:border-secondary [&_blockquote]:pr-4 [&_blockquote]:text-primary/60
                      [&_table]:w-full [&_table]:my-6 [&_table]:text-sm [&_table]:text-right
                      [&_th]:bg-[#f5f6f8] [&_th]:font-bold [&_th]:text-primary [&_th]:p-3 [&_td]:p-3 [&_td]:border-t [&_td]:border-[#110e2d14]
-                     [&_img]:rounded-[14px] [&_img]:shadow-2 [&_img]:my-6 [&_img]:cursor-zoom-in [&_img]:w-full [&_img]:h-auto"
+                     [&_img]:rounded-[14px] [&_img]:shadow-2 [&_img]:cursor-zoom-in [&_img]:w-full [&_img]:h-auto"
             >
               <Content components={components} />
             </div>
-
-            <CtaBlock />
 
             <AuthorBox author={author} />
 

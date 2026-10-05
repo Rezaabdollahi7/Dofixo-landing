@@ -1,0 +1,49 @@
+---
+import { articlePath, getArticles } from "../../lib/academy";
+
+/**
+ * پایان هر مقاله: قدم بعدی در دوفیکسو، و برای کسی که هنوز امتحانش نکرده،
+ * شروع کار. لینک به مقاله‌ی بعدی فقط وقتی ساخته می‌شود که آن مقاله منتشر شده
+ * باشد؛ تا آن موقع بلوک فقط CTA شروع را دارد — لینک به صفحه‌ای که نیست،
+ * build را شکست می‌دهد (scripts/check-site.mjs).
+ *
+ *   <NextStep title="دستگاه ثبت شد؛ حالا نوبت پیگیری تعمیر است"
+ *             to="tutorials/device-statuses" label="آموزش مدیریت وضعیت دستگاه">
+ *   بعد از پذیرش، می‌توانید …
+ *   </NextStep>
+ */
+interface Props {
+  title: string;
+  /** شناسه‌ی مقاله‌ی بعدی، مثل "tutorials/device-statuses" */
+  to?: string;
+  label?: string;
+}
+const { title, to, label } = Astro.props;
+const next = to ? (await getArticles()).find((a) => a.id === to) : undefined;
+---
+
+<section class="not-prose my-12 rounded-[24px] border-2 border-primary/10 bg-white p-6 sm:p-8 text-right!">
+  <h2 class="font-heading font-extrabold text-2xl text-primary mt-0! mb-3!">{title}</h2>
+  <div class="text-primary/75 leading-[210%] [&_p]:mb-3!"><slot /></div>
+  <div class="flex flex-col sm:flex-row gap-3 mt-5">
+    {
+      next && (
+        <a
+          href={articlePath(next)}
+          class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 transition-colors text-white! no-underline! font-bold rounded-[12px] px-6 h-12"
+        >
+          {label ?? next.data.title} ←
+        </a>
+      )
+    }
+    <a
+      href="https://app.dofixo.ir/register"
+      rel="noopener"
+      class={`inline-flex items-center justify-center gap-2 transition-colors no-underline! font-bold rounded-[12px] px-6 h-12 ${
+        next ? "bg-[#fdeeea] text-secondary! hover:bg-secondary hover:text-white!" : "bg-secondary text-white! hover:bg-secondary/90"
+      }`}
+    >
+      {next ? "هنوز دوفیکسو را امتحان نکرده‌اید؟ شروع ۳۰ روز رایگان ←" : "شروع ۳۰ روز رایگان دوفیکسو ←"}
+    </a>
+  </div>
+</section>

@@ -60,6 +60,11 @@ const academy = defineCollection({
       // حدود طول از docs/academy/writing-guide.md؛ build با عنوان بلندتر شکست می‌خورد
       title: z.string().max(70),
       description: z.string().min(80).max(170),
+      /**
+       * «در این مقاله چه یاد می‌گیرید» — سه تا شش جمله‌ی کوتاه، هر کدام یک
+       * نتیجه که خواننده با خودش می‌برد، نه فهرست سرتیترها.
+       */
+      learn: z.array(z.string()).min(3).max(6),
       /** کلمه‌ی کلیدی اصلی از docs/academy/keyword-map.md؛ در صفحه نمایش داده نمی‌شود */
       keyword: z.string(),
       author: reference("authors"),
