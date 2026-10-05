@@ -1,0 +1,80 @@
+---
+import { getCollection } from "astro:content";
+import { Image, getImage } from "astro:assets";
+import Layout from "../../../layouts/Layout.astro";
+import Header from "../../../components/ui/Header.astro";
+import Footer from "../../../components/sections/Footer.astro";
+import Breadcrumbs from "../../../components/academy/Breadcrumbs.astro";
+import ArticleCard from "../../../components/academy/ArticleCard.astro";
+import { absoluteUrl, breadcrumbSchema } from "../../../data/site";
+import { type Author, authorPath, getArticles, personSchema } from "../../../lib/academy";
+
+// صفحه‌ی نویسنده فقط وقتی ساخته می‌شود که دست‌کم یک مقاله‌ی منتشرشده داشته باشد.
+export async function getStaticPaths() {
+  const articles = await getArticles();
+  const authors = await getCollection("authors");
+  return authors
+    .filter((author) => articles.some((a) => a.data.author.id === author.id))
+    .map((author) => ({ params: { author: author.id }, props: { author } }));
+}
+
+const { author } = Astro.props as { author: Author };
+const articles = (await getArticles()).filter((a) => a.data.author.id === author.id);
+const avatar = await getImage({ src: author.data.avatar, width: 400, height: 400 });
+
+const crumbs = [
+  { name: "خانه", path: "/" },
+  { name: "مرکز آموزش", path: "/academy/" },
+  { name: author.data.name, path: authorPath(author.id) },
+];
+
+const profileSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  url: absoluteUrl(authorPath(author.id)),
+  inLanguage: "fa-IR",
+  mainEntity: personSchema(author, avatar.src),
+};
+---
+
+<Layout
+  title={`${author.data.name} | نویسنده‌ی مرکز آموزش دوفیکسو`}
+  description={author.data.bioShort.slice(0, 160)}
+  canonicalPath={authorPath(author.id)}
+  schema={[profileSchema, breadcrumbSchema(crumbs)]}
+>
+  <Header />
+
+  <main id="main-content">
+    <div class="max-w-content mx-auto px-4 mt-6">
+      <Breadcrumbs items={crumbs} />
+
+      <header class="max-w-3xl mx-auto mt-10 flex flex-col sm:flex-row items-center sm:items-start gap-6 text-center sm:text-right">
+        <Image
+          src={author.data.avatar}
+          alt={author.data.avatarIsPlaceholder ? "" : author.data.name}
+          width={160}
+          height={160}
+          loading="eager"
+          class="w-28 h-28 sm:w-32 sm:h-32 rounded-full shrink-0 shadow-2"
+        />
+        <div>
+          <h1 class="text-3xl md:text-4xl font-heading font-extrabold text-primary">{author.data.name}</h1>
+          <p class="text-primary/50 mt-2">{author.data.role}</p>
+          <p class="text-primary/75 leading-[210%] mt-4">{author.data.bioLong}</p>
+        </div>
+      </header>
+
+      <section class="mt-14 mb-20" aria-labelledby="author-articles">
+        <h2 id="author-articles" class="font-heading font-extrabold text-2xl text-primary mb-6">
+          مقاله‌های {author.data.name}
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {articles.map((a) => <ArticleCard article={a} />)}
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

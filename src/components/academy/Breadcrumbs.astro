@@ -1,0 +1,25 @@
+---
+/**
+ * مسیر صفحه. همان آیتم‌ها به breadcrumbSchema() هم داده می‌شوند تا آنچه
+ * کاربر می‌بیند و آنچه گوگل می‌خواند یکی باشد. آخرین آیتم لینک ندارد.
+ */
+interface Props {
+  items: { name: string; path: string }[];
+}
+const { items } = Astro.props;
+---
+
+<nav aria-label="مسیر صفحه" class="text-xs text-primary/40 flex flex-wrap items-center gap-2">
+  {
+    items.map((item, i) =>
+      i < items.length - 1 ? (
+        <>
+          <a href={item.path} class="hover:text-secondary transition-colors">{item.name}</a>
+          <span aria-hidden="true">/</span>
+        </>
+      ) : (
+        <span class="text-primary/70 line-clamp-1" aria-current="page">{item.name}</span>
+      ),
+    )
+  }
+</nav>

@@ -1,0 +1,27 @@
+---
+import { Image } from "astro:assets";
+import { type Author, authorPath } from "../../lib/academy";
+
+interface Props {
+  author: Author;
+}
+const { author } = Astro.props;
+---
+
+<aside aria-label="درباره‌ی نویسنده" class="bg-[#f8f9fb] rounded-[20px] p-5 sm:p-6 flex gap-4 sm:gap-5 items-start">
+  <Image
+    src={author.data.avatar}
+    alt={author.data.avatarIsPlaceholder ? "" : author.data.name}
+    width={72}
+    height={72}
+    class="w-14 h-14 sm:w-18 sm:h-18 rounded-full shrink-0 object-cover"
+  />
+  <div class="min-w-0">
+    <p class="text-xs text-primary/40 font-bold">نویسنده</p>
+    <a href={authorPath(author.id)} class="font-heading font-extrabold text-lg text-primary hover:text-secondary transition-colors">
+      {author.data.name}
+    </a>
+    <p class="text-xs text-primary/50 mt-0.5">{author.data.role}</p>
+    <p class="text-sm text-primary/70 leading-[200%] mt-3">{author.data.bioShort}</p>
+  </div>
+</aside>

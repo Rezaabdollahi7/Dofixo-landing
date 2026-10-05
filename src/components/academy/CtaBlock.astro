@@ -1,0 +1,31 @@
+---
+/**
+ * CTA اصلی مرکز آموزش. متن پیش‌فرض همان CTA همه‌جای سایت است؛ آموزش‌ها
+ * می‌توانند متن مخصوص همان کار را بدهند («همین حالا اولین دستگاهت را ثبت کن»).
+ * حداکثر سه CTA در هر مقاله — docs/academy/writing-guide.md.
+ */
+interface Props {
+  title?: string;
+  text?: string;
+  button?: string;
+}
+const {
+  title = "دوفیکسو را ۳۰ روز رایگان امتحان کنید",
+  text = "با همه‌ی امکانات و بدون نصب؛ روی کامپیوتر و گوشی.",
+  button = "شروع ۳۰ روز رایگان",
+} = Astro.props;
+---
+
+<div class="not-prose my-10 text-right! bg-primary rounded-[20px] sm:rounded-[24px] p-6 sm:p-8 text-white flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
+  <div class="flex-1">
+    <p class="font-heading font-extrabold text-xl leading-[150%] mb-0! text-white!">{title}</p>
+    <p class="text-sm text-white/60! leading-[200%] mt-2 mb-0!">{text}</p>
+  </div>
+  <a
+    href="https://app.dofixo.ir/register"
+    rel="noopener"
+    class="shrink-0 inline-flex items-center justify-center bg-secondary hover:bg-secondary/90 transition-colors text-white! no-underline! font-bold rounded-[12px] px-7 h-12"
+  >
+    {button}
+  </a>
+</div>
