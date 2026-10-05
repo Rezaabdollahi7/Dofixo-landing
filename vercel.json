@@ -3,6 +3,56 @@
   "trailingSlash": true,
   "redirects": [
     {
+      "source": "/blog/ayande-modiriat-tamirat",
+      "destination": "/academy/guide/mobile-repair-shop-management/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/ayande-modiriat-tamirat/",
+      "destination": "/academy/guide/mobile-repair-shop-management/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/checklist-modiriat-tamirgah-mobile",
+      "destination": "/academy/guide/mobile-repair-shop-management/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/checklist-modiriat-tamirgah-mobile/",
+      "destination": "/academy/guide/mobile-repair-shop-management/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/estandard-herfei-tamirgah-mafixo",
+      "destination": "/academy/guide/mobile-repair-shop-management/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/estandard-herfei-tamirgah-mafixo/",
+      "destination": "/academy/guide/mobile-repair-shop-management/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/kahesh-estress-modiran-tamirgah",
+      "destination": "/academy/guide/mobile-repair-shop-management/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/kahesh-estress-modiran-tamirgah/",
+      "destination": "/academy/guide/mobile-repair-shop-management/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/kahesh-hazine-panhan-tamirgah",
+      "destination": "/academy/guide/mobile-repair-shop-management/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/kahesh-hazine-panhan-tamirgah/",
+      "destination": "/academy/guide/mobile-repair-shop-management/",
+      "permanent": true
+    },
+    {
       "source": "/blog/rahnamaye-tanzimat-avalie-mafixo",
       "destination": "/academy/tutorials/getting-started/",
       "permanent": true
