@@ -6,6 +6,7 @@
 //   - متن جانگهدار مثل «[تصویر: …]» در صفحه‌ی منتشرشده
 //   - vercel.json که با src/data/blog-redirects.json هم‌خوان نیست (pnpm redirects)
 //   - ریدایرکتی که مقصدش ساخته نشده، یا مبدأش هنوز صفحه دارد
+//   - مقاله‌ی منتشرشده‌ای که هنوز جای خالی تجربه‌ی نویسنده دارد ({/* نویسنده: … */})
 //
 // هر کدام در docs/academy/writing-guide.md دلیل دارد؛ بیشترشان قبلاً یک بار
 // در سایت اتفاق افتاده بودند.
@@ -49,6 +50,19 @@ for (const file of pages) {
     }
     if (!path.endsWith("/")) problems.push(`${page}: لینک بدون / در انتها ${path}`);
     else if (!existsSync(join(DIST, path, "index.html"))) problems.push(`${page}: صفحه پیدا نشد ${path}`);
+  }
+}
+
+// جای تجربه‌ی نویسنده. کامنت MDX در HTML نمی‌آید، پس از خود فایل‌ها خوانده
+// می‌شود: پیش‌نویس می‌تواند این جاها را داشته باشد، مقاله‌ی منتشرشده نه
+// (writing-guide.md، قاعده‌ی ۲: «اسم نویسنده یعنی تأیید نویسنده»).
+const CONTENT = join(ROOT, "src", "content", "academy");
+for (const file of walk(CONTENT).filter((p) => p.endsWith(".mdx") || p.endsWith(".md"))) {
+  const src = readFileSync(file, "utf8");
+  const frontmatter = src.match(/^---\n([\s\S]*?)\n---/)?.[1] ?? "";
+  if (/^draft:\s*true\s*$/m.test(frontmatter)) continue;
+  if (/\{\/\*\s*نویسنده:/.test(src)) {
+    problems.push(`${relative(ROOT, file)}: منتشر شده ولی جای تجربه‌ی نویسنده هنوز خالی است`);
   }
 }
 

@@ -11,9 +11,17 @@ import { Image } from "astro:assets";
  * تصویر بهینه‌شده از خود سایت سرو می‌شود (/_astro/…)، نه از جای دیگر.
  */
 const { title, ...props } = Astro.props;
+
+// عکس عمودی (صفحه‌ی گوشی) در عرض کامل متن، چند صفحه بلند می‌شود؛ باریک و وسط.
+const src = (props as any).src;
+const portrait = typeof src === "object" && src.height > src.width;
 ---
 
-<figure class="my-8">
-  <Image {...(props as any)} widths={[720, 1080, 1440]} sizes="(min-width: 1024px) 760px, 100vw" />
+<figure class:list={["my-8", portrait && "max-w-[360px] mx-auto"]}>
+  <Image
+    {...(props as any)}
+    widths={portrait ? [360, 720] : [720, 1080, 1440]}
+    sizes={portrait ? "360px" : "(min-width: 1024px) 760px, 100vw"}
+  />
   {title && <figcaption class="text-sm text-primary/55 text-center leading-[200%] mt-3 px-4">{title}</figcaption>}
 </figure>

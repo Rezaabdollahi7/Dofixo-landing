@@ -259,3 +259,13 @@ summary:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* چک‌لیست Markdown (- [ ]) در مقاله‌ها: چک‌باکس به‌جای گلوله، نه هر دو */
+.contains-task-list {
+  list-style: none;
+  padding-inline-start: 0;
+}
+.contains-task-list input[type="checkbox"] {
+  margin-inline-end: 0.5rem;
+  vertical-align: middle;
+}
