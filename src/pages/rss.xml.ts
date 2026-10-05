@@ -24,7 +24,7 @@ export const GET: APIRoute = async ({ site }) => {
 
   const items = sortedPosts
     .map((post) => {
-      const postUrl = `${siteUrl}/blog/${post.id}`;
+      const postUrl = `${siteUrl}/blog/${post.id}/`;
       return `
     <item>
       <title>${escapeXml(post.data.title)}</title>
@@ -41,7 +41,7 @@ export const GET: APIRoute = async ({ site }) => {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>بلاگ دوفیکسو</title>
-    <link>${siteUrl}/blog</link>
+    <link>${siteUrl}/blog/</link>
     <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml" />
     <description>مقالات و راهنماهای مدیریت تعمیرگاه موبایل، لپ‌تاپ و دستگاه‌های الکترونیکی</description>
     <language>fa-ir</language>${items}

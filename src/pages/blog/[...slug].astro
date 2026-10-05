@@ -100,7 +100,7 @@ const schema = [postSchema, breadcrumb];
       <nav aria-label="مسیر صفحه" class="text-xs text-primary/40 flex items-center gap-2 mb-6">
         <a href="/" class="hover:text-secondary transition-colors">خانه</a>
         <span aria-hidden="true">/</span>
-        <a href="/blog" class="hover:text-secondary transition-colors">بلاگ</a>
+        <a href="/blog/" class="hover:text-secondary transition-colors">بلاگ</a>
         <span aria-hidden="true">/</span>
         <span class="text-primary/70 line-clamp-1">{post.data.title}</span>
       </nav>
@@ -195,12 +195,12 @@ const schema = [postSchema, breadcrumb];
             <ArticleIllustration topic={post.data.icon} label={iconLabels[post.data.icon]} />
 
             <div class="bg-primary rounded-[18px] p-5 text-white">
-              <p class="font-heading font-extrabold text-sm mb-2">دموی رایگان دوفیکسو رو ببین</p>
+              <p class="font-heading font-extrabold text-sm mb-2">دوفیکسو رو ۳۰ روز رایگان امتحان کن</p>
               <p class="text-xs text-white/60 leading-6 mb-4">
                 مدیریت تعمیرگاهت رو با یه نرم‌افزار ساده و سریع شروع کن.
               </p>
-              <a  href="https://app.dofixo.ir" target="_blank" rel="noopener" class="block text-center bg-secondary hover:bg-secondary/90 transition-colors text-white text-sm font-bold rounded-lg py-2.5">
-                شروع با دمو
+              <a  href="https://app.dofixo.ir/register" target="_blank" rel="noopener" class="block text-center bg-secondary hover:bg-secondary/90 transition-colors text-white text-sm font-bold rounded-lg py-2.5">
+                شروع ۳۰ روز رایگان
               </a>
             </div>
           </div>
@@ -216,7 +216,7 @@ const schema = [postSchema, breadcrumb];
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedPosts.map((related) => (
                 <BlogCard
-                  href={`/blog/${related.id}`}
+                  href={`/blog/${related.id}/`}
                   title={related.data.title}
                   description={related.data.description}
                   publishDate={related.data.publishDate}
