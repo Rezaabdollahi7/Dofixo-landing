@@ -1,0 +1,131 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Header from "../../../components/ui/Header.astro";
+import Footer from "../../../components/sections/Footer.astro";
+import Breadcrumbs from "../../../components/academy/Breadcrumbs.astro";
+import CtaBlock from "../../../components/academy/CtaBlock.astro";
+import { SITE, absoluteUrl, breadcrumbSchema } from "../../../data/site";
+import { COURSE, publishedChapters } from "../../../data/course";
+import { aparatEmbedUrl, aparatPageUrl, articlePath, formatDuration, getArticles } from "../../../lib/academy";
+
+/**
+ * دوره‌ی کامل: /academy/course/. فقط وقتی ساخته می‌شود که دست‌کم یک فصل
+ * ویدیو داشته باشد، و فقط فصل‌های دارای ویدیو را نشان می‌دهد.
+ *
+ * iframe‌ها با loading="lazy" می‌آیند؛ پوستر جدا برای هر فصل نداریم، پس
+ * facade صفحه‌ی مقاله این‌جا به کار نمی‌آید.
+ */
+export async function getStaticPaths() {
+  return publishedChapters().length > 0 ? [{ params: { index: undefined } }] : [];
+}
+
+const chapters = publishedChapters();
+const published = new Map((await getArticles()).map((a) => [a.id, a]));
+
+const crumbs = [
+  { name: "خانه", path: "/" },
+  { name: "مرکز آموزش", path: "/academy/" },
+  { name: COURSE.title, path: "/academy/course/" },
+];
+
+const url = absoluteUrl("/academy/course/");
+const courseSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "@id": `${url}#chapters`,
+  name: COURSE.title,
+  description: COURSE.description,
+  url,
+  itemListElement: chapters.map((c, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "VideoObject",
+      name: `فصل ${c.number}: ${c.title}`,
+      description: c.description,
+      uploadDate: new Date(c.video.uploadDate).toISOString(),
+      duration: c.video.duration,
+      embedUrl: aparatEmbedUrl(c.video.aparat),
+      url: aparatPageUrl(c.video.aparat),
+      thumbnailUrl: absoluteUrl(SITE.ogImage),
+      inLanguage: "fa-IR",
+    },
+  })),
+};
+---
+
+<Layout
+  title={`${COURSE.title} | مرکز آموزش دوفیکسو`}
+  description={COURSE.description}
+  canonicalPath="/academy/course/"
+  schema={[courseSchema, breadcrumbSchema(crumbs)]}
+>
+  <Header />
+
+  <main id="main-content">
+    <div class="max-w-content mx-auto px-4 mt-6">
+      <Breadcrumbs items={crumbs} />
+
+      <header class="text-center max-w-2xl mx-auto mt-10">
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-primary leading-tight">{COURSE.title}</h1>
+        <p class="text-primary/60 text-base md:text-lg mt-4 leading-[190%]">{COURSE.description}</p>
+        {
+          COURSE.fullLengthYoutube && (
+            <p class="text-sm text-primary/50 mt-3">
+              نسخه‌ی یکجا در{" "}
+              <a href={`https://www.youtube.com/watch?v=${COURSE.fullLengthYoutube}`} class="text-secondary font-bold underline" rel="noopener">
+                یوتیوب
+              </a>
+            </p>
+          )
+        }
+      </header>
+
+      <ol class="max-w-4xl mx-auto mt-12 space-y-12">
+        {
+          chapters.map((c) => (
+            <li id={`chapter-${c.number}`} class="scroll-mt-28">
+              <h2 class="font-heading font-extrabold text-2xl text-primary">
+                <span class="text-secondary">فصل {c.number.toLocaleString("fa-IR")}:</span> {c.title}
+              </h2>
+              <p class="text-primary/60 mt-2 leading-[200%]">
+                {c.description} <span class="text-primary/40">({formatDuration(c.video.duration)})</span>
+              </p>
+              <div class="relative aspect-video mt-5 rounded-[20px] overflow-hidden bg-primary shadow-2">
+                <iframe
+                  src={aparatEmbedUrl(c.video.aparat)}
+                  title={`فصل ${c.number}: ${c.title}`}
+                  loading="lazy"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                  class="absolute inset-0 w-full h-full border-0"
+                />
+              </div>
+              {c.tutorials.filter((id) => published.has(id)).length > 0 && (
+                <p class="text-sm text-primary/60 mt-4">
+                  آموزش نوشتاری:{" "}
+                  {c.tutorials
+                    .filter((id) => published.has(id))
+                    .map((id, i) => (
+                      <>
+                        {i > 0 && "، "}
+                        <a href={articlePath(published.get(id)!)} class="text-secondary font-bold underline underline-offset-4">
+                          {published.get(id)!.data.title}
+                        </a>
+                      </>
+                    ))}
+                </p>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="max-w-4xl mx-auto mt-16 mb-20">
+        <CtaBlock />
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

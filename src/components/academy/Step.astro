@@ -1,0 +1,27 @@
+---
+/**
+ * یک قدم شماره‌دار در آموزش‌ها. در MDX:
+ *
+ *   <Step n={1} title="روی «دستگاه جدید» بزنید">
+ *
+ *   ![فرم ثبت دستگاه جدید در دوفیکسو](./02-new-device.webp)
+ *
+ *   </Step>
+ *
+ * خط خالی بعد از تگ باز و قبل از تگ بسته لازم است تا متن داخلش Markdown خوانده شود.
+ */
+interface Props {
+  n: number;
+  title: string;
+}
+const { n, title } = Astro.props;
+const id = `step-${n}`;
+---
+
+<section class="academy-step relative pr-12 sm:pr-14 my-10" aria-labelledby={id}>
+  <span class="absolute right-0 top-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-secondary text-white font-black flex items-center justify-center" aria-hidden="true">
+    {n.toLocaleString("fa-IR")}
+  </span>
+  <h3 id={id} class="mt-0! mb-3! font-heading font-bold text-primary text-xl scroll-mt-28">{title}</h3>
+  <slot />
+</section>

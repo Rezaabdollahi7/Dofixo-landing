@@ -1,0 +1,373 @@
+---
+import { render } from "astro:content";
+import { Image, getImage } from "astro:assets";
+import Layout from "../../../layouts/Layout.astro";
+import Header from "../../../components/ui/Header.astro";
+import Footer from "../../../components/sections/Footer.astro";
+import Breadcrumbs from "../../../components/academy/Breadcrumbs.astro";
+import ArticleCard from "../../../components/academy/ArticleCard.astro";
+import AuthorBox from "../../../components/academy/AuthorBox.astro";
+import CtaBlock from "../../../components/academy/CtaBlock.astro";
+import AparatPlayer from "../../../components/academy/AparatPlayer.astro";
+import Step from "../../../components/academy/Step.astro";
+import Callout from "../../../components/academy/Callout.astro";
+import { SITE, absoluteUrl, breadcrumbSchema } from "../../../data/site";
+import { CHAPTERS, publishedChapters } from "../../../data/course";
+import {
+  type Article,
+  aparatEmbedUrl,
+  aparatPageUrl,
+  articlePath,
+  authorPath,
+  formatDate,
+  getArticles,
+  getAuthor,
+  getSectionArticles,
+  personSchema,
+  readingMinutes,
+  sectionMeta,
+  sectionOf,
+  sectionPath,
+  slugOf,
+  wordCount,
+} from "../../../lib/academy";
+
+export async function getStaticPaths() {
+  const articles = await getArticles();
+  return articles.map((article) => ({
+    params: { section: sectionOf(article), slug: slugOf(article) },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props as { article: Article };
+const { Content, headings } = await render(article);
+const tocHeadings = headings.filter((h) => h.depth === 2);
+
+const section = sectionMeta(sectionOf(article));
+const author = await getAuthor(article);
+const all = await getArticles();
+const published = new Set(all.map((a) => a.id));
+const sectionArticles = await getSectionArticles(section.key);
+const isTutorial = section.key === "tutorials";
+
+// قبلی و بعدی فقط در مسیر آموزش‌ها؛ در بقیه‌ی بخش‌ها ترتیبی وجود ندارد.
+const position = sectionArticles.findIndex((a) => a.id === article.id);
+const prev = isTutorial && position > 0 ? sectionArticles[position - 1] : undefined;
+const next = isTutorial && position >= 0 && position < sectionArticles.length - 1 ? sectionArticles[position + 1] : undefined;
+
+// مقاله‌ی ستون بخش؛ هر خوشه به آن لینک می‌دهد (docs/academy/writing-guide.md).
+const pillar = !article.data.pillar && !isTutorial ? sectionArticles.find((a) => a.data.pillar) : undefined;
+
+// مرتبط‌ها: اول آن‌هایی که نویسنده انتخاب کرده — فقط اگر منتشر شده باشند —
+// بعد هم‌بخشی‌ها تا سه کارت.
+const chosen = article.data.related
+  .map((ref) => all.find((a) => a.id === ref.id))
+  .filter((a): a is Article => !!a && published.has(a.id));
+const related = [...chosen, ...sectionArticles.filter((a) => a.id !== article.id && !chosen.includes(a))].slice(0, 3);
+
+const chapter = article.data.courseChapter
+  ? publishedChapters().find((c) => c.number === article.data.courseChapter)
+  : undefined;
+const chapterTitle = article.data.courseChapter
+  ? CHAPTERS.find((c) => c.number === article.data.courseChapter)?.title
+  : undefined;
+
+const url = absoluteUrl(articlePath(article));
+const cover = await getImage({ src: article.data.cover, width: 1200, height: 630, format: "webp" });
+const avatar = await getImage({ src: author.data.avatar, width: 400, height: 400 });
+const poster = article.data.video
+  ? await getImage({ src: article.data.video.poster, width: 1280, height: 720, format: "webp" })
+  : undefined;
+
+const publishedISO = article.data.publishDate.toISOString();
+const modifiedISO = (article.data.updatedDate ?? article.data.publishDate).toISOString();
+const minutes = readingMinutes(article);
+
+// گوگل عنوان را حدود ۶۰۰ پیکسل می‌بُرد؛ پسوند برند فقط وقتی جا دارد.
+const pageTitle = article.data.title.length <= 50 ? `${article.data.title} | دوفیکسو` : article.data.title;
+
+const crumbs = [
+  { name: "خانه", path: "/" },
+  { name: "مرکز آموزش", path: "/academy/" },
+  { name: section.name, path: sectionPath(section.key) },
+  { name: article.data.title, path: articlePath(article) },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": isTutorial ? "TechArticle" : "Article",
+  "@id": `${url}#article`,
+  headline: article.data.title,
+  description: article.data.description,
+  image: absoluteUrl(cover.src),
+  datePublished: publishedISO,
+  dateModified: modifiedISO,
+  inLanguage: "fa-IR",
+  wordCount: wordCount(article),
+  articleSection: section.name,
+  author: personSchema(author, avatar.src),
+  publisher: { "@id": `${SITE.url}/#organization` },
+  mainEntityOfPage: url,
+  url,
+  ...(article.data.video ? { video: { "@id": `${url}#video` } } : {}),
+};
+
+const videoSchema =
+  article.data.video && poster
+    ? {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "@id": `${url}#video`,
+        name: article.data.video.title,
+        description: article.data.description,
+        thumbnailUrl: absoluteUrl(poster.src),
+        uploadDate: article.data.video.uploadDate.toISOString(),
+        duration: article.data.video.duration,
+        embedUrl: aparatEmbedUrl(article.data.video.aparat),
+        url: aparatPageUrl(article.data.video.aparat),
+        inLanguage: "fa-IR",
+        publisher: { "@id": `${SITE.url}/#organization` },
+      }
+    : undefined;
+
+const schema = [articleSchema, breadcrumbSchema(crumbs), ...(videoSchema ? [videoSchema] : [])];
+
+// اجزایی که مقاله‌های MDX بدون import می‌توانند استفاده کنند
+const components = { Step, Callout, Cta: CtaBlock };
+---
+
+<Layout
+  title={pageTitle}
+  description={article.data.description}
+  canonicalPath={articlePath(article)}
+  ogType="article"
+  ogImage={cover.src}
+  ogImageAlt={article.data.coverAlt}
+  publishedTime={publishedISO}
+  modifiedTime={modifiedISO}
+  schema={schema}
+>
+  <Header />
+
+  <main id="main-content">
+    <article class="mt-10">
+      <div class="max-w-content mx-auto px-4">
+        <Breadcrumbs items={crumbs} />
+
+        <header class="max-w-3xl mx-auto text-center mt-6">
+          <a href={sectionPath(section.key)} class="inline-block text-[11px] font-bold text-secondary bg-[#fdeeea] rounded-full px-3 py-1 mb-4 hover:bg-secondary hover:text-white transition-colors">
+            {section.name}
+          </a>
+          <h1 class="text-3xl md:text-4xl lg:text-[42px] font-heading font-extrabold text-primary leading-[140%]">
+            {article.data.title}
+          </h1>
+          <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mt-5 text-sm text-primary/50">
+            <a href={authorPath(author.id)} class="hover:text-secondary transition-colors">{author.data.name}</a>
+            <span class="w-1 h-1 rounded-full bg-primary/20"></span>
+            <time datetime={publishedISO.slice(0, 10)}>{formatDate(article.data.publishDate)}</time>
+            {
+              article.data.updatedDate && (
+                <>
+                  <span class="w-1 h-1 rounded-full bg-primary/20" />
+                  <span>
+                    به‌روزرسانی: <time datetime={modifiedISO.slice(0, 10)}>{formatDate(article.data.updatedDate)}</time>
+                  </span>
+                </>
+              )
+            }
+            <span class="w-1 h-1 rounded-full bg-primary/20"></span>
+            <span>{minutes.toLocaleString("fa-IR")} دقیقه مطالعه</span>
+          </div>
+        </header>
+
+        <div class="max-w-4xl mx-auto mt-8">
+          {
+            article.data.video ? (
+              <AparatPlayer
+                hash={article.data.video.aparat}
+                title={article.data.video.title}
+                duration={article.data.video.duration}
+                poster={article.data.video.poster}
+              />
+            ) : (
+              <div class="rounded-[20px] sm:rounded-[30px] overflow-hidden shadow-2">
+                <Image
+                  src={article.data.cover}
+                  alt={article.data.coverAlt}
+                  width={1200}
+                  height={630}
+                  loading="eager"
+                  fetchpriority="high"
+                  class="w-full h-auto"
+                />
+              </div>
+            )
+          }
+          {
+            chapter && (
+              <p class="text-sm text-primary/60 text-center mt-4">
+                این موضوع با جزئیات بیشتر در{" "}
+                <a href="/academy/course/" class="text-secondary font-bold underline underline-offset-4">
+                  فصل {chapter.number.toLocaleString("fa-IR")} دوره‌ی کامل — {chapterTitle}
+                </a>{" "}
+                آمده است.
+              </p>
+            )
+          }
+        </div>
+
+        <div class="max-w-6xl mx-auto mt-10 pb-12 grid grid-cols-1 lg:grid-cols-[1fr_300px] gap-10 items-start">
+          <div class="min-w-0">
+            {
+              pillar && (
+                <p class="text-sm text-primary/60 bg-[#f8f9fb] rounded-[14px] px-5 py-3 mb-8">
+                  این مقاله بخشی از{" "}
+                  <a href={articlePath(pillar)} class="text-secondary font-bold underline underline-offset-4">
+                    {pillar.data.title}
+                  </a>{" "}
+                  است.
+                </p>
+              )
+            }
+
+            <div
+              class="academy-prose text-primary/80 leading-[220%] text-justify
+                     [&_h2]:font-heading [&_h2]:font-extrabold [&_h2]:text-primary [&_h2]:text-2xl [&_h2]:mt-12 [&_h2]:mb-4 [&_h2]:scroll-mt-28 [&_h2]:text-right
+                     [&_h3]:font-heading [&_h3]:font-bold [&_h3]:text-primary [&_h3]:text-xl [&_h3]:mt-8 [&_h3]:mb-3 [&_h3]:scroll-mt-28 [&_h3]:text-right
+                     [&_p]:mb-5
+                     [&_ul]:list-disc [&_ul]:pr-6 [&_ul]:mb-5 [&_ol]:list-decimal [&_ol]:pr-6 [&_ol]:mb-5
+                     [&_li]:mb-2
+                     [&_a]:text-secondary [&_a]:font-bold [&_a]:underline [&_a]:underline-offset-4
+                     [&_strong]:text-primary [&_strong]:font-bold
+                     [&_blockquote]:border-r-4 [&_blockquote]:border-secondary [&_blockquote]:pr-4 [&_blockquote]:text-primary/60
+                     [&_table]:w-full [&_table]:my-6 [&_table]:text-sm [&_table]:text-right
+                     [&_th]:bg-[#f5f6f8] [&_th]:font-bold [&_th]:text-primary [&_th]:p-3 [&_td]:p-3 [&_td]:border-t [&_td]:border-[#110e2d14]
+                     [&_img]:rounded-[14px] [&_img]:shadow-2 [&_img]:my-6 [&_img]:cursor-zoom-in [&_img]:w-full [&_img]:h-auto"
+            >
+              <Content components={components} />
+            </div>
+
+            <CtaBlock />
+
+            <AuthorBox author={author} />
+
+            {
+              (prev || next) && (
+                <nav aria-label="آموزش قبلی و بعدی" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+                  {prev ? (
+                    <a href={articlePath(prev)} class="group bg-white shadow-2 hover:shadow-8 transition-all rounded-[18px] p-5">
+                      <span class="text-xs text-primary/40 font-bold">→ آموزش قبلی</span>
+                      <span class="block font-bold text-primary group-hover:text-secondary transition-colors mt-1">{prev.data.title}</span>
+                    </a>
+                  ) : (
+                    <span />
+                  )}
+                  {next && (
+                    <a href={articlePath(next)} class="group bg-white shadow-2 hover:shadow-8 transition-all rounded-[18px] p-5 sm:text-left">
+                      <span class="text-xs text-primary/40 font-bold">آموزش بعدی ←</span>
+                      <span class="block font-bold text-primary group-hover:text-secondary transition-colors mt-1">{next.data.title}</span>
+                    </a>
+                  )}
+                </nav>
+              )
+            }
+          </div>
+
+          <aside class="hidden lg:block">
+            <div class="sticky top-24 space-y-5">
+              {
+                tocHeadings.length > 0 && (
+                  <nav aria-label="فهرست مطالب" class="bg-[#f8f9fb] rounded-[18px] p-5">
+                    <p class="text-xs font-bold text-primary/40 mb-3">فهرست مطالب</p>
+                    <ul class="space-y-2.5 text-sm border-r-2 border-[#110e2d0d] pr-3" role="list">
+                      {tocHeadings.map((h) => (
+                        <li>
+                          <a href={`#${h.slug}`} class="toc-link block text-primary/60 hover:text-secondary transition-colors leading-6" data-slug={h.slug}>
+                            {h.text}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                )
+              }
+              <div class="bg-primary rounded-[18px] p-5 text-white">
+                <p class="font-heading font-extrabold text-sm mb-2">دوفیکسو را ۳۰ روز رایگان امتحان کنید</p>
+                <p class="text-xs text-white/60 leading-6 mb-4">با همه‌ی امکانات، بدون نصب.</p>
+                <a href="https://app.dofixo.ir/register" rel="noopener" class="block text-center bg-secondary hover:bg-secondary/90 transition-colors text-white text-sm font-bold rounded-lg py-2.5">
+                  شروع ۳۰ روز رایگان
+                </a>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        {
+          related.length > 0 && (
+            <section class="max-w-content mx-auto pb-20" aria-labelledby="related-heading">
+              <h2 id="related-heading" class="font-heading font-extrabold text-2xl text-primary text-center mb-8">
+                بیشتر بخوانید
+              </h2>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {related.map((r) => (
+                  <ArticleCard article={r} />
+                ))}
+              </div>
+            </section>
+          )
+        }
+      </div>
+    </article>
+  </main>
+
+  <dialog id="academy-zoom" class="m-auto max-w-[96vw] max-h-[94vh] bg-transparent p-0 backdrop:bg-primary/80">
+    <form method="dialog">
+      <button class="block cursor-zoom-out" aria-label="بستن تصویر">
+        <img alt="" class="max-w-[96vw] max-h-[94vh] w-auto h-auto rounded-[12px]" />
+      </button>
+    </form>
+  </dialog>
+
+  <Footer />
+</Layout>
+
+<script>
+  function initArticle() {
+    // فهرست مطالب: سرتیتر فعلی را پررنگ می‌کند
+    const links = Array.from(document.querySelectorAll<HTMLAnchorElement>(".toc-link"));
+    const headings = links
+      .map((l) => document.getElementById(l.dataset.slug || ""))
+      .filter((el): el is HTMLElement => !!el);
+    if (headings.length) {
+      const observer = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            links.forEach((l) => {
+              const active = l.dataset.slug === entry.target.id;
+              l.classList.toggle("text-secondary", active);
+              l.classList.toggle("font-bold", active);
+              l.classList.toggle("text-primary/60", !active);
+            });
+          }),
+        { rootMargin: "-100px 0px -70% 0px" },
+      );
+      headings.forEach((h) => observer.observe(h));
+    }
+
+    // اسکرین‌شات‌ها با کلیک بزرگ می‌شوند
+    const dialog = document.getElementById("academy-zoom") as HTMLDialogElement | null;
+    const zoomed = dialog?.querySelector("img");
+    if (!dialog || !zoomed) return;
+    document.querySelectorAll<HTMLImageElement>(".academy-prose img").forEach((img) => {
+      img.addEventListener("click", () => {
+        zoomed.src = img.currentSrc || img.src;
+        zoomed.alt = img.alt;
+        dialog.showModal();
+      });
+    });
+  }
+  document.addEventListener("astro:page-load", initArticle);
+  initArticle();
+</script>

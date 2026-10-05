@@ -1,0 +1,111 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Header from "../../../components/ui/Header.astro";
+import Footer from "../../../components/sections/Footer.astro";
+import Breadcrumbs from "../../../components/academy/Breadcrumbs.astro";
+import ArticleCard from "../../../components/academy/ArticleCard.astro";
+import CtaBlock from "../../../components/academy/CtaBlock.astro";
+import { absoluteUrl, breadcrumbSchema, SITE } from "../../../data/site";
+import { SECTIONS, articlePath, getSectionArticles, sectionPath, type SectionKey } from "../../../lib/academy";
+
+// بخشی که هنوز مقاله‌ی منتشرشده ندارد ساخته نمی‌شود: صفحه‌ی خالی، صفحه‌ی ضعیف است.
+export async function getStaticPaths() {
+  const paths = [];
+  for (const section of SECTIONS) {
+    const articles = await getSectionArticles(section.key);
+    if (articles.length > 0) paths.push({ params: { section: section.key }, props: { key: section.key } });
+  }
+  return paths;
+}
+
+const { key } = Astro.props as { key: SectionKey };
+const section = SECTIONS.find((s) => s.key === key)!;
+const articles = await getSectionArticles(key);
+const isTutorial = key === "tutorials";
+const pillar = isTutorial ? undefined : articles.find((a) => a.data.pillar);
+const rest = articles.filter((a) => a !== pillar);
+
+const crumbs = [
+  { name: "خانه", path: "/" },
+  { name: "مرکز آموزش", path: "/academy/" },
+  { name: section.name, path: sectionPath(key) },
+];
+
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "@id": `${absoluteUrl(sectionPath(key))}#page`,
+  name: section.name,
+  description: section.description,
+  url: absoluteUrl(sectionPath(key)),
+  inLanguage: "fa-IR",
+  isPartOf: { "@id": `${SITE.url}/academy/#page` },
+  mainEntity: {
+    "@type": "ItemList",
+    itemListOrder: isTutorial ? "https://schema.org/ItemListOrderAscending" : "https://schema.org/ItemListUnordered",
+    itemListElement: articles.map((a, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: absoluteUrl(articlePath(a)),
+      name: a.data.title,
+    })),
+  },
+};
+---
+
+<Layout
+  title={`${section.name} | مرکز آموزش دوفیکسو`}
+  description={section.description}
+  canonicalPath={sectionPath(key)}
+  schema={[collectionSchema, breadcrumbSchema(crumbs)]}
+>
+  <Header />
+
+  <main id="main-content">
+    <div class="max-w-content mx-auto px-4 mt-6">
+      <Breadcrumbs items={crumbs} />
+
+      <header class="text-center max-w-2xl mx-auto mt-10">
+        <span class="inline-block bg-[#fdeeea] text-secondary font-bold text-sm rounded-full px-6 py-2 mb-4">مرکز آموزش دوفیکسو</span>
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-primary leading-tight">{section.name}</h1>
+        <p class="text-primary/60 text-base md:text-lg mt-4 leading-[190%]">{section.description}</p>
+      </header>
+
+      {
+        pillar && (
+          <section class="mt-14" aria-label="راهنمای جامع">
+            <div class="max-w-3xl mx-auto">
+              <ArticleCard article={pillar} headingLevel="h2" />
+            </div>
+          </section>
+        )
+      }
+
+      {
+        isTutorial ? (
+          <ol class="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" aria-label="مسیر آموزش‌ها، به ترتیب">
+            {rest.map((a) => (
+              <li>
+                <ArticleCard article={a} showOrder headingLevel="h2" />
+              </li>
+            ))}
+          </ol>
+        ) : (
+          rest.length > 0 && (
+            <div class="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {rest.map((a) => (
+                <ArticleCard article={a} headingLevel="h2" />
+              ))}
+            </div>
+          )
+        )
+      }
+
+      <div class="max-w-4xl mx-auto mt-16 mb-20">
+        <CtaBlock />
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

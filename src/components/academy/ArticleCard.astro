@@ -1,0 +1,75 @@
+---
+import { Image } from "astro:assets";
+import {
+  type Article,
+  articlePath,
+  formatDate,
+  formatDuration,
+  getAuthor,
+  sectionMeta,
+  sectionOf,
+} from "../../lib/academy";
+
+interface Props {
+  article: Article;
+  /** در فهرست آموزش‌ها شماره‌ی قدم به‌جای تاریخ نمایش داده می‌شود */
+  showOrder?: boolean;
+  headingLevel?: "h2" | "h3";
+}
+
+const { article, showOrder = false, headingLevel = "h3" } = Astro.props;
+const author = await getAuthor(article);
+const section = sectionMeta(sectionOf(article));
+const Heading = headingLevel;
+---
+
+<a
+  href={articlePath(article)}
+  class="group bg-white rounded-[20px] sm:rounded-[30px] shadow-2 hover:shadow-8 transition-all duration-300 overflow-hidden h-full flex flex-col"
+>
+  <div class="relative aspect-[1200/630] w-full overflow-hidden bg-[#f5f6f8]">
+    <Image
+      src={article.data.cover}
+      alt={article.data.coverAlt}
+      width={640}
+      height={336}
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+    />
+    {
+      article.data.video && (
+        <span class="absolute bottom-3 left-3 inline-flex items-center gap-1.5 bg-primary/85 text-white text-[11px] font-bold rounded-full px-3 py-1">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+          ویدیو {formatDuration(article.data.video.duration)}
+        </span>
+      )
+    }
+  </div>
+
+  <div class="p-5 sm:p-6 flex flex-col flex-grow">
+    <div class="flex flex-wrap items-center gap-2 mb-3">
+      {
+        showOrder && article.data.order !== undefined ? (
+          <span class="text-[11px] font-bold text-white bg-secondary rounded-full px-3 py-1">
+            قدم {article.data.order.toLocaleString("fa-IR")}
+          </span>
+        ) : (
+          <span class="text-[11px] font-bold text-secondary bg-[#fdeeea] rounded-full px-3 py-1">{section.short}</span>
+        )
+      }
+      {article.data.pillar && (
+        <span class="text-[11px] font-bold text-primary bg-[#f0f4fa] rounded-full px-3 py-1">راهنمای جامع</span>
+      )}
+    </div>
+
+    <Heading class="font-heading font-extrabold text-lg text-primary leading-[145%] group-hover:text-secondary transition-colors">
+      {article.data.title}
+    </Heading>
+
+    <p class="text-primary/60 text-sm leading-[190%] mt-2 line-clamp-2 flex-grow">{article.data.description}</p>
+
+    <div class="flex items-center justify-between gap-2 mt-4 pt-4 border-t border-[#110e2d0d] text-xs text-primary/50 font-medium">
+      <span>{author.data.name}</span>
+      <time datetime={article.data.publishDate.toISOString().slice(0, 10)}>{formatDate(article.data.publishDate)}</time>
+    </div>
+  </div>
+</a>

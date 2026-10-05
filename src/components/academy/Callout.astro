@@ -1,0 +1,20 @@
+---
+/** یادداشت کنار متن: «نکته» برای میان‌بُر، «هشدار» برای اشتباهی که گران تمام می‌شود. */
+interface Props {
+  type?: "tip" | "warning";
+  title?: string;
+}
+const { type = "tip", title } = Astro.props;
+const label = title ?? (type === "warning" ? "هشدار" : "نکته");
+const styles =
+  type === "warning"
+    ? "bg-[#fdeeea] border-secondary"
+    : "bg-[#f0f4fa] border-primary/30";
+---
+
+<aside class={`not-prose my-8 rounded-[16px] border-r-4 ${styles} p-5`} role="note">
+  <p class="font-bold text-primary text-sm mb-1">{label}</p>
+  <div class="text-sm text-primary/75 leading-[210%] [&_p]:mb-2 [&_a]:text-secondary [&_a]:font-bold [&_a]:underline">
+    <slot />
+  </div>
+</aside>

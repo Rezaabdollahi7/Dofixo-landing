@@ -1,0 +1,59 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { aparatEmbedUrl, aparatPageUrl, formatDuration } from "../../lib/academy";
+
+/**
+ * پخش‌کننده‌ی آپارات که تا کلیک نشود بارگذاری نمی‌شود.
+ *
+ * iframe آپارات چند صد کیلوبایت اسکریپت می‌آورد؛ گذاشتنش مستقیم در صفحه،
+ * سرعت همه‌ی خواننده‌ها را فدای آن‌هایی می‌کند که ویدیو را می‌بینند. تا کلیک،
+ * فقط تصویر پوستر خود ما و یک دکمه است. بدون جاوااسکریپت هم لینک به خود
+ * آپارات باز می‌شود.
+ */
+interface Props {
+  hash: string;
+  title: string;
+  duration: string;
+  poster: ImageMetadata;
+}
+const { hash, title, duration, poster } = Astro.props;
+---
+
+<div class="aparat-player not-prose relative aspect-video w-full overflow-hidden rounded-[20px] bg-primary shadow-2" data-embed={aparatEmbedUrl(hash)} data-title={title}>
+  <a href={aparatPageUrl(hash)} class="aparat-facade group absolute inset-0 block" aria-label={`پخش ویدیو: ${title}`} target="_blank" rel="noopener">
+    <Image src={poster} alt="" width={1280} height={720} class="w-full h-full object-cover" />
+    <span class="absolute inset-0 bg-primary/30 group-hover:bg-primary/20 transition-colors"></span>
+    <span class="absolute inset-0 flex items-center justify-center">
+      <span class="w-18 h-18 rounded-full bg-secondary text-white flex items-center justify-center shadow-8 group-hover:scale-110 transition-transform">
+        <svg class="w-8 h-8 -mr-1" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+      </span>
+    </span>
+    <span class="absolute bottom-4 right-4 left-4 flex items-center justify-between gap-3 text-white text-sm font-bold">
+      <span class="line-clamp-1">{title}</span>
+      <span class="shrink-0 bg-primary/80 rounded-full px-3 py-1 text-xs">{formatDuration(duration)}</span>
+    </span>
+  </a>
+</div>
+
+<script>
+  function initAparat() {
+    document.querySelectorAll<HTMLElement>(".aparat-player").forEach((player) => {
+      const facade = player.querySelector<HTMLAnchorElement>(".aparat-facade");
+      if (!facade || player.dataset.bound) return;
+      player.dataset.bound = "1";
+      facade.addEventListener("click", (e) => {
+        e.preventDefault();
+        const iframe = document.createElement("iframe");
+        iframe.src = player.dataset.embed!;
+        iframe.title = player.dataset.title || "ویدیو";
+        iframe.allow = "autoplay; fullscreen; picture-in-picture";
+        iframe.allowFullscreen = true;
+        iframe.className = "absolute inset-0 w-full h-full border-0";
+        facade.replaceWith(iframe);
+      });
+    });
+  }
+  document.addEventListener("astro:page-load", initAparat);
+  initAparat();
+</script>
