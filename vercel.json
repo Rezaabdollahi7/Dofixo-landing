@@ -1,4 +1,36 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "trailingSlash": true
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/blog/rahnamaye-tanzimat-avalie-mafixo",
+      "destination": "/academy/tutorials/getting-started/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/rahnamaye-tanzimat-avalie-mafixo/",
+      "destination": "/academy/tutorials/getting-started/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/safar-shafaf-dastgah-mafixo",
+      "destination": "/academy/tutorials/device-statuses/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/safar-shafaf-dastgah-mafixo/",
+      "destination": "/academy/tutorials/device-statuses/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/vizhegihaye-kamshenakhte-mafixo",
+      "destination": "/academy/tutorials/getting-started/",
+      "permanent": true
+    },
+    {
+      "source": "/blog/vizhegihaye-kamshenakhte-mafixo/",
+      "destination": "/academy/tutorials/getting-started/",
+      "permanent": true
+    }
+  ]
 }
