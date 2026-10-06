@@ -269,3 +269,13 @@ summary:focus-visible {
   margin-inline-end: 0.5rem;
   vertical-align: middle;
 }
+
+/* جدول پهن در مقاله روی گوشی: اسکرول افقی خود جدول، نه بیرون‌زدن از صفحه.
+   فقط روی صفحه‌ی کوچک، تا جدول‌های باریک روی دسکتاپ تمام‌عرض بمانند. */
+@media (max-width: 640px) {
+  .academy-prose table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
