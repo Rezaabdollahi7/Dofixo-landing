@@ -1,0 +1,48 @@
+---
+/**
+ * تجربه‌ی واقعی نویسنده، با حرف خود او.
+ *
+ *   <Experience author="davood-jafari">
+ *
+ *   متنی که خود نویسنده گفته یا نوشته.
+ *
+ *   </Experience>
+ *
+ * جدا از متن مقاله نمایش داده می‌شود تا خواننده ببیند این بخش از تجربه است،
+ * نه توصیه‌ی کلی — همان چیزی که اسم نویسنده را بالای مقاله درست می‌کند
+ * (writing-guide.md، قاعده‌ی ۲). فقط حرفی که نویسنده واقعاً زده؛ ویرایش در
+ * حد املا و نشانه‌گذاری.
+ */
+import { getEntry } from "astro:content";
+import { Image } from "astro:assets";
+import { authorPath } from "../../lib/academy";
+
+interface Props {
+  author: string;
+}
+const author = await getEntry("authors", Astro.props.author);
+if (!author) throw new Error(`<Experience>: نویسنده‌ی «${Astro.props.author}» پیدا نشد.`);
+---
+
+<figure class="not-prose my-8 rounded-[16px] bg-[#fbf6ee] border-r-4 border-[#c98a2b] p-5">
+  <!-- «!»ها: متن مقاله برای blockquote، img و a استایل خودش را دارد ([slug].astro) -->
+  <blockquote class="border-0! p-0! m-0! text-[15px] text-primary/85! leading-[215%] text-right [&_p]:mb-2! [&_p:last-child]:mb-0!">
+    <slot />
+  </blockquote>
+  <figcaption class="flex items-center gap-3 mt-4">
+    <Image
+      src={author.data.avatar}
+      alt=""
+      width={40}
+      height={40}
+      data-no-zoom
+      class="w-9! h-9! rounded-full! shadow-none! cursor-auto! object-cover shrink-0"
+    />
+    <span class="text-xs leading-[180%] text-right">
+      <a href={authorPath(author.id)} class="font-bold text-primary! no-underline! hover:text-secondary! transition-colors">
+        {author.data.name}
+      </a>
+      <span class="block text-primary/50">{author.data.role}</span>
+    </span>
+  </figcaption>
+</figure>

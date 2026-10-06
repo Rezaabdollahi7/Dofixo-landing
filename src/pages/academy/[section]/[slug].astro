@@ -13,6 +13,7 @@ import Step from "../../../components/academy/Step.astro";
 import Callout from "../../../components/academy/Callout.astro";
 import Figure from "../../../components/academy/Figure.astro";
 import NextStep from "../../../components/academy/NextStep.astro";
+import Experience from "../../../components/academy/Experience.astro";
 import { SITE, absoluteUrl, breadcrumbSchema } from "../../../data/site";
 import { CHAPTERS, publishedChapters } from "../../../data/course";
 import {
@@ -136,7 +137,7 @@ const videoSchema =
 const schema = [articleSchema, breadcrumbSchema(crumbs), ...(videoSchema ? [videoSchema] : [])];
 
 // اجزایی که مقاله‌های MDX بدون import می‌توانند استفاده کنند
-const components = { img: Figure, Step, Callout, Cta: CtaBlock, NextStep };
+const components = { img: Figure, Step, Callout, Cta: CtaBlock, NextStep, Experience };
 ---
 
 <Layout
@@ -374,7 +375,7 @@ const components = { img: Figure, Step, Callout, Cta: CtaBlock, NextStep };
     const dialog = document.getElementById("academy-zoom") as HTMLDialogElement | null;
     const zoomed = dialog?.querySelector("img");
     if (!dialog || !zoomed) return;
-    document.querySelectorAll<HTMLImageElement>(".academy-prose img").forEach((img) => {
+    document.querySelectorAll<HTMLImageElement>(".academy-prose img:not([data-no-zoom])").forEach((img) => {
       img.addEventListener("click", () => {
         zoomed.src = img.currentSrc || img.src;
         zoomed.alt = img.alt;
