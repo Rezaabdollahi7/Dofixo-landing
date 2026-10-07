@@ -1,381 +1,253 @@
 ---
 // src/components/sections/Screenshots.astro
+//
+// اسکرین‌شات‌های واقعی اپ (src/data/appScreens.ts). کلیک روی هر کارت آن را در
+// لایت‌باکس تمام‌صفحه باز می‌کند: دکمه‌های قبلی/بعدی، کلیدهای جهت، کشیدن
+// انگشت روی گوشی، و Esc برای بستن.
+import { Image, getImage } from "astro:assets";
+import { gallery } from "../../data/appScreens";
+
+// نسخه‌ی بزرگ برای لایت‌باکس: ۱۴۴۰ برای صفحه‌های معمولی، ۲۸۸۰ (اصل عکس) برای
+// رتینا. فقط وقتی لایت‌باکس باز شود دانلود می‌شود.
+const shots = await Promise.all(
+  gallery.map(async (s) => {
+    const big = await getImage({ src: s.image, widths: [1440, 2880], sizes: "92vw", format: "webp" });
+    return { ...s, big: { src: big.src, srcset: big.srcSet.attribute } };
+  }),
+);
+const toFa = (n: number) => n.toLocaleString("fa-IR");
 ---
 
-<section class="max-w-content mx-auto px-4 relative mt-42">
-    <div class="text-center mb-12">
-        <h2 class="text-2xl md:text-3xl lg:text-4xl font-heading font-extrabold text-primary">
-          اسکرین شات هایی از 
-          <span class="text-secondary">  دوفیکسو</span>
-        </h2>
-        <p class="text-charcoal/60 text-base md:text-lg mt-3 max-w-2xl mx-auto">تصاویری از محیط کاربری و بخش‌های مختلف نرم‌افزار مدیریت تعمیرگاه دوفیکسو</p>
-    </div>
+<section id="screenshots" class="max-w-content mx-auto px-4 relative mt-42">
+  <div class="text-center mb-12">
+    <h2 class="text-2xl md:text-3xl lg:text-4xl font-heading font-extrabold text-primary">
+      اسکرین شات هایی از
+      <span class="text-secondary">دوفیکسو</span>
+    </h2>
+    <p class="text-charcoal/60 text-base md:text-lg mt-3 max-w-2xl mx-auto">
+      تصویرهای واقعی از بخش‌های مختلف نرم‌افزار، روی اطلاعات یک تعمیرگاه موبایل نمونه. برای دیدن جزئیات روی هر تصویر بزنید.
+    </p>
+  </div>
 
   <!-- لایه‌های تزیینی بالای کارت -->
   <div class="rounded-t-[20px] sm:rounded-t-[30px] bg-[#fcfcfc] shadow-2 z-1 h-5 mx-[59px] relative"></div>
   <div class="rounded-t-[20px] sm:rounded-t-[30px] bg-[#f4f4f4] shadow-2 h-5 mx-[30px] relative"></div>
 
-  <!-- کارت اصلی -->
-  <div class="rounded-[20px] sm:rounded-[30px] bg-white shadow-2 p-3 sm:p-[30px] pt-4 relative">
+  <div class="rounded-[20px] sm:rounded-[30px] bg-white shadow-2 p-3 sm:p-[30px] relative">
+    <ul class="bg-[#F1F4F7] rounded-[16px] sm:rounded-[24px] p-3 sm:p-5 lg:p-7 grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-5 xl:gap-7">
+      {shots.map((s, i) => (
+        <li>
+          <button
+            type="button"
+            class="shot-open group w-full text-right rounded-[16px] sm:rounded-[20px] bg-white p-2 sm:p-2.5 shadow-[0_1px_2px_rgba(17,14,45,0.06)] hover:shadow-[0_18px_40px_-18px_rgba(17,14,45,0.35)] hover:-translate-y-1 transition-all duration-300 cursor-zoom-in focus-visible:outline-2 focus-visible:outline-secondary"
+            data-index={i}
+            aria-label={`بزرگ‌نمایی تصویر ${s.title}`}
+          >
+            <span class="block relative overflow-hidden rounded-[11px] sm:rounded-[14px] border border-lavender-1 aspect-[16/10] bg-[#f6f8fb]">
+              <Image
+                src={s.image}
+                alt={`${s.title} در نرم‌افزار دوفیکسو: ${s.caption}`}
+                widths={[480, 800, 1200]}
+                sizes="(min-width: 1024px) 380px, 46vw"
+                loading="lazy"
+                class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+              />
+              <span class="absolute inset-0 bg-primary/0 group-hover:bg-primary/25 transition-colors duration-300 flex items-center justify-center">
+                <span class="size-11 rounded-full bg-white/95 text-primary flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 shadow-lg">
+                  <svg class="size-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" /><path stroke-linecap="round" d="M20 20l-3.5-3.5M11 8v6M8 11h6" />
+                  </svg>
+                </span>
+              </span>
+            </span>
+            <span class="flex items-center gap-2 sm:gap-2.5 px-1 sm:px-1.5 pt-2.5 sm:pt-3 pb-1 sm:pb-1.5">
+              <span class="shrink-0 size-5 sm:size-6 rounded-full bg-primary text-white text-[10px] sm:text-[11px] font-bold flex items-center justify-center">{toFa(i + 1)}</span>
+              <span class="font-heading font-bold text-[13px] sm:text-[15px] text-primary leading-snug">{s.title}</span>
+            </span>
+            <span class="hidden sm:block px-1.5 pb-1 text-[13px] leading-[190%] text-charcoal/70">{s.caption}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  </div>
 
-    <!-- لیست اسکرین‌شات‌ها -->
-    <div class="mt-5 bg-[#F1F4F7] rounded-[20px] sm:rounded-[30px] pb-0 sm:pb-[18px] p-[18px] lg:p-7 relative">
+  <!-- لایت‌باکس -->
+  <dialog
+    id="shotbox"
+    aria-label="نمایش بزرگ اسکرین‌شات‌ها"
+    class="shotbox m-0 p-0 w-screen h-dvh max-w-none max-h-none bg-transparent text-white overflow-hidden"
+  >
+    <div class="h-full w-full flex flex-col">
+      <div class="flex items-center justify-between gap-3 px-4 sm:px-6 pt-4 sm:pt-5">
+        <p class="text-sm text-white/70 tabular-nums" aria-live="polite">
+          <span id="shotbox-num">۱</span> از {toFa(shots.length)}
+        </p>
+        <button type="button" id="shotbox-close" aria-label="بستن" class="size-11 rounded-full bg-white/10 hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70 flex items-center justify-center transition-colors cursor-pointer">
+          <svg class="size-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 xl:gap-[30px]">
+      <div id="shotbox-middle" class="flex-1 min-h-0 flex flex-col justify-center">
+      <div id="shotbox-stage" class="relative max-sm:flex-none sm:flex-1 min-h-0 flex items-center justify-center px-3 sm:px-20 pt-3 pb-16 sm:py-3 select-none">
+        <img
+          id="shotbox-img"
+          src={shots[0].big.src}
+          srcset={shots[0].big.srcset}
+          sizes="92vw"
+          alt=""
+          width="1440"
+          height="900"
+          decoding="async"
+          class="max-w-full max-h-full w-auto h-auto rounded-[10px] sm:rounded-[14px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)] transition-opacity duration-200"
+        />
+        <!-- راست = قبلی، چپ = بعدی، چون صفحه راست‌به‌چپ است -->
+        <button type="button" id="shotbox-prev" aria-label="تصویر قبلی" class="shotbox-nav right-2 sm:right-5">
+          <svg class="size-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+        </button>
+        <button type="button" id="shotbox-next" aria-label="تصویر بعدی" class="shotbox-nav left-2 sm:left-5">
+          <svg class="size-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+      </div>
 
-        <!-- اسکرین‌شات ۱: داشبورد -->
-        <div>
-          <div class="rounded-t-[15px] sm:rounded-t-[23px] bg-[#ffffff5b] shadow-2 h-[10px] mx-6 relative"></div>
-          <div class="rounded-[15px] sm:rounded-[23px] bg-white p-[9px]">
-            <div class="w-full h-[179px] rounded-[15px] sm:rounded-[22px] border-2 border-[#E8EDF3] bg-gradient-to-br from-blue-50 to-blue-100/50 flex items-center justify-center overflow-hidden">
-              <div class="w-full h-full flex flex-col items-center justify-center p-4">
-                <div class="w-full bg-white rounded-lg shadow-lg p-3">
-                  <div class="flex items-center gap-2 mb-2">
-                    <div class="w-2 h-2 rounded-full bg-secondary"></div>
-                    <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
-                    <div class="w-2 h-2 rounded-full bg-green-400"></div>
-                    <div class="flex-1 text-center text-[8px] text-gray-400 font-['IRANYekanXFaNum']">داشبورد مدیریتی</div>
-                  </div>
-                  <div class="grid grid-cols-3 gap-1">
-                    <div class="bg-blue-50 rounded p-1 text-center">
-                      <div class="text-[10px] font-bold text-[#110e2d] font-['Rokh']">۱۲۸</div>
-                      <div class="text-[6px] text-gray-400 font-['IRANYekanXFaNum']">دستگاه</div>
-                    </div>
-                    <div class="bg-green-50 rounded p-1 text-center">
-                      <div class="text-[10px] font-bold text-[#110e2d] font-['Rokh']">۴۵</div>
-                      <div class="text-[6px] text-gray-400 font-['IRANYekanXFaNum']">تعمیر شده</div>
-                    </div>
-                    <div class="bg-orange-50 rounded p-1 text-center">
-                      <div class="text-[10px] font-bold text-[#110e2d] font-['Rokh']">۲۳</div>
-                      <div class="text-[6px] text-gray-400 font-['IRANYekanXFaNum']">در انتظار</div>
-                    </div>
-                  </div>
-                </div>
-                <span class="text-[8px] text-gray-400 mt-1 font-['IRANYekanXFaNum']">داشبورد هوشمند</span>
-              </div>
-            </div>
-            <div class="mt-[13px] flex items-center justify-between gap-1.5">
-              <div class="flex items-center gap-1.5">
-                <div class="flex-shrink-0 w-[21px] h-[21px] overflow-hidden rounded-[200px] bg-[#110e2d] flex-center text-white text-xs font-bold">
-                  د
-                </div>
-                <h3 class="text-sm text-[#110e2d] font-['Rokh'] font-bold">داشبورد مدیریتی</h3>
-              </div>
-              <p class="bg-[#FCDFD7] rounded-[28px] text-secondary text-[9px] px-[9px] py-[3px] font-['IRANYekanXFaNum']">صفحه اصلی</p>
-            </div>
-          </div>
+      <div class="px-4 sm:px-6 pb-4 sm:pb-6 text-center">
+        <p id="shotbox-title" class="font-heading font-bold text-lg sm:text-xl">{shots[0].title}</p>
+        <p id="shotbox-caption" class="mt-1 text-sm sm:text-[15px] leading-[190%] text-white/70 max-w-2xl mx-auto">{shots[0].caption}</p>
+        <div class="hidden md:flex justify-center gap-2 mt-4" id="shotbox-thumbs">
+          {shots.map((s, i) => (
+            <button type="button" data-index={i} aria-label={s.title} class="shotbox-thumb w-[72px] aspect-[16/10] rounded-md overflow-hidden ring-2 ring-transparent opacity-50 hover:opacity-90 transition cursor-pointer">
+              <Image src={s.image} alt="" width={144} loading="lazy" class="w-full h-full object-cover object-top" />
+            </button>
+          ))}
         </div>
-
-        <!-- اسکرین‌شات ۲: لیست دستگاه‌ها -->
-        <div>
-          <div class="rounded-t-[15px] sm:rounded-t-[23px] bg-[#ffffff5b] shadow-2 h-[10px] mx-6 relative"></div>
-          <div class="rounded-[15px] sm:rounded-[23px] bg-white p-[9px]">
-            <div class="w-full h-[179px] rounded-[15px] sm:rounded-[22px] border-2 border-[#E8EDF3] bg-gradient-to-br from-indigo-50 to-indigo-100/50 flex items-center justify-center overflow-hidden">
-              <div class="w-full h-full flex flex-col items-center justify-center p-4">
-                <div class="w-full bg-white rounded-lg shadow-lg p-3">
-                  <div class="flex items-center gap-2 mb-2">
-                    <div class="w-2 h-2 rounded-full bg-secondary"></div>
-                    <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
-                    <div class="w-2 h-2 rounded-full bg-green-400"></div>
-                    <div class="flex-1 text-center text-[8px] text-gray-400 font-['IRANYekanXFaNum']">مدیریت دستگاه‌ها</div>
-                  </div>
-                  <div class="space-y-1">
-                    <div class="flex items-center justify-between text-[8px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">سامسونگ A52</span>
-                      <span class="text-yellow-600 font-['IRANYekanXFaNum']">در انتظار</span>
-                    </div>
-                    <div class="flex items-center justify-between text-[8px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">آیفون ۱۳</span>
-                      <span class="text-green-600 font-['IRANYekanXFaNum']">تعمیر شده</span>
-                    </div>
-                    <div class="flex items-center justify-between text-[8px]">
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">شیائومی نوت ۱۰</span>
-                      <span class="text-blue-600 font-['IRANYekanXFaNum']">در حال بررسی</span>
-                    </div>
-                  </div>
-                </div>
-                <span class="text-[8px] text-gray-400 mt-1 font-['IRANYekanXFaNum']">لیست دستگاه‌ها</span>
-              </div>
-            </div>
-            <div class="mt-[13px] flex items-center justify-between gap-1.5">
-              <div class="flex items-center gap-1.5">
-                <div class="flex-shrink-0 w-[21px] h-[21px] overflow-hidden rounded-[200px] bg-[#110e2d] flex-center text-white text-xs font-bold">
-                  د
-                </div>
-                <h3 class="text-sm text-[#110e2d] font-['Rokh'] font-bold">لیست دستگاه‌ها</h3>
-              </div>
-              <p class="bg-[#FCDFD7] rounded-[28px] text-secondary text-[9px] px-[9px] py-[3px] font-['IRANYekanXFaNum']">مدیریت</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- اسکرین‌شات ۳: مدیریت مشتریان -->
-        <div>
-          <div class="rounded-t-[15px] sm:rounded-t-[23px] bg-[#ffffff5b] shadow-2 h-[10px] mx-6 relative"></div>
-          <div class="rounded-[15px] sm:rounded-[23px] bg-white p-[9px]">
-            <div class="w-full h-[179px] rounded-[15px] sm:rounded-[22px] border-2 border-[#E8EDF3] bg-gradient-to-br from-purple-50 to-purple-100/50 flex items-center justify-center overflow-hidden">
-              <div class="w-full h-full flex flex-col items-center justify-center p-4">
-                <div class="w-full bg-white rounded-lg shadow-lg p-3">
-                  <div class="flex items-center gap-2 mb-2">
-                    <div class="w-2 h-2 rounded-full bg-secondary"></div>
-                    <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
-                    <div class="w-2 h-2 rounded-full bg-green-400"></div>
-                    <div class="flex-1 text-center text-[8px] text-gray-400 font-['IRANYekanXFaNum']">مدیریت مشتریان</div>
-                  </div>
-                  <div class="space-y-1">
-                    <div class="flex items-center justify-between text-[8px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">علی احمدی</span>
-                      <span class="text-gray-500 font-['IRANYekanXFaNum']">۳ دستگاه</span>
-                    </div>
-                    <div class="flex items-center justify-between text-[8px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">محمد کریمی</span>
-                      <span class="text-gray-500 font-['IRANYekanXFaNum']">۵ دستگاه</span>
-                    </div>
-                    <div class="flex items-center justify-between text-[8px]">
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">سارا حسینی</span>
-                      <span class="text-gray-500 font-['IRANYekanXFaNum']">۲ دستگاه</span>
-                    </div>
-                  </div>
-                </div>
-                <span class="text-[8px] text-gray-400 mt-1 font-['IRANYekanXFaNum']">لیست مشتریان</span>
-              </div>
-            </div>
-            <div class="mt-[13px] flex items-center justify-between gap-1.5">
-              <div class="flex items-center gap-1.5">
-                <div class="flex-shrink-0 w-[21px] h-[21px] overflow-hidden rounded-[200px] bg-[#110e2d] flex-center text-white text-xs font-bold">
-                  م
-                </div>
-                <h3 class="text-sm text-[#110e2d] font-['Rokh'] font-bold">مدیریت مشتریان</h3>
-              </div>
-              <p class="bg-[#FCDFD7] rounded-[28px] text-secondary text-[9px] px-[9px] py-[3px] font-['IRANYekanXFaNum']">مشتریان</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- اسکرین‌شات ۴: مدیریت انبار -->
-        <div>
-          <div class="rounded-t-[15px] sm:rounded-t-[23px] bg-[#ffffff5b] shadow-2 h-[10px] mx-6 relative"></div>
-          <div class="rounded-[15px] sm:rounded-[23px] bg-white p-[9px]">
-            <div class="w-full h-[179px] rounded-[15px] sm:rounded-[22px] border-2 border-[#E8EDF3] bg-gradient-to-br from-emerald-50 to-emerald-100/50 flex items-center justify-center overflow-hidden">
-              <div class="w-full h-full flex flex-col items-center justify-center p-4">
-                <div class="w-full bg-white rounded-lg shadow-lg p-3">
-                  <div class="flex items-center gap-2 mb-2">
-                    <div class="w-2 h-2 rounded-full bg-secondary"></div>
-                    <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
-                    <div class="w-2 h-2 rounded-full bg-green-400"></div>
-                    <div class="flex-1 text-center text-[8px] text-gray-400 font-['IRANYekanXFaNum']">مدیریت انبار</div>
-                  </div>
-                  <div class="space-y-1">
-                    <div class="flex items-center justify-between text-[8px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">صفحه نمایش</span>
-                      <span class="text-orange-500 font-['IRANYekanXFaNum']">۵ عدد</span>
-                    </div>
-                    <div class="flex items-center justify-between text-[8px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">باتری</span>
-                      <span class="text-red-500 font-['IRANYekanXFaNum']">۳ عدد</span>
-                    </div>
-                    <div class="flex items-center justify-between text-[8px]">
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">کابل USB</span>
-                      <span class="text-green-500 font-['IRANYekanXFaNum']">۱۲ عدد</span>
-                    </div>
-                  </div>
-                </div>
-                <span class="text-[8px] text-gray-400 mt-1 font-['IRANYekanXFaNum']">موجودی انبار</span>
-              </div>
-            </div>
-            <div class="mt-[13px] flex items-center justify-between gap-1.5">
-              <div class="flex items-center gap-1.5">
-                <div class="flex-shrink-0 w-[21px] h-[21px] overflow-hidden rounded-[200px] bg-[#110e2d] flex-center text-white text-xs font-bold">
-                  ا
-                </div>
-                <h3 class="text-sm text-[#110e2d] font-['Rokh'] font-bold">مدیریت انبار</h3>
-              </div>
-              <p class="bg-[#FCDFD7] rounded-[28px] text-secondary text-[9px] px-[9px] py-[3px] font-['IRANYekanXFaNum']">انبار</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- اسکرین‌شات ۵: صدور فاکتور -->
-        <div>
-          <div class="rounded-t-[15px] sm:rounded-t-[23px] bg-[#ffffff5b] shadow-2 h-[10px] mx-6 relative"></div>
-          <div class="rounded-[15px] sm:rounded-[23px] bg-white p-[9px]">
-            <div class="w-full h-[179px] rounded-[15px] sm:rounded-[22px] border-2 border-[#E8EDF3] bg-gradient-to-br from-yellow-50 to-yellow-100/50 flex items-center justify-center overflow-hidden">
-              <div class="w-full h-full flex flex-col items-center justify-center p-4">
-                <div class="w-full bg-white rounded-lg shadow-lg p-3">
-                  <div class="flex items-center gap-2 mb-2">
-                    <div class="w-2 h-2 rounded-full bg-secondary"></div>
-                    <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
-                    <div class="w-2 h-2 rounded-full bg-green-400"></div>
-                    <div class="flex-1 text-center text-[8px] text-gray-400 font-['IRANYekanXFaNum']">صدور فاکتور</div>
-                  </div>
-                  <div class="border border-gray-200 rounded p-2">
-                    <div class="flex justify-between text-[7px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-gray-500">آیفون ۱۳</span>
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">۴۵۰,۰۰۰</span>
-                    </div>
-                    <div class="flex justify-between text-[7px] border-b border-gray-100 pb-1 mt-1">
-                      <span class="font-['IRANYekanXFaNum'] text-gray-500">صفحه نمایش</span>
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">۲۵۰,۰۰۰</span>
-                    </div>
-                    <div class="flex justify-between text-[8px] font-bold mt-1 border-t border-gray-200 pt-1">
-                      <span class="font-['IRANYekanXFaNum'] text-gray-500">جمع:</span>
-                      <span class="font-['IRANYekanXFaNum'] text-secondary">۷۰۰,۰۰۰</span>
-                    </div>
-                  </div>
-                </div>
-                <span class="text-[8px] text-gray-400 mt-1 font-['IRANYekanXFaNum']">پیش‌نمایش فاکتور</span>
-              </div>
-            </div>
-            <div class="mt-[13px] flex items-center justify-between gap-1.5">
-              <div class="flex items-center gap-1.5">
-                <div class="flex-shrink-0 w-[21px] h-[21px] overflow-hidden rounded-[200px] bg-[#110e2d] flex-center text-white text-xs font-bold">
-                  ف
-                </div>
-                <h3 class="text-sm text-[#110e2d] font-['Rokh'] font-bold">صدور فاکتور</h3>
-              </div>
-              <p class="bg-[#FCDFD7] rounded-[28px] text-secondary text-[9px] px-[9px] py-[3px] font-['IRANYekanXFaNum']">فاکتور</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- اسکرین‌شات ۶: گزارش‌ها -->
-        <div>
-          <div class="rounded-t-[15px] sm:rounded-t-[23px] bg-[#ffffff5b] shadow-2 h-[10px] mx-6 relative"></div>
-          <div class="rounded-[15px] sm:rounded-[23px] bg-white p-[9px]">
-            <div class="w-full h-[179px] rounded-[15px] sm:rounded-[22px] border-2 border-[#E8EDF3] bg-gradient-to-br from-rose-50 to-rose-100/50 flex items-center justify-center overflow-hidden">
-              <div class="w-full h-full flex flex-col items-center justify-center p-4">
-                <div class="w-full bg-white rounded-lg shadow-lg p-3">
-                  <div class="flex items-center gap-2 mb-2">
-                    <div class="w-2 h-2 rounded-full bg-secondary"></div>
-                    <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
-                    <div class="w-2 h-2 rounded-full bg-green-400"></div>
-                    <div class="flex-1 text-center text-[8px] text-gray-400 font-['IRANYekanXFaNum']">گزارش‌ها</div>
-                  </div>
-                  <div class="space-y-1">
-                    <div class="flex justify-between text-[7px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-gray-500">درآمد امروز</span>
-                      <span class="font-['IRANYekanXFaNum'] text-green-600">۱۲۵,۰۰۰</span>
-                    </div>
-                    <div class="flex justify-between text-[7px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-gray-500">درآمد ماه</span>
-                      <span class="font-['IRANYekanXFaNum'] text-green-600">۳,۲۰۰,۰۰۰</span>
-                    </div>
-                    <div class="flex justify-between text-[7px]">
-                      <span class="font-['IRANYekanXFaNum'] text-gray-500">درآمد سال</span>
-                      <span class="font-['IRANYekanXFaNum'] text-secondary">۱۲,۵۰۰,۰۰۰</span>
-                    </div>
-                  </div>
-                </div>
-                <span class="text-[8px] text-gray-400 mt-1 font-['IRANYekanXFaNum']">گزارش مالی</span>
-              </div>
-            </div>
-            <div class="mt-[13px] flex items-center justify-between gap-1.5">
-              <div class="flex items-center gap-1.5">
-                <div class="flex-shrink-0 w-[21px] h-[21px] overflow-hidden rounded-[200px] bg-[#110e2d] flex-center text-white text-xs font-bold">
-                  گ
-                </div>
-                <h3 class="text-sm text-[#110e2d] font-['Rokh'] font-bold">گزارش‌های مالی</h3>
-              </div>
-              <p class="bg-[#FCDFD7] rounded-[28px] text-secondary text-[9px] px-[9px] py-[3px] font-['IRANYekanXFaNum']">گزارش</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- اسکرین‌شات ۷: مدیریت کاربران -->
-        <div>
-          <div class="rounded-t-[15px] sm:rounded-t-[23px] bg-[#ffffff5b] shadow-2 h-[10px] mx-6 relative"></div>
-          <div class="rounded-[15px] sm:rounded-[23px] bg-white p-[9px]">
-            <div class="w-full h-[179px] rounded-[15px] sm:rounded-[22px] border-2 border-[#E8EDF3] bg-gradient-to-br from-teal-50 to-teal-100/50 flex items-center justify-center overflow-hidden">
-              <div class="w-full h-full flex flex-col items-center justify-center p-4">
-                <div class="w-full bg-white rounded-lg shadow-lg p-3">
-                  <div class="flex items-center gap-2 mb-2">
-                    <div class="w-2 h-2 rounded-full bg-secondary"></div>
-                    <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
-                    <div class="w-2 h-2 rounded-full bg-green-400"></div>
-                    <div class="flex-1 text-center text-[8px] text-gray-400 font-['IRANYekanXFaNum']">مدیریت کاربران</div>
-                  </div>
-                  <div class="space-y-1">
-                    <div class="flex items-center justify-between text-[8px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">احمدی (ادمین)</span>
-                      <span class="text-blue-500 font-['IRANYekanXFaNum']">فعال</span>
-                    </div>
-                    <div class="flex items-center justify-between text-[8px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">کریمی (تکنسین)</span>
-                      <span class="text-green-500 font-['IRANYekanXFaNum']">فعال</span>
-                    </div>
-                    <div class="flex items-center justify-between text-[8px]">
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">حسینی (تکنسین)</span>
-                      <span class="text-gray-400 font-['IRANYekanXFaNum']">غیرفعال</span>
-                    </div>
-                  </div>
-                </div>
-                <span class="text-[8px] text-gray-400 mt-1 font-['IRANYekanXFaNum']">لیست کاربران</span>
-              </div>
-            </div>
-            <div class="mt-[13px] flex items-center justify-between gap-1.5">
-              <div class="flex items-center gap-1.5">
-                <div class="flex-shrink-0 w-[21px] h-[21px] overflow-hidden rounded-[200px] bg-[#110e2d] flex-center text-white text-xs font-bold">
-                  ک
-                </div>
-                <h3 class="text-sm text-[#110e2d] font-['Rokh'] font-bold">مدیریت کاربران</h3>
-              </div>
-              <p class="bg-[#FCDFD7] rounded-[28px] text-secondary text-[9px] px-[9px] py-[3px] font-['IRANYekanXFaNum']">کاربران</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- اسکرین‌شات ۸: پنل تنظیمات -->
-        <div>
-          <div class="rounded-t-[15px] sm:rounded-t-[23px] bg-[#ffffff5b] shadow-2 h-[10px] mx-6 relative"></div>
-          <div class="rounded-[15px] sm:rounded-[23px] bg-white p-[9px]">
-            <div class="w-full h-[179px] rounded-[15px] sm:rounded-[22px] border-2 border-[#E8EDF3] bg-gradient-to-br from-slate-50 to-slate-100/50 flex items-center justify-center overflow-hidden">
-              <div class="w-full h-full flex flex-col items-center justify-center p-4">
-                <div class="w-full bg-white rounded-lg shadow-lg p-3">
-                  <div class="flex items-center gap-2 mb-2">
-                    <div class="w-2 h-2 rounded-full bg-secondary"></div>
-                    <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
-                    <div class="w-2 h-2 rounded-full bg-green-400"></div>
-                    <div class="flex-1 text-center text-[8px] text-gray-400 font-['IRANYekanXFaNum']">تنظیمات</div>
-                  </div>
-                  <div class="space-y-1">
-                    <div class="flex items-center justify-between text-[8px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-gray-500">نام شرکت</span>
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">تعمیرگاه مرکزی</span>
-                    </div>
-                    <div class="flex items-center justify-between text-[8px] border-b border-gray-100 pb-1">
-                      <span class="font-['IRANYekanXFaNum'] text-gray-500">مالیات</span>
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">۹%</span>
-                    </div>
-                    <div class="flex items-center justify-between text-[8px]">
-                      <span class="font-['IRANYekanXFaNum'] text-gray-500">گارانتی</span>
-                      <span class="font-['IRANYekanXFaNum'] text-[#110e2d]">۳ ماه</span>
-                    </div>
-                  </div>
-                </div>
-                <span class="text-[8px] text-gray-400 mt-1 font-['IRANYekanXFaNum']">پنل تنظیمات</span>
-              </div>
-            </div>
-            <div class="mt-[13px] flex items-center justify-between gap-1.5">
-              <div class="flex items-center gap-1.5">
-                <div class="flex-shrink-0 w-[21px] h-[21px] overflow-hidden rounded-[200px] bg-[#110e2d] flex-center text-white text-xs font-bold">
-                  ت
-                </div>
-                <h3 class="text-sm text-[#110e2d] font-['Rokh'] font-bold">پنل تنظیمات</h3>
-              </div>
-              <p class="bg-[#FCDFD7] rounded-[28px] text-secondary text-[9px] px-[9px] py-[3px] font-['IRANYekanXFaNum']">تنظیمات</p>
-            </div>
-          </div>
-        </div>
-
+      </div>
       </div>
     </div>
-  </div>
+  </dialog>
+
+  <script type="application/json" id="shotbox-data" set:html={JSON.stringify(shots.map((s) => ({ src: s.big.src, srcset: s.big.srcset, title: s.title, caption: s.caption })))} />
 </section>
 
-<style is:global>
-  .flex-center {
+<style>
+  .shotbox::backdrop {
+    background: rgba(12, 10, 32, 0.92);
+    backdrop-filter: blur(6px);
+  }
+  .shotbox[open] {
+    display: block;
+    animation: shotbox-in 0.2s ease-out;
+  }
+  @keyframes shotbox-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .shotbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.12);
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .shotbox-nav:hover { background: rgba(255, 255, 255, 0.24); }
+  @media (max-width: 639px) {
+    /* روی گوشی عکس تمام‌عرض است؛ دکمه‌ها زیرش می‌نشینند تا رویش را نپوشانند. کشیدن انگشت هم کار می‌کند */
+    .shotbox-nav { top: auto; bottom: 0; transform: none; width: 2.75rem; height: 2.75rem; }
+  }
+  .shotbox-thumb[aria-current="true"] {
+    opacity: 1;
+    --tw-ring-color: var(--color-burnt-orange);
   }
 </style>
+
+<script>
+  const box = document.getElementById("shotbox") as HTMLDialogElement | null;
+  const data: { src: string; srcset: string; title: string; caption: string }[] = JSON.parse(
+    document.getElementById("shotbox-data")?.textContent ?? "[]",
+  );
+
+  if (box && data.length) {
+    const img = box.querySelector<HTMLImageElement>("#shotbox-img")!;
+    const num = box.querySelector("#shotbox-num")!;
+    const title = box.querySelector("#shotbox-title")!;
+    const caption = box.querySelector("#shotbox-caption")!;
+    const thumbs = [...box.querySelectorAll<HTMLButtonElement>(".shotbox-thumb")];
+    const fa = (n: number) => n.toLocaleString("fa-IR");
+    let current = 0;
+    let opener: HTMLElement | null = null;
+
+    const show = (i: number) => {
+      current = (i + data.length) % data.length;
+      const s = data[current];
+      img.style.opacity = "0";
+      const swap = () => {
+        img.srcset = s.srcset;
+        img.src = s.src;
+        img.alt = s.title;
+        img.onload = () => (img.style.opacity = "1");
+        if (img.complete) img.style.opacity = "1";
+      };
+      // اولین باز شدن بدون محو شدن
+      box.open ? setTimeout(swap, 120) : swap();
+      num.textContent = fa(current + 1);
+      title.textContent = s.title;
+      caption.textContent = s.caption;
+      thumbs.forEach((t, k) => t.setAttribute("aria-current", String(k === current)));
+      // تصویر بعدی را از قبل بگیر تا رفتن به آن بی‌مکث باشد
+      const next = new Image();
+      next.sizes = "92vw";
+      next.srcset = data[(current + 1) % data.length].srcset;
+    };
+
+    document.querySelectorAll<HTMLButtonElement>(".shot-open").forEach((b) =>
+      b.addEventListener("click", () => {
+        opener = b;
+        show(Number(b.dataset.index));
+        box.showModal();
+        document.documentElement.style.overflow = "hidden";
+      }),
+    );
+    box.addEventListener("close", () => {
+      document.documentElement.style.overflow = "";
+      opener?.focus();
+    });
+
+    box.querySelector("#shotbox-close")!.addEventListener("click", () => box.close());
+    box.querySelector("#shotbox-prev")!.addEventListener("click", () => show(current - 1));
+    box.querySelector("#shotbox-next")!.addEventListener("click", () => show(current + 1));
+    thumbs.forEach((t) => t.addEventListener("click", () => show(Number(t.dataset.index))));
+
+    // کلیک روی فضای خالی (نه خود عکس و نه دکمه‌ها) می‌بندد
+    for (const id of ["#shotbox-stage", "#shotbox-middle"]) {
+      box.querySelector(id)!.addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) box.close();
+      });
+    }
+
+    // صفحه راست‌به‌چپ است: جهت چپ یعنی جلو
+    box.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") show(current + 1);
+      else if (e.key === "ArrowRight") show(current - 1);
+    });
+
+    // کشیدن انگشت: به چپ = بعدی، به راست = قبلی
+    let x0: number | null = null;
+    let y0 = 0;
+    box.addEventListener("touchstart", (e) => {
+      x0 = e.touches[0].clientX;
+      y0 = e.touches[0].clientY;
+    }, { passive: true });
+    box.addEventListener("touchend", (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      const dy = e.changedTouches[0].clientY - y0;
+      x0 = null;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(dx < 0 ? current + 1 : current - 1);
+    }, { passive: true });
+  }
+</script>

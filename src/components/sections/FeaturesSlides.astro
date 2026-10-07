@@ -1,577 +1,279 @@
 ---
-import DeviceSvg from '../../../public/icons/img_89.svg?raw';
-import CustomerSvg from '../../../public/icons/img_84.svg?raw';
-import InventorySvg from '../../../public/icons/img_27.svg?raw';
-import InvoiceSvg from '../../../public/icons/img_81.svg?raw';
-import DashboardSvg from '../../../public/icons/img_88.svg?raw';
+// src/components/sections/FeaturesSlides.astro
+//
+// «از پراکندگی به نظم»: پنج ماژول اصلی، هر کدام با تصویر واقعی خودش.
+//
+// قبلاً اسلایدری بود که هر پنج ثانیه خودش جلو می‌رفت و متن بلندش وسط خواندن
+// عوض می‌شد. حالا زبانه است: تا خواننده خودش زبانه‌ی دیگری را نزند چیزی
+// تکان نمی‌خورد، و متن هر ماژول یک جمله و چهار مورد کوتاه است.
+//
+// همه‌ی پنل‌ها در یک خانه‌ی گرید روی هم‌اند، پس ارتفاع بخش با عوض شدن زبانه
+// تغییر نمی‌کند و صفحه زیر دست خواننده نمی‌پرد. هر ادعا باید در
+// docs/academy/product-facts.md پشتوانه داشته باشد.
+import { Image } from "astro:assets";
+import { screens, type AppScreen } from "../../data/appScreens";
+import DeviceSvg from "../../../public/icons/img_89.svg?raw";
+import CustomerSvg from "../../../public/icons/img_84.svg?raw";
+import InventorySvg from "../../../public/icons/img_27.svg?raw";
+import InvoiceSvg from "../../../public/icons/img_81.svg?raw";
+import DashboardSvg from "../../../public/icons/img_88.svg?raw";
 
-const slides = [
+interface Module {
+  id: string;
+  title: string;
+  titleEn: string;
+  icon: string;
+  lead: string;
+  points: string[];
+  screen: AppScreen;
+  link: { href: string; label: string };
+}
+
+const modules: Module[] = [
   {
-    id: 1,
+    id: "devices",
     title: "مدیریت دستگاه‌ها",
-    titleEn: "DEVICE MANAGEMENT",
-    description:
-      "با دوفیکسو، دستگاه مشتری را از لحظه پذیرش تا تحویل نهایی به‌صورت دقیق و هوشمند پیگیری کنید. ثبت کامل اطلاعات دستگاه شامل نام، برند، مدل و شماره سریال، تعیین تکنسین مسئول، آپلود عکس از وضعیت دستگاه و مشاهده لحظه‌ای وضعیت تعمیر — همه در یک پنل یکپارچه و کاربرپسند.\n\n" +
-      "سیستم ما به شما امکان می‌دهد تا تاریخ ورود و خروج دستگاه را ثبت کرده، وضعیت دستگاه را در هر مرحله (در انتظار بررسی، در حال تعمیر، تعمیر شده، آماده تحویل، تحویل داده شده و ...) به‌روز کنید و با اختصاص چندین تکنسین به یک دستگاه، تیم خود را به‌صورت بهینه مدیریت نمایید.\n\n" +
-      "علاوه بر این، قابلیت جستجوی پیشرفته و فیلترهای متنوع (بر اساس وضعیت، برند، مشتری، بازه زمانی و مسئول) به شما کمک می‌کند تا در میان هزاران دستگاه ثبت‌شده، به‌سرعت دستگاه مورد نظر را پیدا کنید.",
-    titleIcon: DeviceSvg,
-    image: "/images/hero-img.webp",
+    titleEn: "Devices",
+    icon: DeviceSvg,
+    lead: "هر دستگاه از لحظه‌ی پذیرش تا تحویل یک شماره و یک پرونده دارد؛ کسی لازم نیست دنبال دفتر بگردد تا بفهمد کار به کجا رسیده.",
+    points: [
+      "شماره‌ی پذیرش پشت‌سرهم، که روی فاکتور و پیامک مشتری هم می‌آید",
+      "وضعیت هر دستگاه، از «در انتظار بررسی» تا «تحویل داده شده»",
+      "سپردن دستگاه به تعمیرکار، با تاریخچه‌ی سپردن‌ها",
+      "پیامک خودکار به مشتری هنگام پذیرش، آماده‌بودن و تحویل",
+    ],
+    screen: screens.devices,
+    link: { href: "/academy/tutorials/device-intake/", label: "آموزش پذیرش دستگاه" },
   },
   {
-    id: 2,
+    id: "customers",
     title: "مدیریت مشتریان",
-    titleEn: "CUSTOMER MANAGEMENT",
-    description:
-      "پرونده کامل و جامع هر مشتری را در دست داشته باشید. دوفیکسو به شما امکان می‌دهد تا اطلاعات تماس، تاریخچه کامل تعمیرات، تعداد دستگاه‌های ثبت‌شده، آمار تعمیرات موفق، میانگین زمان تعمیر و مجموع مبلغ پرداختی هر مشتری را به‌صورت شفاف و دقیق مشاهده کنید.\n\n" +
-      "با یک جستجوی ساده بر اساس نام یا شماره تماس، می‌توانید به‌سرعت مشتری مورد نظر را پیدا کرده و تمام دستگاه‌های ثبت‌شده او را به‌همراه وضعیت هر یک مشاهده نمایید. این قابلیت به شما کمک می‌کند تا ارتباط مؤثرتری با مشتریان خود داشته باشید و خدمات شخصی‌سازی‌شده ارائه دهید.\n\n" +
-      "همچنین با مشاهده آمار دقیق از عملکرد تعمیرات هر مشتری (تعداد تعمیرات موفق، تعداد دستگاه‌های در انتظار و میانگین زمان تعمیر)، می‌توانید کیفیت خدمات خود را ارزیابی کرده و برای بهبود مستمر آن برنامه‌ریزی نمایید.",
-    titleIcon: CustomerSvg,
-    image: "/images/hero-img.webp",
+    titleEn: "Customers",
+    icon: CustomerSvg,
+    lead: "سابقه‌ی هر مشتری در یک صفحه: چه دستگاه‌هایی آورده، چه تعمیری شده و چقدر پرداخته.",
+    points: [
+      "همه‌ی دستگاه‌های مشتری و خط زمانی تعمیرهایش",
+      "فاکتورها و مانده‌ی پرداخت‌نشده",
+      "یادداشت خصوصی، که فقط کارکنان می‌بینند و روی فاکتور نمی‌آید",
+      "پیدا کردن مشتری با نام یا شماره تماس",
+    ],
+    screen: screens.customerPage,
+    link: { href: "/features/", label: "همه‌ی امکانات" },
   },
   {
-    id: 3,
+    id: "inventory",
     title: "مدیریت انبار",
-    titleEn: "INVENTORY MANAGEMENT",
-    description:
-      "موجودی قطعات و کالاهای انبار خود را به‌صورت لحظه‌ای و دقیق رصد کنید. دوفیکسو با ارائه یک سیستم مدیریت انبار کامل، امکان ثبت کالاهای جدید با کد، نام، واحد شمارش و قیمت تمام‌شده را فراهم می‌کند و شما می‌توانید قطعات را بر اساس دسته‌بندی‌های مختلف سازماندهی کنید.\n\n" +
-      "سیستم ما به‌صورت خودکار موجودی انبار را با ثبت هر فاکتور فروش یا خرید به‌روز می‌کند و کالاهایی را که به حداقل موجودی رسیده‌اند در داشبورد نشان می‌دهد تا از کاهش موجودی قطعات پرکاربرد باخبر باشید. این قابلیت به شما کمک می‌کند تا همیشه قطعات مورد نیاز را در انبار داشته باشید و از توقف فرآیند تعمیرات به دلیل کمبود قطعه جلوگیری کنید.\n\n" +
-      "علاوه بر این، با گزارش‌گیری از تراکنش‌های انبار (ورود، خروج و تعدیل موجودی)، می‌توانید جریان حرکت قطعات را به‌صورت شفاف مشاهده کرده و تصمیمات بهتری برای خرید و تأمین قطعات بگیرید.",
-    titleIcon: InventorySvg,
-    image: "/images/hero-img.webp",
+    titleEn: "Inventory",
+    icon: InventorySvg,
+    lead: "موجودی قطعه‌ها با هر فاکتور خودکار به‌روز می‌شود؛ برای دانستن اینکه چه دارید، لازم نیست قفسه را بشمارید.",
+    points: [
+      "کد، دسته‌بندی، واحد و حداقل موجودی برای هر کالا",
+      "موجودی با فاکتور خرید زیاد و با فروش و تعمیر کم می‌شود",
+      "قیمت تمام‌شده با میانگین موزون خریدها",
+      "کالاهای کم‌موجود در داشبورد و گزارش موجودی",
+    ],
+    screen: screens.items,
+    link: { href: "/features/", label: "همه‌ی امکانات" },
   },
   {
-    id: 4,
+    id: "invoices",
     title: "صدور فاکتور",
-    titleEn: "INVOICE MANAGEMENT",
-    description:
-      "فاکتورهای تعمیر، فروش و خرید را در کمتر از چند ثانیه به‌صورت حرفه‌ای و استاندارد صادر کنید. دوفیکسو با ارائه یک سیستم فاکتوردهی قدرتمند و انعطاف‌پذیر، امکان افزودن کالاها از انبار، خدمات تعمیر یا آیتم‌های دلخواه را با قیمت‌گذاری دقیق فراهم می‌کند.\n\n" +
-      "شما می‌توانید تخفیف‌های درصدی یا مبلغ ثابت، مالیات با نرخ قابل تنظیم، گارانتی با مدت‌زمان مشخص و توضیحات تکمیلی را به فاکتور اضافه کرده و وضعیت پرداخت را به‌عنوان پرداخت شده، پرداخت ناقص یا در انتظار پرداخت ثبت کنید. سیستم ما به‌صورت خودکار شماره فاکتور را بر اساس سال شمسی تولید کرده و امکان چاپ حرفه‌ای با تنظیمات کامل را برای شما فراهم می‌آورد.\n\n" +
-      "همچنین با یکپارچگی کامل با سیستم مدیریت مشتریان و انبار، تمام اطلاعات مورد نیاز برای صدور فاکتور به‌صورت خودکار در دسترس شماست و فرآیند صدور فاکتور را به کاری سریع، دقیق و بدون خطا تبدیل می‌کند.",
-    titleIcon: InvoiceSvg,
-    image: "/images/hero-img.webp",
+    titleEn: "Invoices",
+    icon: InvoiceSvg,
+    lead: "فاکتور خرید، فروش و تعمیر با شماره‌ی پشت‌سرهم، و چاپ با لوگو و اطلاعات تعمیرگاه خودتان.",
+    points: [
+      "قطعه و اجرت در فاکتور تعمیر، با تخفیف و مالیات",
+      "پرداخت نقدی، کارتی یا انتقال وجه، در یک یا چند نوبت",
+      "گارانتی با تاریخ پایان خودکار، روی فاکتور چاپی",
+      "ویرایش هر فاکتور، که انبار را هم هم‌پایش اصلاح می‌کند",
+    ],
+    screen: screens.repairInvoice,
+    link: { href: "/features/", label: "همه‌ی امکانات" },
   },
   {
-    id: 5,
+    id: "reports",
     title: "گزارش‌ها و داشبورد",
-    titleEn: "REPORTS & DASHBOARD",
-    description:
-      "وضعیت مالی و عملکردی تعمیرگاه خود را با داشبورد هوشمند و تحلیلی دوفیکسو در یک نگاه مشاهده کنید. این داشبورد با ارائه آمار لحظه‌ای از تعداد دستگاه‌های در حال تعمیر، دستگاه‌های تحویل‌شده، درآمد روزانه و ماهانه، وضعیت پرداخت فاکتورها و عملکرد تکنسین‌ها، تصویری کامل و شفاف از کسب‌وکار شما ارائه می‌دهد.\n\n" +
-      "گزارش‌های پیشرفته دوفیکسو شامل گزارش سود و زیان، گزارش موجودی انبار، گزارش تراکنش‌های مالی، گزارش عملکرد تعمیرکاران و گزارش دستگاه‌های تعمیرشده در بازه‌های زمانی مختلف است. این گزارش‌ها به شما کمک می‌کنند تا برای بهبود مستمر برنامه‌ریزی نمایید.\n\n" +
-      "با داشبورد دوفیکسو، نیازی به نرم‌افزارهای جداگانه برای تحلیل داده‌ها ندارید. تمام اطلاعات مهم کسب‌وکار شما در یک صفحه جمع‌آوری شده و با نمودارهای تعاملی، درک وضعیت مالی و عملکردی تعمیرگاه را برای شما آسان می‌سازد.",
-    titleIcon: DashboardSvg,
-    image: "/images/hero-img.webp",
+    titleEn: "Reports",
+    icon: DashboardSvg,
+    lead: "وضعیت تعمیرگاه در یک نگاه، و سود واقعی هر ماه از روی فاکتورها — نه از روی حدس.",
+    points: [
+      "دستگاه‌های در کار، بار کاری تعمیرکارها و درآمد امروز و این ماه",
+      "سود و زیان در هر بازه‌ی تاریخ، به تفکیک کالا",
+      "ارزش ریالی انبار در گزارش موجودی",
+      "نرخ تعمیر موفق و میانگین زمان تعمیر هر تعمیرکار",
+    ],
+    screen: screens.dashboard,
+    link: { href: "/features/", label: "همه‌ی امکانات" },
   },
 ];
 
-const CENTER = 2;
+const toFa = (n: number) => n.toLocaleString("fa-IR", { minimumIntegerDigits: 2 });
 ---
 
-<section class="mt-42" dir="rtl">
+<section class="mt-42" dir="rtl" id="modules">
   <div class="container mx-auto mt-2 mb-8 md:mb-12 text-center px-4">
     <h2 class="text-3xl md:text-4xl lg:text-5xl font-heading font-extrabold text-secondary mb-4 md:mb-6">
       «از پراکندگی به نظم ، با دوفیکسو»
     </h2>
     <p class="text-base md:text-lg text-charcoal/70 max-w-2xl mx-auto">
-      سیستم جامع مدیریت دستگاه‌ها، مشتریان، انبار و فاکتورها
+      دستگاه‌ها، مشتری‌ها، انبار، فاکتورها و گزارش‌ها — به‌جای دفتر و اکسل و کاغذهای پراکنده، در یک پنل
     </p>
   </div>
 
-  <div class="max-w-[1450px] mx-auto px-4">
+  <div class="max-w-content mx-auto px-4">
+    <!-- زبانه‌ها. روی گوشی افقی اسکرول می‌شوند. -->
+    <div class="flex justify-center">
+      <div
+        role="tablist"
+        aria-label="ماژول‌های دوفیکسو"
+        class="mod-tabs flex gap-1.5 p-1.5 bg-white rounded-full border border-lavender shadow-[0_8px_30px_-12px_rgba(17,14,45,0.15)] max-w-full overflow-x-auto snap-x"
+      >
+        {modules.map((m, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`mod-tab-${m.id}`}
+            aria-controls={`mod-panel-${m.id}`}
+            aria-selected={i === 0 ? "true" : "false"}
+            tabindex={i === 0 ? 0 : -1}
+            class="mod-tab snap-start shrink-0 flex items-center gap-2 rounded-full px-4 sm:px-5 h-11 sm:h-12 text-sm sm:text-[15px] font-bold whitespace-nowrap cursor-pointer transition-colors duration-200 text-primary/60 hover:text-primary hover:bg-[#f1f4f7] aria-selected:bg-primary aria-selected:text-white aria-selected:hover:bg-primary"
+          >
+            <span class="mod-tab-icon size-5 shrink-0 [&_svg]:size-full [&_svg_path]:stroke-current" set:html={m.icon} />
+            {m.title}
+          </button>
+        ))}
+      </div>
+    </div>
 
-    <!-- ستون کنترل اسلایدر ۷٪ بیرون از قاب می‌نشیند و تا ویوپورت ۱۶۶۰ پیکسل
-         جایی برای آن نیست. به‌جای جابه‌جا کردن دکمه‌ها (که روی عنوان ماژول‌ها
-         می‌افتادند) قاب اسلایدر به همان اندازه باریک‌تر می‌شود تا بیرون‌زدگی
-         داخل صفحه جا شود و اسکرول افقی ساخته نشود. -->
-    <div class="md:max-[1659px]:pr-[7.5%]">
-    <div class="hidden md:flex gap-6 items-stretch relative">
-
-      <div class="w-[260px] xl:w-[400px] shrink-0 flex flex-col justify-center overflow-hidden">
-        <div id="slideTrack" class="flex flex-col gap-3 w-full">
-          {slides.map((slide, i) => {
-            const dist = i - CENTER;
-            const scale = dist === 0 ? 1 : Math.abs(dist) === 1 ? 0.9 : 0.7;
-            const opacity = dist === 0 ? 1 : Math.abs(dist) === 1 ? 0.6 : 0.45;
-            const isActive = dist === 0;
-
-            return (
-              <div
-                class="slideTab w-full flex-shrink-0 transition-all duration-500 ease-in-out origin-right cursor-pointer"
-                data-index={i}
-                style={`transform: scale(${scale}); opacity: ${opacity};`}
+    <!-- پنل‌ها، همه در یک خانه‌ی گرید -->
+    <div class="grid mt-6 sm:mt-10">
+      {modules.map((m, i) => (
+        <div
+          role="tabpanel"
+          id={`mod-panel-${m.id}`}
+          aria-labelledby={`mod-tab-${m.id}`}
+          data-active={i === 0 ? "true" : "false"}
+          class="mod-panel [grid-area:1/1] bg-white rounded-[24px] sm:rounded-[32px] border border-lavender shadow-[0_30px_80px_-40px_rgba(17,14,45,0.25)] p-4 sm:p-8 lg:p-10 grid lg:grid-cols-12 gap-6 lg:gap-10 content-start lg:content-center items-center"
+        >
+          <div class="lg:col-span-5 order-2 lg:order-1">
+            <p class="flex items-center gap-2 text-xs font-bold tracking-widest uppercase">
+              <span class="text-secondary">{toFa(i + 1)}</span>
+              <span class="h-px w-6 bg-secondary/40"></span>
+              <span class="text-primary/40" dir="ltr">{m.titleEn}</span>
+            </p>
+            <h3 class="mt-3 font-heading font-extrabold text-2xl sm:text-3xl text-primary">{m.title}</h3>
+            <p class="mt-3 text-[15px] sm:text-base leading-[200%] text-charcoal/80">{m.lead}</p>
+            <ul class="mt-5 space-y-3">
+              {m.points.map((p) => (
+                <li class="flex items-start gap-3 text-[14px] sm:text-[15px] leading-[180%] text-primary/85">
+                  <span class="mt-0.5 size-5 shrink-0 rounded-full bg-linen-1 text-secondary flex items-center justify-center">
+                    <svg class="size-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
+                  {p}
+                </li>
+              ))}
+            </ul>
+            <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <a
+                href="https://app.dofixo.ir/register"
+                rel="noopener"
+                class="bg-secondary btnHover inline-flex items-center justify-center h-12 px-7 rounded-[12px] text-white font-bold"
               >
-                <div class:list={[
-                  "w-full text-right rounded-l-full pr-4 pl-2 py-3 flex items-center gap-3 transition-all duration-500",
-                  isActive ? "bg-[#EDF2F8]" : "bg-white border border-lavender",
-                ]}>
-                  <div class:list={[
-                    "progressBarContainer w-1 self-stretch rounded-full overflow-hidden flex-shrink-0",
-                    isActive ? "bg-lavender" : "bg-transparent"
-                  ]}>
-                    {isActive && (
-                      <div id="progressBar" class="progressInner w-full bg-primary rounded-full h-0"></div>
-                    )}
-                  </div>
+                شروع ۳۰ روز رایگان
+              </a>
+              <a href={m.link.href} class="inline-flex items-center gap-1.5 text-sm font-bold text-primary hover:text-secondary transition-colors">
+                {m.link.label}
+                <svg class="size-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </a>
+            </div>
+          </div>
 
-                  <div class="flex flex-col gap-1 flex-1 min-w-0">
-                    <div class:list={[
-                      "slide-title-fa font-bold text-2xl xl:text-3xl transition-colors",
-                      isActive ? "text-secondary" : "text-secondary/40"
-                    ]}>
-                      {slide.title}
-                    </div>
-                    <div class:list={[
-                      "slide-title-en text-xs font-thin uppercase tracking-widest transition-colors",
-                      isActive ? "text-primary" : "text-silver"
-                    ]}>
-                      {slide.titleEn}
-                    </div>
-                  </div>
-
-                  <div class:list={[
-                    "slide-icon-wrap bg-white p-3 rounded-full shadow-2xl flex-shrink-0",
-                    isActive ? "inline-flex" : "hidden"
-                  ]}>
-                    <span class="w-[30px] h-[31px] [&_svg_path]:stroke-secondary" id="slideIcon"></span>
-                  </div>
+          <div class="lg:col-span-7 order-1 lg:order-2">
+            <div class="rounded-[16px] sm:rounded-[22px] bg-[#F1F4F7] p-2 sm:p-3">
+              <div class="rounded-[10px] sm:rounded-[14px] overflow-hidden bg-white border border-lavender-1 shadow-[0_20px_40px_-24px_rgba(17,14,45,0.35)]">
+                <div class="flex items-center gap-1.5 px-3 h-6 sm:h-7 bg-[#f7f8fa] border-b border-lavender-1" dir="ltr" aria-hidden="true">
+                  <i class="size-2 sm:size-2.5 rounded-full bg-[#ff5f57]"></i>
+                  <i class="size-2 sm:size-2.5 rounded-full bg-[#febc2e]"></i>
+                  <i class="size-2 sm:size-2.5 rounded-full bg-[#28c840]"></i>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      <div class="grid grid-cols-9 gap-4 flex-1">
-        <div class="col-span-4 relative rounded-[27px] overflow-visible flex items-center justify-center" style="min-height: 280px;">
-          <div class="w-full h-full flex items-center justify-center p-8 relative">
-            <img
-              id="slideImage"
-              src={slides[0].image}
-              alt={slides[0].title}
-              width="800"
-              height="600"
-              class="h-[150%] w-[150%] object-contain transition-opacity duration-300 z-[999]"
-            />
-          </div>
-          <div class="absolute bottom-4 right-1/2 translate-x-1/2 bg-white/80 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-bold text-secondary flex items-center gap-1.5 z-[999]">
-            <span id="slideCurrentNum" class="text-primary font-black">۱</span>
-            <span class="text-silver">از</span>
-            <span>{slides.length}</span>
-          </div>
-          <img alt="" aria-hidden="true" src="/images/Rectangle3.png" width="379" height="404" loading="lazy" decoding="async" class="absolute w-[70%] z-30" />
-          <img alt="" aria-hidden="true" src="/images/Rectangle2.png" width="379" height="404" loading="lazy" decoding="async" class="absolute w-[60%] left-[10%] z-20" />
-          <img alt="" aria-hidden="true" src="/images/Rectangle1.png" width="379" height="404" loading="lazy" decoding="async" class="absolute w-[50%] left-[5%] z-10" />
-        </div>
-
-        <div class="col-span-5 bg-white rounded-[27px] shadow-sm border border-lavender p-6 md:p-8 flex flex-col gap-5 relative">
-          <div class="relative min-h-[410px]">
-            {slides.map((slide, i) => (
-              <p
-                class:list={[
-                  "slide-desc absolute inset-0 text-charcoal leading-8 text-sm md:text-base text-justify transition-opacity duration-300",
-                  i === 0 ? "opacity-100" : "opacity-0 invisible"
-                ]}
-                data-index={i}
-              >
-                {slide.description}
-              </p>
-            ))}
-          </div>
-          <!-- «برگه‌های» تزئینی پشت کارت که تا ۴۰ پیکسل بیرون از قاب می‌نشینند.
-               فقط از ۱۵۳۰ پیکسل به بالا جا می‌شوند؛ پایین‌تر از آن اسکرول افقی
-               روی کل صفحه می‌ساختند، پس همان‌جا پنهان می‌مانند. -->
-          <div aria-hidden="true" class="hidden min-[1530px]:block absolute rtl:-left-5 w-5 h-[87%] bg-[#f3f3f3d4] shadow-2 rtl:rounded-l-[15px] rtl:sm:rounded-l-[30px]"></div>
-          <div aria-hidden="true" class="hidden min-[1530px]:block absolute rtl:-left-10 w-5 h-[67%] my-[58px] bg-[#e9e9e9] shadow-2 rtl:rounded-l-[15px] rtl:sm:rounded-l-[30px]"></div>
-
-          <div class="flex items-center gap-4 mt-auto flex-wrap">
-            <div class="flex items-center gap-1.5">
-              <div class="flex -space-x-2 ">
-                <div class="size-8 rounded-full bg-primary/20 border-2 border-white flex items-center justify-center text-xs">ر</div>
-                <div class="size-8 rounded-full bg-accent/20 border-2 border-white flex items-center justify-center text-xs">ع</div>
-                <div class="size-8 rounded-full bg-secondary/20 border-2 border-white flex items-center justify-center text-xs">م</div>
-              </div>
-              <div class="text-xs text-dark-gray">
-                <span class="font-bold text-secondary">+۵۰۰</span><br />تعمیرگاه فعال
+                <Image
+                  src={m.screen.image}
+                  alt={`${m.screen.title} در نرم‌افزار دوفیکسو: ${m.screen.caption}`}
+                  widths={[640, 960, 1440]}
+                  sizes="(min-width: 1280px) 680px, (min-width: 1024px) 55vw, 92vw"
+                  loading="lazy"
+                  class="w-full h-auto block"
+                />
               </div>
             </div>
-            <div class="w-px h-8 bg-lavender"></div>
-            <a href="https://app.dofixo.ir/register" class="flex items-center gap-2 text-lg font-bold bg-primary text-white px-8 py-3 rounded-lg">
-              <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              شروع رایگان
-            </a>
           </div>
         </div>
-      </div>
-
-      <div class="flex items-center gap-3 flex-col-reverse absolute top-1/2 -translate-y-1/2 right-[-7%]">
-        <button id="slidePrev" aria-label="اسلاید قبلی"
-                class="size-12 cursor-pointer rounded-full border border-lavender bg-white flex items-center justify-center">
-          <svg class="size-7 rotate-90 text-dark-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-          </svg>
-        </button>
-        <button id="slidePlay" aria-label="پخش/توقف"
-                class="size-16 cursor-pointer rounded-full bg-primary/80 hover:bg-primary flex items-center justify-center shadow-md">
-          <svg id="playIcon" class="w-5 h-5 text-white mr-0.5 hidden" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-          <svg id="pauseIcon" class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-          </svg>
-        </button>
-        <button id="slideNext" aria-label="اسلاید بعدی"
-                class="size-12 cursor-pointer rounded-full border border-lavender bg-white flex items-center justify-center">
-          <svg class="size-7 rotate-90 text-dark-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-    </div>
-
-    <div class="flex flex-col gap-4 md:hidden">
-
-      <div class="relative rounded-[27px] overflow-hidden bg-[#f0f4fa] flex items-center justify-center" style="min-height: 240px;">
-        <img
-          id="mobileSlideImage"
-          src={slides[0].image}
-          alt={slides[0].title}
-          width="600"
-          height="400"
-          class="max-w-full max-h-[240px] object-contain transition-opacity duration-300 p-6"
-        />
-      </div>
-
-      <div class="flex items-center justify-between bg-white rounded-2xl border border-lavender px-4 py-3">
-        <button id="mobilePrev" aria-label="اسلاید قبلی"
-                class="size-10 cursor-pointer rounded-full border border-lavender bg-white-smoke flex items-center justify-center flex-shrink-0">
-          <svg class="w-5 h-5 text-dark-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-          </svg>
-        </button>
-
-        <div class="text-center flex-1 mx-3 flex items-center justify-center gap-2">
-          <span class="w-6 h-6 [&_svg_path]:stroke-primary flex-shrink-0" id="mobileSlideIcon"></span>
-          <div>
-            <p id="mobileSlideTitle" class="font-bold text-secondary text-base leading-tight">
-              {slides[0].title}
-            </p>
-            <p id="mobileSlideTitleEn" class="text-xs text-primary font-thin uppercase tracking-widest">
-              {slides[0].titleEn}
-            </p>
-          </div>
-        </div>
-
-        <button id="mobileNext" aria-label="اسلاید بعدی"
-                class="size-10 cursor-pointer rounded-full border border-lavender bg-white-smoke flex items-center justify-center flex-shrink-0">
-          <svg class="w-5 h-5 text-dark-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-          </svg>
-        </button>
-      </div>
-
-      <div class="h-1 bg-lavender rounded-full overflow-hidden">
-        <div id="mobileProgressBar" class="h-full bg-primary rounded-full w-0"></div>
-      </div>
-
-      <div class="bg-white rounded-[27px] shadow-sm border border-lavender p-5 flex flex-col gap-4">
-        <div class="relative min-h-[520px]">
-          {slides.map((slide, i) => (
-            <p
-              class:list={[
-                "mobile-slide-desc absolute inset-0 text-charcoal leading-8 text-sm text-justify transition-opacity duration-300",
-                i === 0 ? "opacity-100" : "opacity-0 invisible"
-              ]}
-              data-index={i}
-            >
-              {slide.description}
-            </p>
-          ))}
-        </div>
-
-        <div class="flex items-center justify-between pt-2 border-t border-lavender">
-          <div class="flex items-center gap-2">
-            <div class="flex -space-x-2 rtl:space-x-reverse">
-              <div class="size-7 rounded-full bg-primary/20 border-2 border-white flex items-center justify-center text-[10px]">ر</div>
-              <div class="size-7 rounded-full bg-accent/20 border-2 border-white flex items-center justify-center text-[10px]">ع</div>
-              <div class="size-7 rounded-full bg-secondary/20 border-2 border-white flex items-center justify-center text-[10px]">م</div>
-            </div>
-            <div class="text-[11px] text-dark-gray">
-              <span class="font-bold text-secondary">+۵۰۰</span> تعمیرگاه فعال
-            </div>
-          </div>
-
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-silver">
-              <span id="mobileCurrentNum" class="text-primary font-black">۱</span>
-              <span class="mx-1">/</span>
-              <span>{slides.length}</span>
-            </span>
-            <button id="mobilePlay" aria-label="پخش/توقف"
-                    class="size-9 cursor-pointer rounded-full bg-primary flex items-center justify-center shadow-md">
-              <svg id="mobilePlayIcon" class="w-4 h-4 text-white mr-0.5 hidden" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
-              <svg id="mobilePauseIcon" class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
+      ))}
     </div>
   </div>
 </section>
 
-<script define:vars={{ slides, CENTER }}>
-  const INTERVAL = 5000;
-  const TOTAL = slides.length;
-
-  let activeIndex = 0;
-  let playing = true;
-  let timer = null;
-
-  const track = document.getElementById("slideTrack");
-  const imageEl = document.getElementById("slideImage");
-  const currentNum = document.getElementById("slideCurrentNum");
-  const prevBtn = document.getElementById("slidePrev");
-  const nextBtn = document.getElementById("slideNext");
-  const playBtn = document.getElementById("slidePlay");
-  const playIcon = document.getElementById("playIcon");
-  const pauseIcon = document.getElementById("pauseIcon");
-  const slideIcon = document.getElementById("slideIcon");
-
-  const mobileImage = document.getElementById("mobileSlideImage");
-  const mobileTitle = document.getElementById("mobileSlideTitle");
-  const mobileTitleEn = document.getElementById("mobileSlideTitleEn");
-  const mobileCurrentNum = document.getElementById("mobileCurrentNum");
-  const mobilePrev = document.getElementById("mobilePrev");
-  const mobileNext = document.getElementById("mobileNext");
-  const mobilePlay = document.getElementById("mobilePlay");
-  const mobilePlayIcon = document.getElementById("mobilePlayIcon");
-  const mobilePauseIcon = document.getElementById("mobilePauseIcon");
-  const mobileProgressBar = document.getElementById("mobileProgressBar");
-  const mobileSlideIcon = document.getElementById("mobileSlideIcon");
-
-  function toFarsiNum(n) {
-    return String(n + 1).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+<style>
+  .mod-tabs {
+    scrollbar-width: none;
   }
-
-  function getOrdered() {
-    return Array.from({ length: TOTAL }, (_, pos) =>
-      ((activeIndex - CENTER + pos) + TOTAL * 10) % TOTAL
-    );
+  .mod-tabs::-webkit-scrollbar {
+    display: none;
   }
-
-  function getScale(dist) {
-    const a = Math.abs(dist);
-    if (a === 0) return 1;
-    if (a === 1) return 0.9;
-    return 0.7;
+  @media (max-width: 767px) {
+    /* زبانه‌های بعدی از لبه‌ی چپ بیرون می‌زنند؛ محو شدن لبه نشان می‌دهد که ادامه دارد */
+    .mod-tabs {
+      mask-image: linear-gradient(to right, transparent 0, #000 28px);
+    }
   }
-
-  function getOpacity(dist) {
-    const a = Math.abs(dist);
-    if (a === 0) return 1;
-    if (a === 1) return 0.6;
-    return 0.45;
+  .mod-panel {
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0s linear 0.35s;
   }
+  .mod-panel[data-active="false"] {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    pointer-events: none;
+  }
+  .mod-panel[data-active="true"] {
+    transition-delay: 0s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mod-panel { transition: none; }
+  }
+</style>
 
-  function renderTabs() {
-    if (!track) return;
-    const tabEls = track.querySelectorAll(".slideTab");
-    const ordered = getOrdered();
+<script>
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>(".mod-tab")];
+  const panels = [...document.querySelectorAll<HTMLElement>(".mod-panel")];
 
-    tabEls.forEach((tabEl, pos) => {
-      const slideIdx = ordered[pos];
-      const slide = slides[slideIdx];
-      const dist = pos - CENTER;
-      const isActive = dist === 0;
-
-      tabEl.style.transform = `scale(${getScale(dist)})`;
-      tabEl.style.opacity = getOpacity(dist);
-
-      const inner = tabEl.querySelector("div");
-      if (!inner) return;
-
-      if (isActive) {
-        inner.classList.add("bg-[#EDF2F8]");
-        inner.classList.remove("bg-white", "border", "border-lavender");
-      } else {
-        inner.classList.remove("bg-[#EDF2F8]");
-        inner.classList.add("bg-white", "border", "border-lavender");
-      }
-
-      const titleFa = inner.querySelector(".slide-title-fa");
-      const titleEn = inner.querySelector(".slide-title-en");
-      if (titleFa) {
-        titleFa.textContent = slide.title;
-        titleFa.className = `slide-title-fa font-bold text-2xl xl:text-3xl transition-colors ${isActive ? "text-secondary" : "text-secondary/40"}`;
-      }
-      if (titleEn) {
-        titleEn.textContent = slide.titleEn;
-        titleEn.className = `slide-title-en text-xs font-thin uppercase tracking-widest transition-colors ${isActive ? "text-primary" : "text-silver"}`;
-      }
-
-      const iconWrap = inner.querySelector(".slide-icon-wrap");
-      if (iconWrap) {
-        iconWrap.classList.toggle("hidden", !isActive);
-        iconWrap.classList.toggle("inline-flex", isActive);
-
-        if (isActive) {
-          const iconSpan = iconWrap.querySelector("span");
-          if (iconSpan) {
-            iconSpan.innerHTML = slide.titleIcon;
-          }
-        }
-      }
-
-      const progressContainer = inner.querySelector(".progressBarContainer");
-      if (progressContainer) {
-        progressContainer.className = `progressBarContainer w-1 self-stretch rounded-full overflow-hidden flex-shrink-0 ${isActive ? "bg-lavender" : "bg-transparent"}`;
-      }
+  const select = (i: number, focus = false) => {
+    tabs.forEach((t, k) => {
+      const on = k === i;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
     });
-  }
+    panels.forEach((p, k) => (p.dataset.active = String(k === i)));
+    // زبانه‌ی انتخاب‌شده روی گوشی دیده شود، بی‌آنکه صفحه عمودی بپرد
+    const tab = tabs[i];
+    const bar = tab.parentElement!;
+    bar.scrollTo({ left: tab.offsetLeft - (bar.clientWidth - tab.offsetWidth) / 2, behavior: "smooth" });
+    if (focus) tab.focus();
+  };
 
-  function getActiveProgressInner() {
-    if (!track) return null;
-    const tabEls = track.querySelectorAll(".slideTab");
-    return tabEls[CENTER]?.querySelector(".progressInner") ?? null;
-  }
-
-  function startProgress() {
-    stopProgress();
-    const bar = getActiveProgressInner();
-    if (bar) {
-      bar.style.transition = "none";
-      bar.style.height = "0%";
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        bar.style.transition = `height ${INTERVAL}ms linear`;
-        bar.style.height = "100%";
-      }));
-    }
-    if (mobileProgressBar) {
-      mobileProgressBar.style.transition = "none";
-      mobileProgressBar.style.width = "0%";
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        mobileProgressBar.style.transition = `width ${INTERVAL}ms linear`;
-        mobileProgressBar.style.width = "100%";
-      }));
-    }
-  }
-
-  function stopProgress() {
-    const bar = getActiveProgressInner();
-    if (bar) {
-      bar.style.transition = "none";
-      bar.style.height = "0%";
-    }
-    if (mobileProgressBar) {
-      mobileProgressBar.style.transition = "none";
-      mobileProgressBar.style.width = "0%";
-    }
-  }
-
-  function showActiveDesc(selector, index) {
-    document.querySelectorAll(selector).forEach((p) => {
-      const isActive = Number(p.dataset.index) === index;
-      p.classList.toggle("opacity-100", isActive);
-      p.classList.toggle("opacity-0", !isActive);
-      p.classList.toggle("invisible", !isActive);
+  tabs.forEach((t, i) => {
+    t.addEventListener("click", () => select(i));
+    // صفحه راست‌به‌چپ است: جهت چپ یعنی زبانه‌ی بعدی
+    t.addEventListener("keydown", (e) => {
+      const n = tabs.length;
+      const go = { ArrowLeft: i + 1, ArrowRight: i - 1, Home: 0, End: n - 1 }[e.key];
+      if (go === undefined) return;
+      e.preventDefault();
+      select((go + n) % n, true);
     });
-  }
-
-  function updateContent(animate) {
-    const slide = slides[activeIndex];
-    const farsiNum = toFarsiNum(activeIndex);
-
-    if (slideIcon) {
-      slideIcon.innerHTML = slide.titleIcon;
-    }
-
-    if (mobileSlideIcon) {
-      mobileSlideIcon.innerHTML = slide.titleIcon;
-    }
-
-    if (animate) {
-      if (imageEl) imageEl.style.opacity = "0";
-      if (mobileImage) mobileImage.style.opacity = "0";
-
-      setTimeout(() => {
-        showActiveDesc(".slide-desc", activeIndex);
-        showActiveDesc(".mobile-slide-desc", activeIndex);
-
-        if (imageEl) { imageEl.src = slide.image; imageEl.alt = slide.title; imageEl.style.opacity = "1"; }
-        if (currentNum) currentNum.textContent = farsiNum;
-
-        if (mobileImage) { mobileImage.src = slide.image; mobileImage.alt = slide.title; mobileImage.style.opacity = "1"; }
-        if (mobileTitle) mobileTitle.textContent = slide.title;
-        if (mobileTitleEn) mobileTitleEn.textContent = slide.titleEn;
-        if (mobileCurrentNum) mobileCurrentNum.textContent = farsiNum;
-      }, 250);
-    } else {
-      showActiveDesc(".slide-desc", activeIndex);
-      showActiveDesc(".mobile-slide-desc", activeIndex);
-
-      if (imageEl) { imageEl.src = slide.image; imageEl.alt = slide.title; }
-      if (currentNum) currentNum.textContent = farsiNum;
-
-      if (mobileImage) { mobileImage.src = slide.image; mobileImage.alt = slide.title; }
-      if (mobileTitle) mobileTitle.textContent = slide.title;
-      if (mobileTitleEn) mobileTitleEn.textContent = slide.titleEn;
-      if (mobileCurrentNum) mobileCurrentNum.textContent = farsiNum;
-    }
-  }
-
-  function goTo(newIndex, animate = true) {
-    activeIndex = ((newIndex % TOTAL) + TOTAL) % TOTAL;
-    renderTabs();
-    updateContent(animate);
-    if (playing) startProgress();
-  }
-
-  function startAutoPlay() {
-    playing = true;
-    playIcon?.classList.add("hidden");
-    pauseIcon?.classList.remove("hidden");
-    mobilePlayIcon?.classList.add("hidden");
-    mobilePauseIcon?.classList.remove("hidden");
-    startProgress();
-    timer = setInterval(() => goTo(activeIndex + 1), INTERVAL);
-  }
-
-  function stopAutoPlay() {
-    playing = false;
-    playIcon?.classList.remove("hidden");
-    pauseIcon?.classList.add("hidden");
-    mobilePlayIcon?.classList.remove("hidden");
-    mobilePauseIcon?.classList.add("hidden");
-    clearInterval(timer);
-    stopProgress();
-  }
-
-  function resetTimer() {
-    if (playing) {
-      clearInterval(timer);
-      timer = setInterval(() => goTo(activeIndex + 1), INTERVAL);
-    }
-  }
-
-  playBtn?.addEventListener("click", () => playing ? stopAutoPlay() : startAutoPlay());
-  prevBtn?.addEventListener("click", () => { goTo(activeIndex - 1); resetTimer(); });
-  nextBtn?.addEventListener("click", () => { goTo(activeIndex + 1); resetTimer(); });
-  track?.querySelectorAll(".slideTab").forEach((tabEl, pos) => {
-    tabEl.addEventListener("click", () => { goTo(getOrdered()[pos]); resetTimer(); });
   });
-
-  mobilePlay?.addEventListener("click", () => playing ? stopAutoPlay() : startAutoPlay());
-  mobilePrev?.addEventListener("click", () => { goTo(activeIndex - 1); resetTimer(); });
-  mobileNext?.addEventListener("click", () => { goTo(activeIndex + 1); resetTimer(); });
-
-  goTo(0, false);
-  startAutoPlay();
 </script>

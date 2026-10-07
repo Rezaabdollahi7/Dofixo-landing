@@ -54,7 +54,7 @@ const iconBaseClass = "flex items-center justify-center [&_svg]:w-full [&_svg]:h
   <div class="max-w-[1450px] mx-auto px-4 lg:px-0">
 
     <!-- Top Bar -->
-    <div class="flex bg-white justify-between py-4 px-4 md:px-20
+    <div class="flex bg-white justify-between py-2 md:py-4 px-3 md:px-20
                 rounded-t-[15px] sm:rounded-t-[27px] md:rounded-t-none
                 rounded-b-[15px] sm:rounded-b-[27px]
                 gap-2 items-center shadow-xl">
@@ -64,13 +64,13 @@ const iconBaseClass = "flex items-center justify-center [&_svg]:w-full [&_svg]:h
         <img
           src="/images/logo-128.webp"
           alt="لوگوی دوفیکسو"
-          class="size-16 rounded-lg"
+          class="size-11 md:size-16 rounded-lg"
           width="128"
           height="128"
           fetchpriority="high"
           decoding="async"
         />
-        <p class="font-semibold text-lg text-secondary lg:pt-1">دوفیکسو</p>
+        <p class="font-semibold text-base md:text-lg text-secondary lg:pt-1">دوفیکسو</p>
       </a>
 
       <!-- Left Side Actions -->
@@ -96,7 +96,7 @@ const iconBaseClass = "flex items-center justify-center [&_svg]:w-full [&_svg]:h
           <span class={`opacity-12 w-px h-6 ${iconBaseClass}`} set:html={SeparatorSvg} />
         </div>
 
-        <button id="hamIcon" aria-label="باز کردن منو" aria-expanded="false" class="cursor-pointer md:hidden rtl:md:mr-4 ltr:md:ml-4">
+        <button id="hamIcon" aria-label="باز کردن منو" aria-expanded="false" class="cursor-pointer md:hidden size-11 -ml-2 flex items-center justify-center rtl:md:mr-4 ltr:md:ml-4">
           <span class={`text-[#110E2D] w-6 h-6 ham-open ${iconBaseClass}`} set:html={MenuSvg} />
           <span class={`text-[#404040] w-6 h-6 hidden ham-close ${iconBaseClass}`} set:html={CloseSvg} />
         </button>
@@ -131,7 +131,7 @@ const iconBaseClass = "flex items-center justify-center [&_svg]:w-full [&_svg]:h
   </div>
 
   <!-- Mobile Navigation -->
-  <nav id="mobileMenu" aria-label="منوی موبایل" class="bg-[#9A9A9A9C] backdrop-blur-md rounded-xl shadow-13 text-black text-sm -mt-2 absolute font-bold right-4 left-4 md:hidden sm:top-[122px] top-[100px] z-999 hidden">
+  <nav id="mobileMenu" aria-label="منوی موبایل" class="bg-[#9A9A9A9C] backdrop-blur-md rounded-xl shadow-13 text-black text-sm -mt-2 absolute font-bold right-4 left-4 md:hidden top-[84px] z-999 hidden">
     <span class="top-[-18px] rotate-180 absolute rtl:left-0 ltr:right-[15px] w-11 h-6" style="color: #9A9A9A9C" set:html={SeparatorSvg} />
 
     <ul class="p-5 pt-10">
