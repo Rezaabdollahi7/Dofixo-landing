@@ -2,19 +2,11 @@
 // src/components/sections/Screenshots.astro
 //
 // اسکرین‌شات‌های واقعی اپ (src/data/appScreens.ts). کلیک روی هر کارت آن را در
-// لایت‌باکس تمام‌صفحه باز می‌کند: دکمه‌های قبلی/بعدی، کلیدهای جهت، کشیدن
-// انگشت روی گوشی، و Esc برای بستن.
-import { Image, getImage } from "astro:assets";
+// لایت‌باکس تمام‌صفحه (ui/ShotLightbox.astro) باز می‌کند.
+import { Image } from "astro:assets";
 import { gallery } from "../../data/appScreens";
+import ShotLightbox from "../ui/ShotLightbox.astro";
 
-// نسخه‌ی بزرگ برای لایت‌باکس: ۱۴۴۰ برای صفحه‌های معمولی، ۲۸۸۰ (اصل عکس) برای
-// رتینا. فقط وقتی لایت‌باکس باز شود دانلود می‌شود.
-const shots = await Promise.all(
-  gallery.map(async (s) => {
-    const big = await getImage({ src: s.image, widths: [1440, 2880], sizes: "92vw", format: "webp" });
-    return { ...s, big: { src: big.src, srcset: big.srcSet.attribute } };
-  }),
-);
 const toFa = (n: number) => n.toLocaleString("fa-IR");
 ---
 
@@ -35,12 +27,12 @@ const toFa = (n: number) => n.toLocaleString("fa-IR");
 
   <div class="rounded-[20px] sm:rounded-[30px] bg-white shadow-2 p-3 sm:p-[30px] relative">
     <ul class="bg-[#F1F4F7] rounded-[16px] sm:rounded-[24px] p-3 sm:p-5 lg:p-7 grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-5 xl:gap-7">
-      {shots.map((s, i) => (
+      {gallery.map((s, i) => (
         <li>
           <button
             type="button"
-            class="shot-open group w-full text-right rounded-[16px] sm:rounded-[20px] bg-white p-2 sm:p-2.5 shadow-[0_1px_2px_rgba(17,14,45,0.06)] hover:shadow-[0_18px_40px_-18px_rgba(17,14,45,0.35)] hover:-translate-y-1 transition-all duration-300 cursor-zoom-in focus-visible:outline-2 focus-visible:outline-secondary"
-            data-index={i}
+            class="group w-full text-right rounded-[16px] sm:rounded-[20px] bg-white p-2 sm:p-2.5 shadow-[0_1px_2px_rgba(17,14,45,0.06)] hover:shadow-[0_18px_40px_-18px_rgba(17,14,45,0.35)] hover:-translate-y-1 transition-all duration-300 cursor-zoom-in focus-visible:outline-2 focus-visible:outline-secondary"
+            data-shot={i}
             aria-label={`بزرگ‌نمایی تصویر ${s.title}`}
           >
             <span class="block relative overflow-hidden rounded-[11px] sm:rounded-[14px] border border-lavender-1 aspect-[16/10] bg-[#f6f8fb]">
@@ -71,183 +63,5 @@ const toFa = (n: number) => n.toLocaleString("fa-IR");
     </ul>
   </div>
 
-  <!-- لایت‌باکس -->
-  <dialog
-    id="shotbox"
-    aria-label="نمایش بزرگ اسکرین‌شات‌ها"
-    class="shotbox m-0 p-0 w-screen h-dvh max-w-none max-h-none bg-transparent text-white overflow-hidden"
-  >
-    <div class="h-full w-full flex flex-col">
-      <div class="flex items-center justify-between gap-3 px-4 sm:px-6 pt-4 sm:pt-5">
-        <p class="text-sm text-white/70 tabular-nums" aria-live="polite">
-          <span id="shotbox-num">۱</span> از {toFa(shots.length)}
-        </p>
-        <button type="button" id="shotbox-close" aria-label="بستن" class="size-11 rounded-full bg-white/10 hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70 flex items-center justify-center transition-colors cursor-pointer">
-          <svg class="size-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" /></svg>
-        </button>
-      </div>
-
-      <div id="shotbox-middle" class="flex-1 min-h-0 flex flex-col justify-center">
-      <div id="shotbox-stage" class="relative max-sm:flex-none sm:flex-1 min-h-0 flex items-center justify-center px-3 sm:px-20 pt-3 pb-16 sm:py-3 select-none">
-        <img
-          id="shotbox-img"
-          src={shots[0].big.src}
-          srcset={shots[0].big.srcset}
-          sizes="92vw"
-          alt=""
-          width="1440"
-          height="900"
-          decoding="async"
-          class="max-w-full max-h-full w-auto h-auto rounded-[10px] sm:rounded-[14px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)] transition-opacity duration-200"
-        />
-        <!-- راست = قبلی، چپ = بعدی، چون صفحه راست‌به‌چپ است -->
-        <button type="button" id="shotbox-prev" aria-label="تصویر قبلی" class="shotbox-nav right-2 sm:right-5">
-          <svg class="size-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
-        </button>
-        <button type="button" id="shotbox-next" aria-label="تصویر بعدی" class="shotbox-nav left-2 sm:left-5">
-          <svg class="size-6" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
-        </button>
-      </div>
-
-      <div class="px-4 sm:px-6 pb-4 sm:pb-6 text-center">
-        <p id="shotbox-title" class="font-heading font-bold text-lg sm:text-xl">{shots[0].title}</p>
-        <p id="shotbox-caption" class="mt-1 text-sm sm:text-[15px] leading-[190%] text-white/70 max-w-2xl mx-auto">{shots[0].caption}</p>
-        <div class="hidden md:flex justify-center gap-2 mt-4" id="shotbox-thumbs">
-          {shots.map((s, i) => (
-            <button type="button" data-index={i} aria-label={s.title} class="shotbox-thumb w-[72px] aspect-[16/10] rounded-md overflow-hidden ring-2 ring-transparent opacity-50 hover:opacity-90 transition cursor-pointer">
-              <Image src={s.image} alt="" width={144} loading="lazy" class="w-full h-full object-cover object-top" />
-            </button>
-          ))}
-        </div>
-      </div>
-      </div>
-    </div>
-  </dialog>
-
-  <script type="application/json" id="shotbox-data" set:html={JSON.stringify(shots.map((s) => ({ src: s.big.src, srcset: s.big.srcset, title: s.title, caption: s.caption })))} />
+  <ShotLightbox shots={gallery} />
 </section>
-
-<style>
-  .shotbox::backdrop {
-    background: rgba(12, 10, 32, 0.92);
-    backdrop-filter: blur(6px);
-  }
-  .shotbox[open] {
-    display: block;
-    animation: shotbox-in 0.2s ease-out;
-  }
-  @keyframes shotbox-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  .shotbox-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3rem;
-    height: 3rem;
-    border-radius: 9999px;
-    background: rgba(255, 255, 255, 0.12);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .shotbox-nav:hover { background: rgba(255, 255, 255, 0.24); }
-  @media (max-width: 639px) {
-    /* روی گوشی عکس تمام‌عرض است؛ دکمه‌ها زیرش می‌نشینند تا رویش را نپوشانند. کشیدن انگشت هم کار می‌کند */
-    .shotbox-nav { top: auto; bottom: 0; transform: none; width: 2.75rem; height: 2.75rem; }
-  }
-  .shotbox-thumb[aria-current="true"] {
-    opacity: 1;
-    --tw-ring-color: var(--color-burnt-orange);
-  }
-</style>
-
-<script>
-  const box = document.getElementById("shotbox") as HTMLDialogElement | null;
-  const data: { src: string; srcset: string; title: string; caption: string }[] = JSON.parse(
-    document.getElementById("shotbox-data")?.textContent ?? "[]",
-  );
-
-  if (box && data.length) {
-    const img = box.querySelector<HTMLImageElement>("#shotbox-img")!;
-    const num = box.querySelector("#shotbox-num")!;
-    const title = box.querySelector("#shotbox-title")!;
-    const caption = box.querySelector("#shotbox-caption")!;
-    const thumbs = [...box.querySelectorAll<HTMLButtonElement>(".shotbox-thumb")];
-    const fa = (n: number) => n.toLocaleString("fa-IR");
-    let current = 0;
-    let opener: HTMLElement | null = null;
-
-    const show = (i: number) => {
-      current = (i + data.length) % data.length;
-      const s = data[current];
-      img.style.opacity = "0";
-      const swap = () => {
-        img.srcset = s.srcset;
-        img.src = s.src;
-        img.alt = s.title;
-        img.onload = () => (img.style.opacity = "1");
-        if (img.complete) img.style.opacity = "1";
-      };
-      // اولین باز شدن بدون محو شدن
-      box.open ? setTimeout(swap, 120) : swap();
-      num.textContent = fa(current + 1);
-      title.textContent = s.title;
-      caption.textContent = s.caption;
-      thumbs.forEach((t, k) => t.setAttribute("aria-current", String(k === current)));
-      // تصویر بعدی را از قبل بگیر تا رفتن به آن بی‌مکث باشد
-      const next = new Image();
-      next.sizes = "92vw";
-      next.srcset = data[(current + 1) % data.length].srcset;
-    };
-
-    document.querySelectorAll<HTMLButtonElement>(".shot-open").forEach((b) =>
-      b.addEventListener("click", () => {
-        opener = b;
-        show(Number(b.dataset.index));
-        box.showModal();
-        document.documentElement.style.overflow = "hidden";
-      }),
-    );
-    box.addEventListener("close", () => {
-      document.documentElement.style.overflow = "";
-      opener?.focus();
-    });
-
-    box.querySelector("#shotbox-close")!.addEventListener("click", () => box.close());
-    box.querySelector("#shotbox-prev")!.addEventListener("click", () => show(current - 1));
-    box.querySelector("#shotbox-next")!.addEventListener("click", () => show(current + 1));
-    thumbs.forEach((t) => t.addEventListener("click", () => show(Number(t.dataset.index))));
-
-    // کلیک روی فضای خالی (نه خود عکس و نه دکمه‌ها) می‌بندد
-    for (const id of ["#shotbox-stage", "#shotbox-middle"]) {
-      box.querySelector(id)!.addEventListener("click", (e) => {
-        if (e.target === e.currentTarget) box.close();
-      });
-    }
-
-    // صفحه راست‌به‌چپ است: جهت چپ یعنی جلو
-    box.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft") show(current + 1);
-      else if (e.key === "ArrowRight") show(current - 1);
-    });
-
-    // کشیدن انگشت: به چپ = بعدی، به راست = قبلی
-    let x0: number | null = null;
-    let y0 = 0;
-    box.addEventListener("touchstart", (e) => {
-      x0 = e.touches[0].clientX;
-      y0 = e.touches[0].clientY;
-    }, { passive: true });
-    box.addEventListener("touchend", (e) => {
-      if (x0 === null) return;
-      const dx = e.changedTouches[0].clientX - x0;
-      const dy = e.changedTouches[0].clientY - y0;
-      x0 = null;
-      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(dx < 0 ? current + 1 : current - 1);
-    }, { passive: true });
-  }
-</script>

@@ -17,6 +17,10 @@ import items from "../assets/site/items.webp";
 import profitReport from "../assets/site/profit-report.webp";
 import technician from "../assets/site/technician.webp";
 import smsWallet from "../assets/site/sms-wallet.webp";
+import statusSms from "../assets/site/status-sms.webp";
+import devicesMobile from "../assets/site/devices-mobile.webp";
+import dashboardMobile from "../assets/site/dashboard-mobile.webp";
+import customerPageMobile from "../assets/site/customer-page-mobile.webp";
 
 export interface AppScreen {
   image: ImageMetadata;
@@ -69,6 +73,26 @@ export const screens = {
     image: smsWallet,
     title: "کیف پول پیامکی",
     caption: "شارژ آنلاین و تاریخچه‌ی پیامک‌هایی که برای پذیرش، آماده‌بودن و تحویل دستگاه به مشتری رفته.",
+  },
+  statusSms: {
+    image: statusSms,
+    title: "تغییر وضعیت و پیامک",
+    caption: "وقتی دستگاه «آماده تحویل» می‌شود، دوفیکسو می‌پرسد پیامک برای مشتری برود یا نه.",
+  },
+  devicesMobile: {
+    image: devicesMobile,
+    title: "دستگاه‌ها روی گوشی",
+    caption: "همان فهرست دستگاه‌ها، روی مرورگر گوشی و بدون نصب برنامه.",
+  },
+  dashboardMobile: {
+    image: dashboardMobile,
+    title: "داشبورد روی گوشی",
+    caption: "وضعیت تعمیرگاه را بیرون از مغازه هم می‌بینید.",
+  },
+  customerPageMobile: {
+    image: customerPageMobile,
+    title: "پرونده‌ی مشتری روی گوشی",
+    caption: "سابقه‌ی مشتری، وقتی پشت تلفن است و کامپیوتر دم دست نیست.",
   },
 } satisfies Record<string, AppScreen>;
 
