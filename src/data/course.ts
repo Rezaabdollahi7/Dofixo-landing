@@ -43,7 +43,7 @@ export const CHAPTERS: CourseChapter[] = [
   {
     number: 2,
     title: "تنظیمات",
-    description: "اطلاعات شرکت، تصاویر، تنظیمات پیش‌فرض فاکتور و قالب فاکتور فروش.",
+    description: "اطلاعات شرکت، تصاویر، و تنظیمات فاکتورها: پیش‌فرض‌ها و قالب چاپ.",
     tutorials: ["tutorials/settings"],
   },
   {
