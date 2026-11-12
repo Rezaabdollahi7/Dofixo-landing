@@ -17,13 +17,6 @@ interface DurationOption {
 
 const durations: DurationOption[] = [
   {
-    id: "monthly",
-    label: "ماهانه",
-    title: "۱ ماهه",
-    price: "۶۹۰",
-    perDay: "معادل ۲۳,۰۰۰ تومان در روز",
-  },
-  {
     id: "quarterly",
     label: "۳ ماهه",
     title: "۳ ماهه",
@@ -250,7 +243,6 @@ const defaultDurationId = "annual";
   .pricing-panel {
     display: none;
   }
-  fieldset:has(#duration-monthly:checked) ~ div .pricing-panel[data-panel="monthly"],
   fieldset:has(#duration-quarterly:checked) ~ div .pricing-panel[data-panel="quarterly"],
   fieldset:has(#duration-semiannual:checked) ~ div .pricing-panel[data-panel="semiannual"],
   fieldset:has(#duration-annual:checked) ~ div .pricing-panel[data-panel="annual"] {

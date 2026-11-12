@@ -24,7 +24,7 @@ export const SITE = {
   telegram: "https://t.me/dofixo",
   instagram: "https://instagram.com/dofixo",
   address: {
-    street: "شهر صنعتی البرز، بلوار سهروردی، بین حکمت اول و سوم، ساختمان چمران",
+    street: "خیابان خرمشهر، بلوار آیت‌الله خامنه‌ای، مجتمع نیایش، طبقه اول",
     city: "قزوین",
     country: "IR",
   },

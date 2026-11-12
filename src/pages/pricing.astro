@@ -10,7 +10,7 @@ import Footer from "../components/sections/Footer.astro";
 import { faqs } from "../data/faqs";
 import { SITE, absoluteUrl, breadcrumbSchema } from "../data/site";
 
-// صفحه قیمت‌ها را به «هزار تومان» نشان می‌دهد (۶۹۰ هزار تومان و ...).
+// صفحه قیمت‌ها را به «هزار تومان» نشان می‌دهد (۱,۹۷۰ هزار تومان و ...).
 // schema.org فقط کد ارز ISO 4217 می‌پذیرد و کد رسمی ایران IRR (ریال) است،
 // پس هر مبلغ در ۱۰ ضرب شده تا عدد schema با قیمت واقعی صفحه یکی باشد.
 const pricingSchema = {
@@ -23,7 +23,6 @@ const pricingSchema = {
   url: absoluteUrl("/pricing/"),
   publisher: { "@id": `${SITE.url}/#organization` },
   offers: [
-    { name: "۱ ماهه", price: "6900000" },
     { name: "۳ ماهه", price: "19700000" },
     { name: "۶ ماهه", price: "39900000" },
     { name: "۱ ساله", price: "79900000" },
@@ -59,7 +58,7 @@ const faqSchema = {
 
 <Layout
   title="قیمت نرم‌افزار مدیریت تعمیرگاه دوفیکسو | تعرفه اشتراک"
-  description="تعرفه‌ی اشتراک دوفیکسو از ۶۹۰ هزار تومان در ماه؛ پلن‌های یک‌ماهه تا یک‌ساله با امکانات یکسان، و ۳۰ روز استفاده‌ی رایگان."
+  description="تعرفه‌ی اشتراک دوفیکسو در سه پلن سه‌ماهه، شش‌ماهه و یک‌ساله با امکانات یکسان، و ۳۰ روز استفاده‌ی رایگان."
   canonicalPath="/pricing"
   schema={[pricingSchema, faqSchema, breadcrumb]}
 >

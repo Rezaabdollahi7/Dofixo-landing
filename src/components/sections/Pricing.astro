@@ -28,13 +28,6 @@ const sharedFeatures: string[] = [
 
 const pricingPlans: PricingPlan[] = [
   {
-    id: "monthly",
-    label: "ماهانه",
-    title: "۱ ماهه",
-    price: "۶۹۰",
-    perDay: "معادل ۲۳,۰۰۰ تومان در روز",
-  },
-  {
     id: "quarterly",
     label: "۳ ماهه",
     title: "۳ ماهه",
@@ -100,7 +93,7 @@ const pricingPlans: PricingPlan[] = [
     </div>
 
     <!-- Pricing Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {pricingPlans.map((plan) => (
         <article 
           class:list={[
