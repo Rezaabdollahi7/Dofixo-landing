@@ -3,18 +3,8 @@
   "trailingSlash": true,
   "redirects": [
     {
-      "source": "/blog/5-dalil-niaz-be-mafixo",
-      "destination": "/academy/guide/mobile-repair-software/",
-      "permanent": true
-    },
-    {
       "source": "/blog/5-dalil-niaz-be-mafixo/",
       "destination": "/academy/guide/mobile-repair-software/",
-      "permanent": true
-    },
-    {
-      "source": "/blog/ayande-modiriat-tamirat",
-      "destination": "/academy/guide/mobile-repair-shop-management/",
       "permanent": true
     },
     {
@@ -23,18 +13,8 @@
       "permanent": true
     },
     {
-      "source": "/blog/che-tamirgahayi-niaz-be-sistem-daran",
-      "destination": "/academy/guide/mobile-repair-software/",
-      "permanent": true
-    },
-    {
       "source": "/blog/che-tamirgahayi-niaz-be-sistem-daran/",
       "destination": "/academy/guide/mobile-repair-software/",
-      "permanent": true
-    },
-    {
-      "source": "/blog/checklist-modiriat-tamirgah-mobile",
-      "destination": "/academy/guide/mobile-repair-shop-management/",
       "permanent": true
     },
     {
@@ -43,27 +23,12 @@
       "permanent": true
     },
     {
-      "source": "/blog/chera-narmafzar-modiriat-tamirgah-sarmayegozari-ast",
-      "destination": "/academy/guide/mobile-repair-software/",
-      "permanent": true
-    },
-    {
       "source": "/blog/chera-narmafzar-modiriat-tamirgah-sarmayegozari-ast/",
       "destination": "/academy/guide/mobile-repair-software/",
       "permanent": true
     },
     {
-      "source": "/blog/estandard-herfei-tamirgah-mafixo",
-      "destination": "/academy/guide/mobile-repair-shop-management/",
-      "permanent": true
-    },
-    {
       "source": "/blog/estandard-herfei-tamirgah-mafixo/",
-      "destination": "/academy/guide/mobile-repair-shop-management/",
-      "permanent": true
-    },
-    {
-      "source": "/blog/kahesh-estress-modiran-tamirgah",
       "destination": "/academy/guide/mobile-repair-shop-management/",
       "permanent": true
     },
@@ -73,27 +38,12 @@
       "permanent": true
     },
     {
-      "source": "/blog/kahesh-hazine-panhan-tamirgah",
-      "destination": "/academy/guide/mobile-repair-shop-management/",
-      "permanent": true
-    },
-    {
       "source": "/blog/kahesh-hazine-panhan-tamirgah/",
       "destination": "/academy/guide/mobile-repair-shop-management/",
       "permanent": true
     },
     {
-      "source": "/blog/mafixo-baraye-tamirgah-console",
-      "destination": "/academy/guide/mobile-repair-software/",
-      "permanent": true
-    },
-    {
       "source": "/blog/mafixo-baraye-tamirgah-console/",
-      "destination": "/academy/guide/mobile-repair-software/",
-      "permanent": true
-    },
-    {
-      "source": "/blog/mafixo-baraye-tamirgah-laptop",
       "destination": "/academy/guide/mobile-repair-software/",
       "permanent": true
     },
@@ -103,17 +53,7 @@
       "permanent": true
     },
     {
-      "source": "/blog/moghayese-narmafzar-modiriat-tamirgah",
-      "destination": "/academy/guide/mobile-repair-software/",
-      "permanent": true
-    },
-    {
       "source": "/blog/moghayese-narmafzar-modiriat-tamirgah/",
-      "destination": "/academy/guide/mobile-repair-software/",
-      "permanent": true
-    },
-    {
-      "source": "/blog/rahnamaye-entekhab-narmafzar-tamirgah",
       "destination": "/academy/guide/mobile-repair-software/",
       "permanent": true
     },
@@ -123,28 +63,13 @@
       "permanent": true
     },
     {
-      "source": "/blog/rahnamaye-tanzimat-avalie-mafixo",
-      "destination": "/academy/tutorials/getting-started/",
-      "permanent": true
-    },
-    {
       "source": "/blog/rahnamaye-tanzimat-avalie-mafixo/",
       "destination": "/academy/tutorials/getting-started/",
       "permanent": true
     },
     {
-      "source": "/blog/safar-shafaf-dastgah-mafixo",
-      "destination": "/academy/tutorials/device-statuses/",
-      "permanent": true
-    },
-    {
       "source": "/blog/safar-shafaf-dastgah-mafixo/",
       "destination": "/academy/tutorials/device-statuses/",
-      "permanent": true
-    },
-    {
-      "source": "/blog/vizhegihaye-kamshenakhte-mafixo",
-      "destination": "/academy/tutorials/getting-started/",
       "permanent": true
     },
     {
