@@ -45,25 +45,30 @@ export function blogRedirectMap() {
 
 /**
  * ریدایرکت‌هایی که الان باید در vercel.json باشند: هر مقاله‌ی قدیمی که مقصدش
- * منتشر شده. هر دو شکل آدرس (با و بی `/`) می‌آیند تا بازدیدکننده دو بار
- * ریدایرکت نشود. وقتی هیچ مقاله‌ی قدیمی نماند، خود /blog/ هم به /academy/ می‌رود.
+ * منتشر شده.
+ *
+ * فقط شکل با `/` ساخته می‌شود. تا قبل از این، شکل بی‌`/` هم ساخته می‌شد با
+ * این فرض که بازدیدکننده را مستقیم به مقصد نهایی می‌برد — اما Vercel قاعده‌ی
+ * سراسری `trailingSlash: true` (در همین vercel.json) را همیشه *پیش از*
+ * هر قاعده‌ی دیگر `redirects` اجرا می‌کند. یعنی درخواست بی‌`/` همیشه اول با
+ * ۳۰۸ به همان آدرس با `/` می‌رسد و بعد قاعده‌ی زیر دوباره با ۳۰۸ به مقصد
+ * نهایی می‌رود — یک هاپ اضافه که قاعده‌ی بی‌`/` نمی‌توانست حذفش کند، چون
+ * اصلاً هرگز اجرا نمی‌شد. تأیید شده با curl روی production (۲۰۲۶-۱۱-۱۲).
+ * حذفش رفتار را عوض نمی‌کند؛ فقط vercel.json را نصف می‌کند و گمراه‌کننده
+ * نمی‌گذاردش.
  */
 export function computeRedirects() {
   const published = new Set(publishedAcademyIds());
   const map = blogRedirectMap();
   const active = Object.entries(map).filter(([, target]) => published.has(target));
-  const redirects = active.flatMap(([old, target]) =>
-    [`/blog/${old}`, `/blog/${old}/`].map((source) => ({
-      source,
-      destination: `/academy/${target}/`,
-      permanent: true,
-    })),
-  );
+  const redirects = active.map(([old, target]) => ({
+    source: `/blog/${old}/`,
+    destination: `/academy/${target}/`,
+    permanent: true,
+  }));
   const movedAll = active.length === Object.keys(map).length;
   if (movedAll) {
-    for (const source of ["/blog", "/blog/"]) {
-      redirects.push({ source, destination: "/academy/", permanent: true });
-    }
+    redirects.push({ source: "/blog/", destination: "/academy/", permanent: true });
   }
   return { redirects, moved: active.map(([old]) => old), movedAll };
 }

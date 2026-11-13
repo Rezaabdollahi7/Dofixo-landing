@@ -25,9 +25,13 @@ const remaining = new Set(remainingBlogSlugs());
 const removed = moved.filter((slug) => remaining.has(slug));
 for (const slug of removed) rmSync(join(ROOT, "src/content/blog", `${slug}.md`));
 
-// لینک‌های داخلی به مقاله‌های منتقل‌شده ← مقصد جدید
+// لینک‌های داخلی به مقاله‌های منتقل‌شده ← مقصد جدید.
+// همه‌ی source ها الان با `/` تمام می‌شوند (computeRedirects دیگر شکل بی‌`/`
+// نمی‌سازد، چون آن شکل هرگز در عمل اجرا نمی‌شد)؛ اینجا همان `/` را برای
+// ساختن کلید حذف می‌کنیم تا هم با لینک بی‌`/` و هم با `/` در متن مقاله‌ها
+// (بعد از .replace(/\/$/, "") پایین‌تر) یکی در بیاید.
 const target = new Map(
-  redirects.filter((r) => r.source.startsWith("/blog/") && !r.source.endsWith("/")).map((r) => [r.source, r.destination]),
+  redirects.filter((r) => r.source.startsWith("/blog/")).map((r) => [r.source.replace(/\/$/, ""), r.destination]),
 );
 function walk(dir) {
   return readdirSync(dir).flatMap((name) => {
