@@ -15,7 +15,10 @@ import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
 import { join, relative } from "node:path";
 import { ROOT, computeRedirects, readVercelJson } from "./lib/redirects.mjs";
 
-const DIST = join(ROOT, "dist");
+// از وقتی آداپتور @astrojs/vercel اضافه شد (برای /api/contact)، خروجی
+// استاتیک یک پوشه عمیق‌تر رفته: dist/client/ (نه خود dist/) —
+// dist/server/ هم کنارش ساخته می‌شود و فقط رندر on-demand را دارد.
+const DIST = join(ROOT, "dist", "client");
 const SITE = "https://www.dofixo.ir";
 const problems = [];
 
