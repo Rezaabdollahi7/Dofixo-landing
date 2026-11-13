@@ -14,6 +14,14 @@ import Contact from '../components/sections/Contact.astro'
 import Screenshots from '../components/sections/Screenshots.astro';
 import { generalFaqs } from '../data/generalFaqs';
 import { SITE, absoluteUrl } from '../data/site';
+import { getImage } from 'astro:assets';
+import heroImg from '../assets/site/hero-img.webp';
+
+// همان srcset که Hero.astro می‌سازد؛ preload باید نزدیک‌ترین کاندید به
+// اندازه‌ی نمایش روی گوشی (sizes="90vw" در اکثر گوشی‌ها) را هدف بگیرد، نه
+// بزرگ‌ترین نسخه‌ی دسکتاپ را — وگرنه یک دانلود اضافه و بی‌ربط LCP را کند
+// می‌کند. و باید به فایل بهینه‌شده اشاره کند، نه مسیر قدیمی در public/.
+const preloadHeroImage = await getImage({ src: heroImg, width: 400 });
 
 const title = 'نرم‌افزار مدیریت تعمیرگاه موبایل و لپ‌تاپ | دوفیکسو';
 const description =
@@ -71,7 +79,7 @@ const faqSchema = {
 <Layout
   title={title}
   description={description}
-  preloadImage="/images/hero-img.webp"
+  preloadImage={preloadHeroImage.src}
   schema={[softwareSchema, faqSchema]}
 >
   <Header />

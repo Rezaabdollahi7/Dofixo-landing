@@ -1,5 +1,8 @@
 ---
 // src/components/sections/Comparison.astro
+import { Image } from "astro:assets";
+import noCRM from "../../assets/site/no-CRM.avif";
+import withCRM from "../../assets/site/with-CRM.avif";
 ---
 
 <section class="relative mt-42 ">
@@ -23,7 +26,7 @@
                     </h3>
                     
                     <div class="   flex items-center justify-center min-h-[200px]">
-                            <img alt="تعمیرگاه بدون نرم‌افزار: دفترچه‌ی دست‌نویس و سوابق پراکنده‌ی تعمیرات" src="/images/no-CRM.avif" width="520" height="360" loading="lazy" decoding="async" class="gray-image" />
+                            <Image alt="تعمیرگاه بدون نرم‌افزار: دفترچه‌ی دست‌نویس و سوابق پراکنده‌ی تعمیرات" src={noCRM} widths={[400, 520, 700]} sizes="(min-width: 1024px) 480px, 90vw" loading="lazy" decoding="async" class="gray-image" />
                     </div>
                     
                     <ul class="space-y-4">
@@ -76,7 +79,7 @@
                     </h3>
                     
                     <div class="   flex items-center justify-center min-h-[200px]">
-                            <img alt="تعمیرگاه با نرم‌افزار دوفیکسو: پرونده‌ی منظم دستگاه‌ها و مشتریان در یک پنل" src="/images/with-CRM.avif" width="520" height="360" loading="lazy" decoding="async" class="" />
+                            <Image alt="تعمیرگاه با نرم‌افزار دوفیکسو: پرونده‌ی منظم دستگاه‌ها و مشتریان در یک پنل" src={withCRM} widths={[400, 520, 700]} sizes="(min-width: 1024px) 480px, 90vw" loading="lazy" decoding="async" />
                     </div>
                     
                      <ul class="space-y-3">
