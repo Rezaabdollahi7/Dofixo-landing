@@ -133,5 +133,56 @@ const jsonLdGraph = [websiteSchema, organizationSchema, ...pageSchemas];
   <body>
     <a href="#main-content" class="skip-link">رفتن به محتوای اصلی</a>
     <slot />
+    <script>
+      // ردیابی منبع تبلیغ (UTM) تا مرز ثبت‌نام: اگر utm_* در URL این بازدید
+      // باشد ذخیره می‌شود (حداکثر ۳۰ روز، هم‌اندازه‌ی دوره‌ی آزمایشی رایگان)
+      // و به هر لینک ثبت‌نام در صفحه چسبانده می‌شود؛ وگرنه از بازدید قبلی
+      // (در همین ۳۰ روز) خوانده می‌شود. اپ باید این پارامترها را در لحظه‌ی
+      // ثبت‌نام بخواند و ذخیره کند — آن قسمت در ریپوی دیگری است.
+      const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+      const STORAGE_KEY = "dofixo_utm";
+      const MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+
+      function readStored(): Record<string, string> | null {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return null;
+          const parsed = JSON.parse(raw);
+          if (Date.now() - parsed.savedAt > MAX_AGE_MS) return null;
+          return parsed.values;
+        } catch {
+          return null;
+        }
+      }
+
+      function storeFromUrl(): Record<string, string> | null {
+        const params = new URLSearchParams(location.search);
+        const values: Record<string, string> = {};
+        for (const key of UTM_KEYS) {
+          const value = params.get(key);
+          if (value) values[key] = value;
+        }
+        if (Object.keys(values).length === 0) return null;
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({ savedAt: Date.now(), values }));
+        } catch {
+          // localStorage در دسترس نیست (مثلاً حالت خصوصی)؛ این بازدید فقط بدون ردیابی می‌ماند
+        }
+        return values;
+      }
+
+      const utm = storeFromUrl() ?? readStored();
+      if (utm) {
+        document.querySelectorAll('a[href^="https://app.dofixo.ir/register"]').forEach((a) => {
+          const href = a.getAttribute("href");
+          if (!href) return;
+          const url = new URL(href, location.href);
+          for (const [key, value] of Object.entries(utm)) {
+            if (!url.searchParams.has(key)) url.searchParams.set(key, value);
+          }
+          a.setAttribute("href", url.toString());
+        });
+      }
+    </script>
   </body>
 </html>
