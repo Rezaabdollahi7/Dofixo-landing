@@ -1,5 +1,7 @@
 ---
 // src/components/sections/Hero.astro
+import { Image } from "astro:assets";
+import heroImg from "../../assets/site/hero-img.webp";
 ---
 
 <section class="relative min-h-[80vh] flex items-center overflow-hidden  ">
@@ -77,12 +79,13 @@
           <div class="absolute inset-0 flex flex-col items-center justify-center  ">
            <!-- از اپ واقعی روی داده‌ی تعمیرگاه دمو؛ ساخته‌ی
                 docs/academy/shots/tutorials/site.mjs در ریپوی اپ -->
-           <img
-              src="/images/hero-img.webp"
+           <Image
+              src={heroImg}
               alt="نرم‌افزار دوفیکسو روی کامپیوتر و گوشی: فهرست دستگاه‌های در حال تعمیر با وضعیت، تعمیرکار و مشتری، و داشبورد تعمیرگاه"
-              width="1520"
-              height="1120"
+              widths={[400, 600, 800, 1140, 1520]}
+              sizes="(min-width: 1024px) 600px, 90vw"
               fetchpriority="high"
+              loading="eager"
               decoding="async"
               class="w-full h-auto"
             />
