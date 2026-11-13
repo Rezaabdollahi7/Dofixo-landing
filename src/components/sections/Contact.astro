@@ -180,6 +180,11 @@
               ></textarea>
             </div>
 
+            <!-- فیلد ضدِ اسپم: برای کاربر دیده نمی‌شود -->
+            <div class="absolute -left-[9999px] top-0" aria-hidden="true">
+              <label for="contact-form-company">شرکت</label>
+              <input id="contact-form-company" type="text" name="company" tabindex="-1" autocomplete="off" />
+            </div>
 
             <!-- دکمه ارسال -->
             <button
@@ -191,6 +196,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>
             </button>
+
+            <p id="contact-form-status" class="text-sm text-center" role="status" aria-live="polite"></p>
 
             <!-- شبکه‌های اجتماعی -->
             <div class="flex items-center justify-center gap-3 pt-2">
@@ -229,3 +236,56 @@
     </div>
   </div>
 </section>
+
+<script>
+  // ارسال فرم با fetch به /api/contact/ و نمایش وضعیت، بدون ترک صفحه.
+  function initContactSectionForm() {
+    const form = document.getElementById("contact-form") as HTMLFormElement | null;
+    const status = document.getElementById("contact-form-status");
+    if (!form || !status) return;
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+      status.textContent = "";
+      status.className = "text-sm text-center";
+
+      const formData = new FormData(form);
+      // فیلد ضدِ اسپم پر شده؛ برای ربات موفق به نظر می‌رسد، چیزی ارسال نمی‌شود.
+      if (String(formData.get("company") || "").trim() !== "") {
+        status.textContent = "پیام شما ارسال شد.";
+        status.classList.add("text-green-600");
+        form.reset();
+        return;
+      }
+
+      if (submitBtn) submitBtn.disabled = true;
+      status.textContent = "در حال ارسال...";
+
+      try {
+        const res = await fetch("/api/contact/", {
+          method: "POST",
+          headers: { Accept: "application/json" },
+          body: formData,
+        });
+        const data = await res.json().catch(() => null);
+        if (res.ok && data?.ok) {
+          status.textContent = "پیام شما با موفقیت ارسال شد؛ به‌زودی با شما تماس می‌گیریم.";
+          status.classList.add("text-green-600");
+          form.reset();
+        } else {
+          status.textContent = data?.error || "ارسال پیام ناموفق بود؛ لطفاً از طریق شماره تماس با ما در ارتباط باشید.";
+          status.classList.add("text-red-600");
+        }
+      } catch {
+        status.textContent = "ارتباط با سرور برقرار نشد؛ لطفاً از طریق شماره تماس با ما در ارتباط باشید.";
+        status.classList.add("text-red-600");
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", initContactSectionForm);
+  initContactSectionForm();
+</script>
