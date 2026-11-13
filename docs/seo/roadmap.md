@@ -149,15 +149,25 @@
 - **شاهد:** `docs/academy/keyword-map.md` (نکتهٔ ۳ در «سه یافته که نقشه
   را عوض کرد»)؛ `src/data/blog-redirects.json` خط مربوط به
   `modiriat-anbar-ghataat-tamirgah`.
-- **اقدام:** نگارش طبق `docs/academy/writing-guide.md`، سپس
-  `pnpm redirects`.
-- **وابستگی:** باید **پس از** انتشار اجرا شود، نه قبل — تا سیگنال رتبه
-  از دست نرود (طبق قاعدهٔ حفاظت از ترافیک ارگانیک، بخش ۵).
-- **فایل‌ها:** `src/content/academy/guide/mobile-parts-inventory/index.mdx` (جدید)، `vercel.json` (خودکار با `pnpm redirects`).
-- **معیار پذیرش:** مقاله منتشر و ریدایرکت فعال شود؛ `pnpm build` بدون
-  خطای `check-site.mjs` عبور کند.
-- **تست:** `pnpm build` محلی.
-- **وضعیت:** Todo
+- **اقدام انجام‌شده:** پیش‌نویس کامل نوشته شد — خوشه (راهنما)، طبق
+  `docs/academy/writing-guide.md`، با `draft: true` و یک کامنت
+  `{/* نویسنده: … */}` برای یگانه جعفری (نویسندهٔ این خوشه طبق
+  `keyword-map.md`). تصویرها از اسکرین‌شات‌های واقعی موجود
+  `tutorials/inventory/` بازاستفاده شدند (نه placeholder).
+- **طبق قاعدهٔ خودِ ریپو (`writing-guide.md` بخش ۱۰، «بعد از تأیید
+  نویسنده»)، `pnpm redirects` و حذف پست قدیمی عمداً اجرا نشد** — این
+  مرحله فقط بعد از این‌که نویسنده مقاله را خواند، تأیید کرد و دست‌کم
+  یک تجربهٔ واقعی خودش را جای کامنت گذاشت و `draft: false` شد، انجام
+  می‌شود. تا آن موقع پست قدیمی (`src/content/blog/modiriat-anbar-ghataat-tamirgah.md`)
+  دست‌نخورده می‌ماند و هیچ سیگنال رتبه‌ای از دست نمی‌رود.
+- **وابستگی:** تأیید یگانه جعفری (محتوایی، نه فنی).
+- **فایل‌ها:** `src/content/academy/guide/mobile-parts-inventory/index.mdx` (جدید)،
+  `cover.webp`/`kardex.webp`/`low-stock.webp` (جدید، بازاستفاده‌شده).
+- **معیار پذیرش:** پیش‌نویس بدون خطای schema/build رد شود (شد)؛ بعد از
+  تأیید نویسنده، `pnpm redirects` + `pnpm build` اجرا و merge شود.
+- **تست:** `pnpm build` محلی سبز، ۴۷ صفحه بدون تغییر (یعنی مقالهٔ
+  draft منتشر نشده — رفتار درست).
+- **وضعیت:** In Progress — منتظر بازبینی و تجربهٔ واقعی نویسنده.
 
 ### T3.2 — تکمیل تدریجی ۱۹ مقالهٔ باقی‌مانده مهاجرت بلاگ
 
