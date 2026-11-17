@@ -146,6 +146,13 @@
 }
 
 @layer base {
+  /* Guard against horizontal page scroll: in RTL anything positioned past the
+     left edge becomes scrollable. `clip` (unlike `hidden`) keeps sticky working. */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   body {
     @apply bg-white-1 text-charcoal font-sans antialiased;
   }
